@@ -27,7 +27,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: Garrett-Checkout
-          path: /dist
+          path: dist
 
   deploy:
     runs-on: ubuntu-latest
