@@ -121,7 +121,7 @@
             "guest_could_login": "Looks like you have an account. Sign in with {email} for a faster checkout.",
             "guest_must_login": "Looks like you have an account. Please sign in to proceed with {email}, or use another email.",
             "guest_temporary_disabled": "Guest checkout is temporarily disabled. Please sign in or <a href=\"{url}\" target=\"_blank\">create an account</a> to continue.",
-            "customer_heading": "Customer",
+            "customer_heading": "Sign In",
             "email_invalid_error": "Email address must be valid",
             "email_label": "Email Address",
             "email_required_error": "Email address is required",
