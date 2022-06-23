@@ -2,6 +2,114 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.228.0](https://github.com/bigcommerce/checkout-js/compare/v1.227.2...v1.228.0) (2022-06-22)
+
+
+### Features
+
+* **checkout:** CHECKOUT-6711 Update buy now cart order-confirmation URL ([#902](https://github.com/bigcommerce/checkout-js/issues/902)) ([bdaf0f2](https://github.com/bigcommerce/checkout-js/commit/bdaf0f2a739ba77a065fe5c856313bfe330b418b))
+
+### [1.227.2](https://github.com/bigcommerce/checkout-js/compare/v1.227.1...v1.227.2) (2022-06-22)
+
+### [1.227.1](https://github.com/bigcommerce/checkout-js/compare/v1.227.0...v1.227.1) (2022-06-21)
+
+
+### Bug Fixes
+
+* **common:** CHECKOUT-6674 Fix issue with prerelease ([#904](https://github.com/bigcommerce/checkout-js/issues/904)) ([cdc603e](https://github.com/bigcommerce/checkout-js/commit/cdc603e70f6544373eae38fbde99b2c966458097))
+
+## [1.227.0](https://github.com/bigcommerce/checkout-js/compare/v1.226.0...v1.227.0) (2022-06-21)
+
+
+### Features
+
+* **checkout:** CHECKOUT-6655 Make screen reader say each shipping form error individually ([#876](https://github.com/bigcommerce/checkout-js/issues/876)) ([90ab315](https://github.com/bigcommerce/checkout-js/commit/90ab3156549161081bd0e6c472b530e803ecec8d))
+
+## [1.226.0](https://github.com/bigcommerce/checkout-js/compare/v1.225.1...v1.226.0) (2022-06-21)
+
+
+### Features
+
+* **checkout:** CHECKOUT-6653 make cart drawer interactable via keyboard ([#881](https://github.com/bigcommerce/checkout-js/issues/881)) ([9c6d398](https://github.com/bigcommerce/checkout-js/commit/9c6d398570428b9c153d4760e7abf49bb2d4d920))
+
+### [1.225.1](https://github.com/bigcommerce/checkout-js/compare/v1.225.0...v1.225.1) (2022-06-17)
+
+## [1.225.0](https://github.com/bigcommerce/checkout-js/compare/v1.224.1...v1.225.0) (2022-06-16)
+
+
+### Features
+
+* **payment:** PAYMENTS-7524 Bump checkout-sdk version to 1.254.0 ([161a8ea](https://github.com/bigcommerce/checkout-js/commit/161a8ea51eb8ca58dac20e7194fef69319f0a1d0))
+* **payment:** PAYPAL-1487 Add paypal-venmo payment method ([2f10bea](https://github.com/bigcommerce/checkout-js/commit/2f10bea51aacc7d1614d364b5c676e42232d1fd8))
+
+### [1.224.1](https://github.com/bigcommerce/checkout-js/compare/v1.224.0...v1.224.1) (2022-06-15)
+
+
+### Bug Fixes
+
+* **payment:** INT-6061 StripeUPE fix initialization failing for not being able to get styles ([#898](https://github.com/bigcommerce/checkout-js/issues/898)) ([603874d](https://github.com/bigcommerce/checkout-js/commit/603874ded68678ab2141e459e870ff5c04a2ab97))
+
+## [1.224.0](https://github.com/bigcommerce/checkout-js/compare/v1.223.0...v1.224.0) (2022-06-15)
+
+
+### Features
+
+* **checkout:** CHECKOUT-6621 Refactor custom fixtures ([#859](https://github.com/bigcommerce/checkout-js/issues/859)) ([c6988ed](https://github.com/bigcommerce/checkout-js/commit/c6988ed50cf666042de50fd5d408d90566f9fa18))
+
+## [1.223.0](https://github.com/bigcommerce/checkout-js/compare/v1.222.0...v1.223.0) (2022-06-15)
+
+
+### Features
+
+* **checkout:** CHECKOUT-6595 remove edit cart button for buy now carts ([#899](https://github.com/bigcommerce/checkout-js/issues/899)) ([d0a4179](https://github.com/bigcommerce/checkout-js/commit/d0a4179d26d05fa629d9c6b4bff27be62f3bc4e2))
+
+## [1.222.0](https://github.com/bigcommerce/checkout-js/compare/v1.221.1...v1.222.0) (2022-06-14)
+
+
+### Features
+
+* **payment:** PAYPAL-1380 updated BraintreeVenmo to show it correctly in payment section ([1dc3edb](https://github.com/bigcommerce/checkout-js/commit/1dc3edb559fed3621272b1c497be6eeca32b4bb1))
+
+
+### Bug Fixes
+
+* **payment:** CHECKOUT-0000 Update Diners IconCardDinersClub.tsx spelling mistake ([#897](https://github.com/bigcommerce/checkout-js/issues/897)) ([1e79a37](https://github.com/bigcommerce/checkout-js/commit/1e79a37e77b47356ba2be383c67b11a6e9be4327))
+
+### [1.221.1](https://github.com/bigcommerce/checkout-js/compare/v1.221.0...v1.221.1) (2022-06-08)
+
+## [1.221.0](https://github.com/bigcommerce/checkout-js/compare/v1.220.0...v1.221.0) (2022-06-07)
+
+
+### Features
+
+* **payment:** INT-6055 bump checkout-sdk-js version ([#896](https://github.com/bigcommerce/checkout-js/issues/896)) ([294b536](https://github.com/bigcommerce/checkout-js/commit/294b5368c08dbe09ee43d1e861df986fcbbbd1af))
+
+## [1.220.0](https://github.com/bigcommerce/checkout-js/compare/v1.219.0...v1.220.0) (2022-06-01)
+
+
+### Features
+
+* **checkout:** CHECKOUT-6703 bump checkout-sdk-js version 1.248.0 ([2cbe0ad](https://github.com/bigcommerce/checkout-js/commit/2cbe0adb092e03aea29e9de8a51a75f7dd8679c2))
+
+## [1.219.0](https://github.com/bigcommerce/checkout-js/compare/v1.218.0...v1.219.0) (2022-05-30)
+
+
+### Features
+
+* **payment:** PAYPAL-1466 bump checkout-sdk-js version ([b49613e](https://github.com/bigcommerce/checkout-js/commit/b49613eb5cb5e9239dd52586fd3ea638defa36fa))
+
+## [1.218.0](https://github.com/bigcommerce/checkout-js/compare/v1.217.2...v1.218.0) (2022-05-30)
+
+
+### Features
+
+* **checkout:** CHECKOUT-6723 Add Norwegian Language ([#883](https://github.com/bigcommerce/checkout-js/issues/883)) ([6baa079](https://github.com/bigcommerce/checkout-js/commit/6baa0798a0d6ebaa9e8b76f32fcb49ddb729da30))
+
+
+### Bug Fixes
+
+* **shipping:** CHECKOUT-6643 Remove or check ([#879](https://github.com/bigcommerce/checkout-js/issues/879)) ([aa60831](https://github.com/bigcommerce/checkout-js/commit/aa60831df20adce87fe958e1f66cab2c9d56453e))
+
 ### [1.217.2](https://github.com/bigcommerce/checkout-js/compare/v1.217.1...v1.217.2) (2022-05-25)
 
 

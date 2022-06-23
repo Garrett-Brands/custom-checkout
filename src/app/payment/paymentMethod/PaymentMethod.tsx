@@ -183,6 +183,7 @@ const PaymentMethodComponent: FunctionComponent<PaymentMethodProps & WithCheckou
 
     if (method.id === PaymentMethodId.PaypalCommerce ||
         method.id === PaymentMethodId.PaypalCommerceCredit ||
+        method.id === PaymentMethodId.PaypalCommerceVenmo ||
         method.gateway === PaymentMethodId.PaypalCommerceAlternativeMethod) {
         return <PaypalCommercePaymentMethod
             { ...props }
@@ -218,6 +219,7 @@ const PaymentMethodComponent: FunctionComponent<PaymentMethodProps & WithCheckou
 
     if (method.gateway === PaymentMethodId.Afterpay ||
         method.gateway === PaymentMethodId.Clearpay ||
+        method.id === PaymentMethodId.BraintreeVenmo ||
         method.id === PaymentMethodId.Humm ||
         method.id === PaymentMethodId.Laybuy ||
         method.id === PaymentMethodId.Quadpay ||

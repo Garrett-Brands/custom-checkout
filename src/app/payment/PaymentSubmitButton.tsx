@@ -56,11 +56,20 @@ const PaymentSubmitButtonText: FunctionComponent<PaymentSubmitButtonTextProps> =
     }
 
     if (methodType === PaymentMethodType.Paypal) {
+        // TODO: method.id === PaymentMethodId.BraintreeVenmo should be removed after the PAYPAL-1380.checkout_button_strategies_update experiment removal
         return <TranslatedString id={ methodId === PaymentMethodId.BraintreeVenmo ? 'payment.braintreevenmo_continue_action' : 'payment.paypal_continue_action' } />;
+    }
+
+    if (methodId === PaymentMethodId.BraintreeVenmo) {
+        return <TranslatedString id="payment.braintreevenmo_continue_action" />;
     }
 
     if (methodType === PaymentMethodType.PaypalCredit) {
         return <TranslatedString data={ { brandName } } id={ brandName ? 'payment.continue_with_brand' : 'payment.paypal_pay_later_continue_action' } />;
+    }
+
+    if (methodType === PaymentMethodType.PaypalVenmo) {
+        return <TranslatedString id="payment.paypal_venmo_continue_action" />;
     }
 
     if (methodId === PaymentMethodId.Opy) {

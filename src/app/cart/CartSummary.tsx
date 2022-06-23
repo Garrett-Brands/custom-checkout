@@ -2,6 +2,7 @@ import { Checkout, ShopperCurrency, StoreCurrency } from '@bigcommerce/checkout-
 import React, { FunctionComponent } from 'react';
 
 import { withCheckout } from '../checkout';
+import { isBuyNowCart } from '../common/utility';
 import OrderSummary from '../order/OrderSummary';
 
 import mapToCartSummaryProps from './mapToCartSummaryProps';
@@ -20,14 +21,16 @@ export type WithCheckoutCartSummaryProps = {
 const CartSummary: FunctionComponent<WithCheckoutCartSummaryProps> = ({
     cartUrl,
     ...props
-}) => (
-    withRedeemable(OrderSummary)({
-        ...props,
-        cartUrl,
-        headerLink: (
-            <EditLink url={ cartUrl } />
-        ),
-    })
-);
+}) => {
+    const headerLink = isBuyNowCart() ? null : <EditLink url={ cartUrl } />;
+
+    return (
+        withRedeemable(OrderSummary)({
+            ...props,
+            cartUrl,
+            headerLink,
+        })
+    );
+};
 
 export default withCheckout(mapToCartSummaryProps)(CartSummary);

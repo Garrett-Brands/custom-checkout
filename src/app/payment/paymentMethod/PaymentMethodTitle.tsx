@@ -39,6 +39,10 @@ function getPaymentMethodTitle(
                 logoUrl: '',
                 titleText: methodName,
             },
+            [PaymentMethodId.BraintreeVenmo]: {
+                logoUrl: method.logoUrl || '',
+                titleText: method.logoUrl ? '' : methodDisplayName,
+            },
             [PaymentMethodType.PaypalCredit]: {
                 logoUrl: cdnPath('/img/payment-providers/paypal_commerce_logo_letter.svg'),
                 titleText: methodDisplayName,
@@ -120,6 +124,7 @@ function getPaymentMethodTitle(
                 titleText: '',
             },
             [PaymentMethodType.Paypal]: {
+                // TODO: method.id === PaymentMethodId.BraintreeVenmo should be removed after the PAYPAL-1380.checkout_button_strategies_update experiment removal
                 logoUrl: (method.id === PaymentMethodId.BraintreeVenmo && method.logoUrl) ? method.logoUrl : cdnPath('/img/payment-providers/paypalpaymentsprouk.png'),
                 titleText: '',
             },
@@ -168,6 +173,10 @@ function getPaymentMethodTitle(
                 titleText: language.translate('payment.credit_debit_card_text'),
             },
         };
+
+        if (method.id === PaymentMethodId.PaypalCommerceVenmo) {
+            return customTitles[PaymentMethodId.PaypalCommerceAlternativeMethod];
+        }
 
         // KLUDGE: 'paypal' is actually a credit card method. It is the only
         // exception to the rule below. We should probably fix it on API level,

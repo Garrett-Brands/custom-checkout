@@ -169,13 +169,13 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
             const cart = data.getCart();
 
             const hasMultiShippingEnabled = data.getConfig()?.checkoutSettings?.hasMultiShippingEnabled;
-            const checkoutBillingSameAsShippingEnabled = data.getConfig()?.checkoutSettings?.checkoutBillingSameAsShippingEnabled;
+            const checkoutBillingSameAsShippingEnabled = data.getConfig()?.checkoutSettings?.checkoutBillingSameAsShippingEnabled ?? true;
             const isMultiShippingMode = !!cart &&
                 !!consignments &&
                 hasMultiShippingEnabled &&
                 isUsingMultiShipping(consignments, cart.lineItems);
 
-            this.setState({ isBillingSameAsShipping: checkoutBillingSameAsShippingEnabled || true });
+            this.setState({ isBillingSameAsShipping: checkoutBillingSameAsShippingEnabled });
 
             if (isMultiShippingMode) {
                 this.setState({ isMultiShippingMode }, this.handleReady);
@@ -490,7 +490,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
         this.navigateToStep(activeStep.type, options);
     };
 
-    private navigateToOrderConfirmation: () => void = () => {
+    private navigateToOrderConfirmation: (orderId?: number) => void = orderId => {
         const { steps } = this.props;
 
         if (this.stepTracker) {
@@ -502,7 +502,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
         }
 
         this.setState({ isRedirecting: true }, () => {
-            navigateToOrderConfirmation();
+            navigateToOrderConfirmation(window.location, orderId);
         });
     };
 
