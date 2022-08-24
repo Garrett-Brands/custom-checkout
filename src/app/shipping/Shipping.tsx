@@ -15,6 +15,7 @@ import { MultiShippingFormValues } from './MultiShippingForm';
 import ShippingForm from './ShippingForm';
 import ShippingHeader from './ShippingHeader';
 import { SingleShippingFormValues } from './SingleShippingForm';
+import GiftMessageForm from './custom-components/giftMessageForm';
 
 export interface ShippingProps {
     isBillingSameAsShipping: boolean;
@@ -142,6 +143,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
                         shouldShowSaveAddress={ !isGuest }
                         updateAddress={ updateShippingAddress }
                     />
+                    <GiftMessageForm />
                 </LoadingOverlay>
             </div>
         );
