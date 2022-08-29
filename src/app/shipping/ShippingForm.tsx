@@ -104,6 +104,7 @@ class ShippingForm extends Component<ShippingFormProps & WithLanguageProps> {
             /> :
             <SingleShippingForm
                 addresses={ addresses }
+                cart={ cart }
                 cartHasChanged={ cartHasChanged }
                 consignments={ consignments }
                 countries={ countries }

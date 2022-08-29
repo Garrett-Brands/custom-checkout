@@ -2,7 +2,7 @@ import { withFormik, FieldProps, FormikProps } from 'formik';
 import React, { memo, useCallback, FunctionComponent, ReactNode } from 'react';
 import { object, string } from 'yup';
 
-import { withLanguage, TranslatedHtml, TranslatedString, WithLanguageProps } from '../locale';
+import { withLanguage, TranslatedString, WithLanguageProps } from '../locale';
 import { getPrivacyPolicyValidationSchema, PrivacyPolicyField } from '../privacyPolicy';
 import { Button, ButtonVariant } from '../ui/button';
 import { BasicFormField, Fieldset, Form, Legend  } from '../ui/form';

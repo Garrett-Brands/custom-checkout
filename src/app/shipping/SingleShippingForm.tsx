@@ -1,4 +1,4 @@
-import { Address, CheckoutParams, CheckoutSelectors, Consignment, Country, CustomerAddress, CustomerRequestOptions, FormField, RequestOptions, ShippingInitializeOptions, ShippingRequestOptions } from '@bigcommerce/checkout-sdk';
+import { Address, Cart, CheckoutParams, CheckoutSelectors, Consignment, Country, CustomerAddress, CustomerRequestOptions, FormField, RequestOptions, ShippingInitializeOptions, ShippingRequestOptions } from '@bigcommerce/checkout-sdk';
 import { withFormik, FormikProps } from 'formik';
 import { debounce, noop } from 'lodash';
 import React, { PureComponent, ReactNode } from 'react';
@@ -14,9 +14,12 @@ import BillingSameAsShippingField from './BillingSameAsShippingField';
 import ShippingAddress from './ShippingAddress';
 import { SHIPPING_ADDRESS_FIELDS } from './ShippingAddressFields';
 import ShippingFormFooter from './ShippingFormFooter';
+import GiftMessageForm from './custom-components/giftMessageForm';
+import ShipDate from './custom-components/shipDate';
 
 export interface SingleShippingFormProps {
     addresses: CustomerAddress[];
+    cart: Cart;
     isBillingSameAsShipping: boolean;
     cartHasChanged: boolean;
     consignments: Consignment[];
@@ -92,6 +95,7 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
     render(): ReactNode {
         const {
             addresses,
+            cart,
             cartHasChanged,
             isLoading,
             onUnhandledError,
@@ -149,6 +153,8 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
                     }
                 </Fieldset>
 
+                <ShipDate />
+
                 <ShippingFormFooter
                     cartHasChanged={ cartHasChanged }
                     isLoading={ isLoading || isUpdatingShippingData }
@@ -156,6 +162,11 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
                     shouldDisableSubmit={ this.shouldDisableSubmit() }
                     shouldShowOrderComments={ shouldShowOrderComments }
                     shouldShowShippingOptions={ isValid }
+                />
+
+                <GiftMessageForm
+                    { ...cart }
+                    consignments={ consignments }
                 />
             </Form>
         );
