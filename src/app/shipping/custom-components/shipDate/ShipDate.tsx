@@ -6,8 +6,9 @@ import ShippingInfo from "./ShippingInfo";
 import SelectedShipDate from "./SelectedShipDate";
 import ArrivalDate from "./ArrivalDate";
 
-const ShipDate = () => {
+const ShipDate = (props: any) => {
 
+    const { address, selectedShippingOption } = props.consignments[0]
     const today = new Date()
     const day = today.getDay()
     const todayReset = today.setHours(0,0,0,0)
@@ -42,6 +43,10 @@ const ShipDate = () => {
         })
     }, [selectedDate])
 
+    useEffect(() => {
+        fetchUPSEstimate()
+    }, [address, selectedShippingOption])
+
     const getNextAvailableDay = (increment: number) => {
         const availableDay = new Date(todayReset)
         availableDay.setDate(availableDay.getDate() + increment)
@@ -69,6 +74,42 @@ const ShipDate = () => {
 
     const increment = () => {
         return isFriday ? 3 : ( isSaturday ? 2 : 1 )
+    }
+
+    const fetchUPSEstimate = () => {
+
+        var data = {
+            "to": {
+                "city": address.city,
+                "state": address.stateOrProvince,
+                "postal_code": address.postalCode,
+                "country": address.country
+            },
+            "pickup_date": selectedDate,
+            "shipping_method": selectedShippingOption.description
+        }
+        
+        var reqObj = {
+            method: 'POST',
+            headers: {
+              "Content-Type": "application/json",
+              "Accept": "application/json",
+              "x-access-key": "XM9xCpdv7TC1ZrzZ3ZeNYKUoCK1GHbZw"
+            },
+            data: JSON.stringify(data)
+          }
+
+        console.log(data, reqObj)
+
+        fetch(`https://https://api.gbdev.cloud/v1/shipping/expected-date`, reqObj)
+        .then(resp => resp.json())
+        .then(estimate => {
+            console.log('ESTIMATE =>', estimate)
+        })
+        .catch(error => {
+            console.log('ERROR =>', error)
+        })
+
     }
 
     return(

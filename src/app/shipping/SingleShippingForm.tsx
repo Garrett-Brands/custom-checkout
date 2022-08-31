@@ -95,7 +95,7 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
     render(): ReactNode {
         const {
             addresses,
-            cart,
+            // cart,
             cartHasChanged,
             isLoading,
             onUnhandledError,
@@ -153,7 +153,7 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
                     }
                 </Fieldset>
 
-                <ShipDate />
+                <ShipDate consignments={ consignments } />
 
                 <ShippingFormFooter
                     cartHasChanged={ cartHasChanged }
@@ -164,10 +164,7 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
                     shouldShowShippingOptions={ isValid }
                 />
 
-                <GiftMessageForm
-                    { ...cart }
-                    consignments={ consignments }
-                />
+                <GiftMessageForm />
             </Form>
         );
     }

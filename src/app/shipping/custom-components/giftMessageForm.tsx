@@ -1,8 +1,7 @@
 import React from "react";
 
-const GiftMessageForm = (props: any) => {
+const GiftMessageForm = () => {
 
-    console.log(props)
     // var checkoutId = props.id
     // var giftMessageConsignmentID = `field_32`
     // const address = props.consignments[0].address
