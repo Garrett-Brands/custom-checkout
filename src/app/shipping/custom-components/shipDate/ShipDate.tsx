@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Legend, Fieldset } from "../../ui/form";
+import { Legend, Fieldset } from "../../../ui/form";
+import ShippingCalendar from "./ShippingCalendar";
 import DatePicker from 'react-datepicker'
+import ShippingInfo from "./ShippingInfo";
+import SelectedShipDate from "./SelectedShipDate";
+import ArrivalDate from "./ArrivalDate";
 
 const ShipDate = () => {
 
@@ -67,25 +71,24 @@ const ShipDate = () => {
         return isFriday ? 3 : ( isSaturday ? 2 : 1 )
     }
 
-    console.log(today, day, todayReset)
-    console.log('Is Friday', isFriday)
-    console.log('Is Saturday', isSaturday)
-    
     return(
         <Fieldset id='ship-date'>
             <Legend testId="ship-date-form-heading">Preferred Ship Date</Legend>
-                <div className="ship-date-calendar-container">
-                    <DatePicker 
-                        calendarClassName="ship-date-calendar"
-                        selected={selectedDate} 
-                        onChange={(date:Date) => setSelectedDate(date)}
-                        minDate={minDate()}
-                        maxDate={maxDate()}
-                        filterDate={filterDates}
-                        // highlightDates={[subDays(new Date(), 7), addDays(new Date(), 7)]}
-                        highlightDates={[estimatedArrival]}
-                        inline />
-                </div>
+                <ShippingCalendar>
+                        <DatePicker 
+                            calendarClassName="ship-date-calendar"
+                            selected={selectedDate} 
+                            onChange={(date:Date) => setSelectedDate(date)}
+                            minDate={minDate()}
+                            maxDate={maxDate()}
+                            filterDate={filterDates}
+                            highlightDates={[estimatedArrival]}
+                            inline />
+                </ShippingCalendar>
+                <ShippingInfo>
+                    <SelectedShipDate shipDate={selectedDate} />
+                    <ArrivalDate arrivalDate={estimatedArrival} />
+                </ShippingInfo>
         </Fieldset>
     )
 }

@@ -14,8 +14,8 @@ import BillingSameAsShippingField from './BillingSameAsShippingField';
 import ShippingAddress from './ShippingAddress';
 import { SHIPPING_ADDRESS_FIELDS } from './ShippingAddressFields';
 import ShippingFormFooter from './ShippingFormFooter';
-import GiftMessageForm from './custom-components/giftMessageForm';
-import ShipDate from './custom-components/shipDate';
+import GiftMessageForm from './custom-components/GiftMessageForm';
+import ShipDate from './custom-components/shipDate/ShipDate';
 
 export interface SingleShippingFormProps {
     addresses: CustomerAddress[];
