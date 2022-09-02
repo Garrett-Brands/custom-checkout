@@ -41,7 +41,9 @@ const ShipDate = (props: any) => {
     }, [nextAvailableDate])
 
     useEffect(() => {
-        fetchUPSEstimate()
+        if (address && selectedShippingOption) {
+            fetchUPSEstimate()
+        }
     }, [selectedDate, address, selectedShippingOption])
 
     const getNextAvailableDay = (increment: number) => {
