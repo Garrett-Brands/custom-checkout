@@ -1,10 +1,12 @@
 import React, { PureComponent, ReactNode } from 'react';
+import { Consignment } from '@bigcommerce/checkout-sdk';
 
 import { TranslatedString } from '../locale';
 import { OrderComments } from '../orderComments';
 import { Alert, AlertType } from '../ui/alert';
 import { Button, ButtonVariant } from '../ui/button';
 import { Fieldset, Legend } from '../ui/form';
+import ShipDate from './customComponents/shipDate/ShipDate';
 
 import { ShippingOptions } from './shippingOption';
 
@@ -15,6 +17,8 @@ export interface ShippingFormFooterProps {
     shouldShowShippingOptions?: boolean;
     shouldDisableSubmit: boolean;
     isLoading: boolean;
+    consignments: Consignment[];
+    setShipDate: Function;
 }
 
 class ShippingFormFooter extends PureComponent<ShippingFormFooterProps> {
@@ -26,7 +30,13 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps> {
             shouldShowShippingOptions = true,
             shouldDisableSubmit,
             isLoading,
+            consignments,
+            setShipDate
         } = this.props;
+
+        // const setShipDate = (shipDate: Date) => {
+        //     console.log('SHIP DATE SET IN FORM FOOTER =>', shipDate)
+        // }
 
         return <>
             <Fieldset
@@ -52,6 +62,11 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps> {
                     shouldShowShippingOptions={ shouldShowShippingOptions }
                 />
             </Fieldset>
+
+            <ShipDate 
+                consignments={ consignments }
+                setShipDate={ setShipDate } 
+            />
 
             { shouldShowOrderComments &&
                 <OrderComments /> }

@@ -9,6 +9,7 @@ import ArrivalDate from "./ArrivalDate";
 const ShipDate = (props: any) => {
 
     const { address, selectedShippingOption } = props.consignments[0]
+    const { setShipDate } = props
     const today = new Date()
     const day = today.getDay()
     const todayReset = today.setHours(0,0,0,0)
@@ -28,6 +29,10 @@ const ShipDate = (props: any) => {
     const [estimatedArrival, setEstimatedArrival] = useState(new Date())
     
     useEffect(() => {
+        setShipDate(selectedDate)
+    }, [selectedDate])
+    
+    useEffect(() => {
         setNextAvailableDate(getNextAvailableDay(increment()))
     }, [isFriday, isSaturday])
     
@@ -36,16 +41,8 @@ const ShipDate = (props: any) => {
     }, [nextAvailableDate])
 
     useEffect(() => {
-        setEstimatedArrival(() => {
-            const newETA = new Date(selectedDate)
-            newETA.setDate(selectedDate.getDate() + 3)
-            return newETA
-        })
-    }, [selectedDate])
-
-    useEffect(() => {
         fetchUPSEstimate()
-    }, [address, selectedShippingOption])
+    }, [selectedDate, address, selectedShippingOption])
 
     const getNextAvailableDay = (increment: number) => {
         const availableDay = new Date(todayReset)
@@ -78,14 +75,19 @@ const ShipDate = (props: any) => {
 
     const fetchUPSEstimate = () => {
 
-        var data = {
+        const year = selectedDate.getFullYear()
+        const month = String(selectedDate.getMonth() + 1).padStart(2, '0')
+        const date = String(selectedDate.getDate()).padStart(2, '0')
+        const formattedDate = [year, month, date].join('')
+
+        var body = {
             "to": {
                 "city": address.city,
                 "state": address.stateOrProvince,
                 "postal_code": address.postalCode,
                 "country": address.country
             },
-            "pickup_date": selectedDate,
+            "pickup_date": formattedDate,
             "shipping_method": selectedShippingOption.description
         }
         
@@ -96,25 +98,28 @@ const ShipDate = (props: any) => {
               "Accept": "application/json",
               "x-access-key": "XM9xCpdv7TC1ZrzZ3ZeNYKUoCK1GHbZw"
             },
-            data: JSON.stringify(data)
+            body: JSON.stringify(body)
           }
 
-        console.log(data, reqObj)
+        // console.log('selectedDate', selectedDate, 'formattedDate', formattedDate)
+        // console.log('selectedShippingOption', selectedShippingOption.description)
 
-        fetch(`https://https://api.gbdev.cloud/v1/shipping/expected-date`, reqObj)
+        fetch(`https://api.gbdev.cloud/v1/shipping/expected-date`, reqObj)
         .then(resp => resp.json())
         .then(estimate => {
-            console.log('ESTIMATE =>', estimate)
+            const estimatedArrival = new Date(estimate.data.EstimatedArrival.Date.replaceAll('-', '/'))
+            // console.log('UPS ESTIMATED ARRIVAL =>', estimate.data.EstimatedArrival.Date, 'estimatedArrival =>', estimatedArrival)
+            setEstimatedArrival(estimatedArrival)
         })
         .catch(error => {
-            console.log('ERROR =>', error)
+            console.log('UPS ESTIMATED ARRIVAL ERROR =>', error)
         })
 
     }
 
     return(
         <Fieldset id='ship-date'>
-            <Legend testId="ship-date-form-heading">Preferred Ship Date</Legend>
+            <Legend testId="ship-date-form-heading">Ship Date</Legend>
                 <ShippingCalendar>
                         <DatePicker 
                             calendarClassName="ship-date-calendar"

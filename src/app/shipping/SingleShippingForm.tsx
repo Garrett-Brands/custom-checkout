@@ -14,8 +14,8 @@ import BillingSameAsShippingField from './BillingSameAsShippingField';
 import ShippingAddress from './ShippingAddress';
 import { SHIPPING_ADDRESS_FIELDS } from './ShippingAddressFields';
 import ShippingFormFooter from './ShippingFormFooter';
-import GiftMessageForm from './custom-components/GiftMessageForm';
-import ShipDate from './custom-components/shipDate/ShipDate';
+// import GiftMessageForm from './custom-components/GiftMessageForm';
+// import ShipDate from './custom-components/shipDate/ShipDate';
 
 export interface SingleShippingFormProps {
     addresses: CustomerAddress[];
@@ -42,6 +42,7 @@ export interface SingleShippingFormProps {
     onUnhandledError?(error: Error): void;
     signOut(options?: CustomerRequestOptions): void;
     updateAddress(address: Partial<Address>, options?: RequestOptions<CheckoutParams>): Promise<CheckoutSelectors>;
+    setShipDate: Function;
 }
 
 export interface SingleShippingFormValues {
@@ -112,6 +113,7 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
             deinitialize,
             values: { shippingAddress: addressForm },
             isShippingStepPending,
+            setShipDate
         } = this.props;
 
         const {
@@ -153,7 +155,7 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
                     }
                 </Fieldset>
 
-                <ShipDate consignments={ consignments } />
+                {/* <ShipDate consignments={ consignments } /> */}
 
                 <ShippingFormFooter
                     cartHasChanged={ cartHasChanged }
@@ -162,9 +164,11 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
                     shouldDisableSubmit={ this.shouldDisableSubmit() }
                     shouldShowOrderComments={ shouldShowOrderComments }
                     shouldShowShippingOptions={ isValid }
+                    consignments={ consignments }
+                    setShipDate={ setShipDate }
                 />
 
-                <GiftMessageForm />
+                {/* <GiftMessageForm /> */}
             </Form>
         );
     }

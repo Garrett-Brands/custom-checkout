@@ -86,6 +86,9 @@ class MultiShippingForm extends PureComponent<MultiShippingFormProps & WithLangu
         } = this.props;
 
         const { items, itemAddingAddress, createCustomerAddressError } = this.state;
+        const setShipDate = (shipDate: Date) => {
+            console.log('Multiship - Ship Date Set', shipDate)
+        }
 
         if (isGuest) {
             return (
@@ -151,6 +154,8 @@ class MultiShippingForm extends PureComponent<MultiShippingFormProps & WithLangu
                         shouldDisableSubmit={ this.shouldDisableSubmit() }
                         shouldShowOrderComments={ shouldShowOrderComments }
                         shouldShowShippingOptions={ !hasUnassignedLineItems(consignments, cart.lineItems) }
+                        consignments={ consignments }
+                        setShipDate={ setShipDate }
                     />
                 </Form>
             </Fragment>
