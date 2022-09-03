@@ -27,6 +27,7 @@ export interface ShippingProps {
     onSignIn(): void;
     navigateNextStep(isBillingSameAsShipping: boolean): void;
     setShipDate: Function;
+    setArrivalDate: Function;
 }
 
 export interface WithCheckoutShippingProps {
@@ -110,6 +111,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             isMultiShippingMode,
             onToggleMultiShipping,
             setShipDate,
+            setArrivalDate,
             ...shippingFormProps
         } = this.props;
 
@@ -144,6 +146,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
                         shouldShowSaveAddress={ !isGuest }
                         updateAddress={ updateShippingAddress }
                         setShipDate={ setShipDate }
+                        setArrivalDate={ setArrivalDate }
                     />
                     
                 </LoadingOverlay>

@@ -77,6 +77,7 @@ export interface CheckoutState {
     isRedirecting: boolean;
     hasSelectedShippingOptions: boolean;
     shipDate: Date;
+    arrivalDate: Date;
 }
 
 export interface WithCheckoutProps {
@@ -108,7 +109,8 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
         isRedirecting: false,
         isMultiShippingMode: false,
         hasSelectedShippingOptions: false,
-        shipDate: new Date(0)
+        shipDate: new Date(0),
+        arrivalDate: new Date(0)
     };
 
     private embeddedMessenger?: EmbeddedCheckoutMessenger;
@@ -332,11 +334,16 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
         const {
             isBillingSameAsShipping,
             isMultiShippingMode,
-            shipDate
+            shipDate,
+            arrivalDate
         } = this.state;
 
-        const setShipDate = (shipDate: Date) =>{
+        const setShipDate = (shipDate: Date) => {
             this.setState({shipDate: shipDate})
+        }
+
+        const setArrivalDate = (arrivalDate: Date) => {
+            this.setState({arrivalDate: arrivalDate})
         }
 
         if (!cart) {
@@ -357,7 +364,9 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                             compactView={ consignments.length < 2 }
                             consignment={ consignment }
                         />
-                        <ShippingSummary shipDate={shipDate} />
+                        <ShippingSummary 
+                            shipDate={shipDate}
+                            arrivalDate={arrivalDate} />
                     </div>) }
             >
                 <LazyContainer>
@@ -372,6 +381,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                         onToggleMultiShipping={ this.handleToggleMultiShipping }
                         onUnhandledError={ this.handleUnhandledError }
                         setShipDate={ setShipDate }
+                        setArrivalDate={ setArrivalDate }
                     />
                 </LazyContainer>
             </CheckoutStep>

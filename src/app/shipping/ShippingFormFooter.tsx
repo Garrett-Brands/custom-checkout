@@ -19,6 +19,7 @@ export interface ShippingFormFooterProps {
     isLoading: boolean;
     consignments: Consignment[];
     setShipDate: Function;
+    setArrivalDate: Function;
 }
 
 class ShippingFormFooter extends PureComponent<ShippingFormFooterProps> {
@@ -31,12 +32,9 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps> {
             shouldDisableSubmit,
             isLoading,
             consignments,
-            setShipDate
+            setShipDate,
+            setArrivalDate
         } = this.props;
-
-        // const setShipDate = (shipDate: Date) => {
-        //     console.log('SHIP DATE SET IN FORM FOOTER =>', shipDate)
-        // }
 
         return <>
             <Fieldset
@@ -65,7 +63,8 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps> {
 
             <ShipDate 
                 consignments={ consignments }
-                setShipDate={ setShipDate } 
+                setShipDate={ setShipDate }
+                setArrivalDate={ setArrivalDate } 
             />
 
             { shouldShowOrderComments &&

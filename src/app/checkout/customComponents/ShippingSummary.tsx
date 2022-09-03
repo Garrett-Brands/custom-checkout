@@ -1,9 +1,9 @@
 import React from "react";
 import SelectedShipDate from "../../shipping/customComponents/shipDate/SelectedShipDate";
+import ArrivalDate from "../../shipping/customComponents/shipDate/ArrivalDate";
 
 const ShippingSummary = (props: any) => {
-    const { shipDate } = props
-    // const formattedShipDate = shipDate.toLocaleDateString('en-us', { weekday:"short", month:"short", day:"numeric"})
+    const { shipDate, arrivalDate } = props
 
     const renderShipDate = () => {
         if (shipDate.getYear() !== 69) {
@@ -11,10 +11,17 @@ const ShippingSummary = (props: any) => {
         }
     }
 
+    const renderArrivalDate = () => {
+        if (arrivalDate.getYear() !== 69) {
+            return <ArrivalDate arrivalDate={ arrivalDate } />
+        }
+    }
+
     return(
         <div className="shipping-summary-container">
             {renderShipDate()}
-        </div>
+            {renderArrivalDate()}
+        </div >
     )
 }
 

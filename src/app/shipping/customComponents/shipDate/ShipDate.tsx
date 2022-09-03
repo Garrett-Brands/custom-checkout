@@ -9,7 +9,7 @@ import ArrivalDate from "./ArrivalDate";
 const ShipDate = (props: any) => {
 
     const { address, selectedShippingOption } = props.consignments[0]
-    const { setShipDate } = props
+    const { setShipDate, setArrivalDate } = props
     const today = new Date()
     const day = today.getDay()
     const todayReset = today.setHours(0,0,0,0)
@@ -31,6 +31,10 @@ const ShipDate = (props: any) => {
     useEffect(() => {
         setShipDate(selectedDate)
     }, [selectedDate])
+
+    useEffect(() => {
+        setArrivalDate(estimatedArrival)
+    }, [estimatedArrival])
     
     useEffect(() => {
         setNextAvailableDate(getNextAvailableDay(increment()))

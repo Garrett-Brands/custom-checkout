@@ -40,6 +40,7 @@ export interface ShippingFormProps {
     signOut(options?: CustomerRequestOptions): void;
     updateAddress(address: Partial<Address>, options: RequestOptions<CheckoutParams>): Promise<CheckoutSelectors>;
     setShipDate: Function;
+    setArrivalDate: Function;
 }
 
 class ShippingForm extends Component<ShippingFormProps & WithLanguageProps> {
@@ -77,7 +78,8 @@ class ShippingForm extends Component<ShippingFormProps & WithLanguageProps> {
             signOut,
             updateAddress,
             isShippingStepPending,
-            setShipDate
+            setShipDate,
+            setArrivalDate
         } = this.props;
 
         return isMultiShippingMode ?
@@ -130,6 +132,7 @@ class ShippingForm extends Component<ShippingFormProps & WithLanguageProps> {
                 signOut={ signOut }
                 updateAddress={ updateAddress }
                 setShipDate={ setShipDate }
+                setArrivalDate={ setArrivalDate }
             />;
     }
 }
