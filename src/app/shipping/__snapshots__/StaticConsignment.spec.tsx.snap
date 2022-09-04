@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`StaticConsignment Component renders compact view of static consignment 1`] = `
+<div
+  class="staticConsignment"
+>
+  <div>
+    <div
+      class="shippingOption shippingOption--alt"
+    >
+      <div
+        class="shippingOption shippingOption--alt"
+      >
+        <span
+          class="shippingOption-desc"
+        >
+          Flat Rate
+        </span>
+        <span
+          class="shippingOption-price"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`StaticConsignment Component renders static consignment with shipping method 1`] = `
+<div
+  class="staticConsignment"
+>
+  <strong />
+  <div
+    class="staticConsignment-items"
+  >
+    <strong />
+    <ul />
+  </div>
+  <div>
+    <strong />
+    <div
+      class="shippingOption shippingOption--alt"
+    >
+      <div
+        class="shippingOption shippingOption--alt"
+      >
+        <span
+          class="shippingOption-desc"
+        >
+          Flat Rate
+        </span>
+        <span
+          class="shippingOption-price"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;
