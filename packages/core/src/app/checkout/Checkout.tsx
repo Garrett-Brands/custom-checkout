@@ -23,6 +23,7 @@ import CheckoutStep from './CheckoutStep';
 import CheckoutStepStatus from './CheckoutStepStatus';
 import CheckoutStepType from './CheckoutStepType';
 import CheckoutSupport from './CheckoutSupport';
+import ShippingSummary from './customComponents/shippingSummary';
 
 const Billing = lazy(() => retry(() => import(
     /* webpackChunkName: "billing" */
@@ -76,6 +77,8 @@ export interface CheckoutState {
     isRedirecting: boolean;
     hasSelectedShippingOptions: boolean;
     isBuyNowCartEnabled: boolean;
+    shipDate: Date;
+    arrivalDate: Date;
 }
 
 export interface WithCheckoutProps {
@@ -110,6 +113,8 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
         isMultiShippingMode: false,
         hasSelectedShippingOptions: false,
         isBuyNowCartEnabled: false,
+        shipDate: new Date(0),
+        arrivalDate: new Date(0)
     };
 
     private embeddedMessenger?: EmbeddedCheckoutMessenger;
@@ -334,7 +339,17 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
         const {
             isBillingSameAsShipping,
             isMultiShippingMode,
+            shipDate,
+            arrivalDate
         } = this.state;
+
+        const setShipDate = (shipDate: Date) => {
+            this.setState({shipDate: shipDate})
+        }
+
+        const setArrivalDate = (arrivalDate: Date) => {
+            this.setState({arrivalDate: arrivalDate})
+        }
 
         if (!cart) {
             return;
@@ -354,6 +369,9 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                             compactView={ consignments.length < 2 }
                             consignment={ consignment }
                         />
+                        <ShippingSummary 
+                            shipDate={shipDate}
+                            arrivalDate={arrivalDate} />
                     </div>) }
             >
                 <LazyContainer>
@@ -367,6 +385,8 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                         onSignIn={ this.handleShippingSignIn }
                         onToggleMultiShipping={ this.handleToggleMultiShipping }
                         onUnhandledError={ this.handleUnhandledError }
+                        setShipDate={ setShipDate }
+                        setArrivalDate={ setArrivalDate }
                     />
                 </LazyContainer>
             </CheckoutStep>

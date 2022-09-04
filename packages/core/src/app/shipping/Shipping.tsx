@@ -26,6 +26,8 @@ export interface ShippingProps {
     onUnhandledError(error: Error): void;
     onSignIn(): void;
     navigateNextStep(isBillingSameAsShipping: boolean): void;
+    setShipDate: Function;
+    setArrivalDate: Function;
 }
 
 export interface WithCheckoutShippingProps {
@@ -108,6 +110,8 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             deinitializeShippingMethod,
             isMultiShippingMode,
             onToggleMultiShipping,
+            setShipDate,
+            setArrivalDate,
             ...shippingFormProps
         } = this.props;
 
@@ -141,7 +145,10 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
                         onUseNewAddress={ this.handleUseNewAddress }
                         shouldShowSaveAddress={ !isGuest }
                         updateAddress={ updateShippingAddress }
+                        setShipDate={ setShipDate }
+                        setArrivalDate={ setArrivalDate }
                     />
+                    
                 </LoadingOverlay>
             </div>
         );

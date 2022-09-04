@@ -1,4 +1,4 @@
-import { Address, CheckoutParams, CheckoutSelectors, Consignment, Country, CustomerAddress, CustomerRequestOptions, FormField, RequestOptions, ShippingInitializeOptions, ShippingRequestOptions } from '@bigcommerce/checkout-sdk';
+import { Address, Cart, CheckoutParams, CheckoutSelectors, Consignment, Country, CustomerAddress, CustomerRequestOptions, FormField, RequestOptions, ShippingInitializeOptions, ShippingRequestOptions } from '@bigcommerce/checkout-sdk';
 import { withFormik, FormikProps } from 'formik';
 import { debounce, noop } from 'lodash';
 import React, { PureComponent, ReactNode } from 'react';
@@ -17,6 +17,7 @@ import ShippingFormFooter from './ShippingFormFooter';
 
 export interface SingleShippingFormProps {
     addresses: CustomerAddress[];
+    cart: Cart;
     isBillingSameAsShipping: boolean;
     cartHasChanged: boolean;
     consignments: Consignment[];
@@ -39,6 +40,8 @@ export interface SingleShippingFormProps {
     onUnhandledError?(error: Error): void;
     signOut(options?: CustomerRequestOptions): void;
     updateAddress(address: Partial<Address>, options?: RequestOptions<CheckoutParams>): Promise<CheckoutSelectors>;
+    setShipDate: Function;
+    setArrivalDate: Function;
 }
 
 export interface SingleShippingFormValues {
@@ -92,6 +95,7 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
     render(): ReactNode {
         const {
             addresses,
+            // cart,
             cartHasChanged,
             isLoading,
             onUnhandledError,
@@ -108,6 +112,8 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
             deinitialize,
             values: { shippingAddress: addressForm },
             isShippingStepPending,
+            setShipDate,
+            setArrivalDate
         } = this.props;
 
         const {
@@ -156,7 +162,12 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
                     shouldDisableSubmit={ this.shouldDisableSubmit() }
                     shouldShowOrderComments={ shouldShowOrderComments }
                     shouldShowShippingOptions={ isValid }
+                    consignments={ consignments }
+                    setShipDate={ setShipDate }
+                    setArrivalDate={ setArrivalDate }
                 />
+
+                {/* <GiftMessageForm /> */}
             </Form>
         );
     }
