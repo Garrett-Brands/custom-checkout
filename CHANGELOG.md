@@ -2,6 +2,61 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.251.1](https://github.com/bigcommerce/checkout-js/compare/v1.251.0...v1.251.1) (2022-09-02)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-6760 [Accessibility] - simplymedical.com - Ensure color is not the sole means of indicating error messages ([3b76297](https://github.com/bigcommerce/checkout-js/commit/3b76297acedcb215cf1a797698e32d0045b08ef3))
+* **payment:** INT-6115 Worldpay -Payment with hosted credit card ([#994](https://github.com/bigcommerce/checkout-js/issues/994)) ([14cd2b1](https://github.com/bigcommerce/checkout-js/commit/14cd2b1179115a6b03dd07efd639f29261bf9fe4))
+* **payment:** INT-6404 AmazonPayV2: Prevent button flickering ([#978](https://github.com/bigcommerce/checkout-js/issues/978)) ([4fe56b4](https://github.com/bigcommerce/checkout-js/commit/4fe56b4c6054c97113de4f6c333b267ed6522849))
+
+## [1.251.0](https://github.com/bigcommerce/checkout-js/compare/v1.250.0...v1.251.0) (2022-08-31)
+
+
+### Features
+
+* **payment:** CHECKOUT-6460 Add apple pay test boilerplate ([be46b60](https://github.com/bigcommerce/checkout-js/commit/be46b60e7330a8c30e65605c0bfff48fe05ce8c1))
+* **payment:** CHECKOUT-6460 Add mock file for apple pay mock ([4d6e81b](https://github.com/bigcommerce/checkout-js/commit/4d6e81b04332fe8d8c898f07ee779eb87476fff4))
+* **payment:** CHECKOUT-6460 Payment step happy path ([15c37c4](https://github.com/bigcommerce/checkout-js/commit/15c37c4597abcda85ee82b2eb22e4acd42ab0456))
+
+## [1.250.0](https://github.com/bigcommerce/checkout-js/compare/v1.249.2...v1.250.0) (2022-08-30)
+
+
+### Features
+
+* **checkout:** CHECKOUT-6875 Improve accessibility part I ([#996](https://github.com/bigcommerce/checkout-js/issues/996)) ([6bcb5e4](https://github.com/bigcommerce/checkout-js/commit/6bcb5e4a586427d0676c7d628074c113283bac0e))
+
+### [1.249.2](https://github.com/bigcommerce/checkout-js/compare/v1.249.1...v1.249.2) (2022-08-30)
+
+### [1.249.1](https://github.com/bigcommerce/checkout-js/compare/v1.249.0...v1.249.1) (2022-08-26)
+
+
+### Bug Fixes
+
+* **common:** CHECKOUT-000 upgrade @types/dompurify from 0.0.32 to 0.0.33 ([#931](https://github.com/bigcommerce/checkout-js/issues/931)) ([6fe8c54](https://github.com/bigcommerce/checkout-js/commit/6fe8c54c2635fbd483fc01679c814cf769862641))
+* **common:** CHECKOUT-000 upgrade @types/react from 16.14.28 to 16.14.29 ([#982](https://github.com/bigcommerce/checkout-js/issues/982)) ([6382ef0](https://github.com/bigcommerce/checkout-js/commit/6382ef0119b4660a2802308ae61b6243b49226e2))
+* **common:** CHECKOUT-000 upgrade dompurify from 2.3.9 to 2.3.10 ([#960](https://github.com/bigcommerce/checkout-js/issues/960)) ([1986832](https://github.com/bigcommerce/checkout-js/commit/1986832b46b202c11327f0c959985b3119c21c0d))
+
+## [1.249.0](https://github.com/bigcommerce/checkout-js/compare/v1.248.0...v1.249.0) (2022-08-25)
+
+
+### Features
+
+* **checkout:** CHECKOUT-6851 Improve multi-shipping look ([#993](https://github.com/bigcommerce/checkout-js/issues/993)) ([699c181](https://github.com/bigcommerce/checkout-js/commit/699c18125e4c8b4e78ce97948b701884d61752f0))
+
+## [1.248.0](https://github.com/bigcommerce/checkout-js/compare/v1.247.3...v1.248.0) (2022-08-24)
+
+
+### Features
+
+* **checkout:** CHECKOUT-6851 Separate shipping option from address ([#991](https://github.com/bigcommerce/checkout-js/issues/991)) ([8b141ff](https://github.com/bigcommerce/checkout-js/commit/8b141ff6a65c87325cb42b664dfd94f2e139aee5))
+
+
+### Bug Fixes
+
+* **payment:** INT-6392 [Mollie] Klarna shopper are able to place orders with digital items through klarna pay later and slice it when them are added via coupon ([#969](https://github.com/bigcommerce/checkout-js/issues/969)) ([3df97f1](https://github.com/bigcommerce/checkout-js/commit/3df97f13a0ca6db76c8b9a3248e78336ddba00e9))
+
 ### [1.247.3](https://github.com/bigcommerce/checkout-js/compare/v1.247.2...v1.247.3) (2022-08-22)
 
 
