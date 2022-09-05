@@ -4,12 +4,14 @@ const { copyFileSync } = require('fs');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { join } = require('path');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
-const TerserPlugin = require('terser-webpack-plugin');
 const { DefinePlugin } = require('webpack');
 const WebpackAssetsManifest = require('webpack-assets-manifest');
 
-const { AsyncHookPlugin, BuildHookPlugin, autoExport, getNextVersion, transformManifest } = require('./scripts/webpack');
-const autoExportConfig = require('./auto-export.config.json');
+const { AsyncHookPlugin,
+    BuildHookPlugin,
+    getLoaderPackages: { aliasMap: alias, tsLoaderIncludes },
+    getNextVersion,
+    transformManifest } = require('./scripts/webpack');
 
 const ENTRY_NAME = 'checkout';
 const LIBRARY_NAME = 'checkout';
@@ -43,13 +45,14 @@ function appConfig(options, argv) {
             return {
                 entry: {
                     [ENTRY_NAME]: [
-                        join(__dirname, 'src', 'app', 'polyfill.ts'),
-                        join(__dirname, 'src', 'app', 'index.ts'),
+                        join(__dirname, 'packages', 'core','src', 'app', 'polyfill.ts'),
+                        join(__dirname, 'packages', 'core','src', 'app', 'index.ts'),
                     ],
                 },
                 mode,
                 devtool: isProduction ? 'source-map' : 'eval-source-map',
                 resolve: {
+                    alias,
                     extensions: ['.ts', '.tsx', '.js'],
                     // It seems some packages, i.e.: Formik, have incorrect
                     // source maps for their ESM bundle. Therefore, until that
@@ -60,14 +63,15 @@ function appConfig(options, argv) {
                 optimization: {
                     runtimeChunk: 'single',
                     minimizer: [
-                        new TerserPlugin({
-                            terserOptions: {
-                                output: {
-                                    comments: false,
+                        (compiler) => {
+                            const TerserPlugin = require('terser-webpack-plugin');
+                            new TerserPlugin({
+                                extractComments: false,
+                                terserOptions: {
+                                    sourceMap: true,
                                 },
-                            },
-                            sourceMap: true,
-                        }),
+                            }).apply(compiler);
+                        },
                     ],
                     splitChunks: {
                         chunks: 'all',
@@ -116,7 +120,7 @@ function appConfig(options, argv) {
                     }),
                     new CircularDependencyPlugin({
                         exclude: /.*\.spec\.tsx?/,
-                        include: /src\/app/,
+                        include: /packages\/core\/src\/app/,
                     }),
                     new WebpackAssetsManifest({
                         entrypoints: true,
@@ -130,9 +134,6 @@ function appConfig(options, argv) {
                         onError(errors) {
                             eventEmitter.emit('app:error', errors);
                         },
-                        onBeforeCompile() {
-                            return Promise.all(autoExportConfig.entries.map(autoExport));
-                        },
                     }),
                 ].filter(Boolean),
                 module: {
@@ -144,7 +145,7 @@ function appConfig(options, argv) {
                         },
                         {
                             test: /\.tsx?$/,
-                            include: join(__dirname, 'src'),
+                            include: tsLoaderIncludes,
                             use: [
                                 {
                                     loader: 'ts-loader',
@@ -156,7 +157,7 @@ function appConfig(options, argv) {
                         },
                         {
                             test: /app\/polyfill\.ts$/,
-                            include: join(__dirname, 'src'),
+                            include: join(__dirname, 'packages', 'core', 'src'),
                             use: [
                                 {
                                     loader: 'babel-loader',
@@ -228,8 +229,8 @@ function loaderConfig(options, argv) {
         .then(appVersion => {
             return {
                 entry: {
-                    [LOADER_ENTRY_NAME]: join(__dirname, 'src', 'app', 'loader.ts'),
-                    [AUTO_LOADER_ENTRY_NAME]: join(__dirname, 'src', 'app', 'auto-loader.ts'),
+                    [LOADER_ENTRY_NAME]: join(__dirname,  'packages', 'core','src', 'app', 'loader.ts'),
+                    [AUTO_LOADER_ENTRY_NAME]: join(__dirname,  'packages', 'core', 'src', 'app', 'auto-loader.ts'),
                 },
                 mode,
                 devtool: isProduction ? 'source-map' : 'eval-source-map',
@@ -281,7 +282,7 @@ function loaderConfig(options, argv) {
                         },
                         {
                             test: /\.tsx?$/,
-                            include: join(__dirname, 'src'),
+                            include: join(__dirname,  'packages', 'core', 'src'),
                             use: [
                                 {
                                     loader: 'babel-loader',

@@ -1,7 +1,10 @@
+.idea
+.vscode
+__temp__
 node_modules
 build
 coverage
-tests/report/
-tests/screenshots/
-src/app/generated/
-__temp__
+/dist-tools
+/packages/**/generated
+/packages/payment-integration-test-framework/report
+/packages/payment-integration-test-framework/screenshots
