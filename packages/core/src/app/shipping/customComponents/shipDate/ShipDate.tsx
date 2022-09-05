@@ -7,8 +7,7 @@ import SelectedShipDate from "./SelectedShipDate";
 import ArrivalDate from "./ArrivalDate";
 
 const ShipDate = (props: any) => {
-
-    const { address, selectedShippingOption } = props.consignments[0]
+    
     const { setShipDate, setArrivalDate } = props
     const today = new Date()
     const day = today.getDay()
@@ -24,6 +23,8 @@ const ShipDate = (props: any) => {
         isSaturday = true
     }
 
+    const [address, setAddress] = useState(Object)
+    const [selectedShippingOption, setSelectedShippingOption] = useState(Object)
     const [selectedDate, setSelectedDate] = useState(new Date())
     const [nextAvailableDate, setNextAvailableDate] = useState(new Date())
     const [estimatedArrival, setEstimatedArrival] = useState(new Date())
@@ -49,6 +50,14 @@ const ShipDate = (props: any) => {
             fetchUPSEstimate()
         }
     }, [selectedDate, address, selectedShippingOption])
+
+    useEffect(() => {
+        if (props.consignments[0]) {
+            const { address, selectedShippingOption } = props.consignments[0]
+            setAddress(address)
+            setSelectedShippingOption(selectedShippingOption)
+        }
+    }, [props])
 
     const getNextAvailableDay = (increment: number) => {
         const availableDay = new Date(todayReset)

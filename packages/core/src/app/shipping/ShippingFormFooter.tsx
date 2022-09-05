@@ -7,6 +7,7 @@ import { Alert, AlertType } from '../ui/alert';
 import { Button, ButtonVariant } from '../ui/button';
 import { Fieldset, Legend } from '../ui/form';
 import ShipDate from './customComponents/shipDate/ShipDate';
+import ShipDateDisabled from './customComponents/shipDate/ShipDateDisabled';
 
 import { ShippingOptions } from './shippingOption';
 
@@ -61,11 +62,19 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps> {
                 />
             </Fieldset>
 
-            <ShipDate 
-                consignments={ consignments }
-                setShipDate={ setShipDate }
-                setArrivalDate={ setArrivalDate } 
-            />
+            {/* { consignments.length > 0 &&
+                <ShipDate 
+                    consignments={ consignments }
+                    setShipDate={ setShipDate }
+                    setArrivalDate={ setArrivalDate } 
+            /> } */}
+
+            { consignments.length > 0 ?
+                <ShipDate 
+                    consignments={ consignments }
+                    setShipDate={ setShipDate }
+                    setArrivalDate={ setArrivalDate } 
+            /> : <ShipDateDisabled /> }
 
             { shouldShowOrderComments &&
                 <OrderComments /> }
