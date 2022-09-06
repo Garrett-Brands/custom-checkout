@@ -1,8 +1,13 @@
 import React from "react"
 
 function ShippingCalendar(props: any) {
+    const className = () => {
+        return props.disabled
+        ? 'shipping-calendar-container-disabled'
+        : 'shipping-calendar-container'
+    }
     return(
-        <div className="shipping-calendar-container">{props.children}</div>
+        <div className={className()}>{props.children}</div>
     )
 }
 

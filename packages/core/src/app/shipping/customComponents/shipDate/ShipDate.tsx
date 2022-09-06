@@ -5,6 +5,7 @@ import DatePicker from 'react-datepicker'
 import ShippingInfo from "./ShippingInfo";
 import SelectedShipDate from "./SelectedShipDate";
 import ArrivalDate from "./ArrivalDate";
+import ShippingBanner from "./ShippingBanner";
 
 const ShipDate = (props: any) => {
     
@@ -12,6 +13,7 @@ const ShipDate = (props: any) => {
     const today = new Date()
     const day = today.getDay()
     const todayReset = today.setHours(0,0,0,0)
+    const bannerMessage = 'Schedule shipping up to 25 days in advance on select items.'
     var isFriday = false
     var isSaturday = false
 
@@ -135,6 +137,8 @@ const ShipDate = (props: any) => {
     return(
         <Fieldset id='ship-date'>
             <Legend testId="ship-date-form-heading">Ship Date</Legend>
+                    <ShippingBanner 
+                        bannerMessage={bannerMessage} />
                 <ShippingCalendar>
                         <DatePicker 
                             calendarClassName="ship-date-calendar"
