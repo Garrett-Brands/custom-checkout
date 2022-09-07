@@ -62,20 +62,6 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps> {
                 />
             </Fieldset>
 
-            {/* { consignments.length > 0 &&
-                <ShipDate 
-                    consignments={ consignments }
-                    setShipDate={ setShipDate }
-                    setArrivalDate={ setArrivalDate } 
-            /> } */}
-
-            {/* { consignments.length > 0 ?
-                <ShipDate 
-                    consignments={ consignments }
-                    setShipDate={ setShipDate }
-                    setArrivalDate={ setArrivalDate } 
-            /> : <ShipDateDisabled /> } */}
-
             { shouldShowShippingOptions ?
                 <ShipDate 
                     consignments={ consignments }
