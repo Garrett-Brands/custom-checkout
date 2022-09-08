@@ -10,6 +10,7 @@ import ShipDate from './customComponents/shipDate/ShipDate';
 import ShipDateDisabled from './customComponents/shipDate/ShipDateDisabled';
 
 import { ShippingOptions } from './shippingOption';
+import GiftMessage from './customComponents/giftOptions/GiftMessage';
 
 export interface ShippingFormFooterProps {
     cartHasChanged: boolean;
@@ -62,12 +63,16 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps> {
                 />
             </Fieldset>
 
-            { shouldShowShippingOptions ?
-                <ShipDate 
+            { shouldShowShippingOptions 
+            ?   <ShipDate 
                     consignments={ consignments }
                     setShipDate={ setShipDate }
-                    setArrivalDate={ setArrivalDate } 
-            /> : <ShipDateDisabled /> }
+                    setArrivalDate={ setArrivalDate } /> 
+            : <ShipDateDisabled /> }
+
+            { shouldShowShippingOptions
+            ?   <GiftMessage />
+            :   null }
 
             { shouldShowOrderComments &&
                 <OrderComments /> }

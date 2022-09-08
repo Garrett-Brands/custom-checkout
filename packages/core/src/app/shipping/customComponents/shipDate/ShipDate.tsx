@@ -11,7 +11,7 @@ const ShipDate = (props: any) => {
     
     const { setShipDate, setArrivalDate } = props
 
-    const today = new Date('10-20-22')
+    const today = new Date()
     const todayReset = today.setHours(0,0,0,0)
     const bannerMessage = 'Schedule shipping up to 25 days in advance on select items.'
     
@@ -80,7 +80,7 @@ const ShipDate = (props: any) => {
     }
 
     const isToday = (date: Date) => {
-        return today.getTime() === date.getTime()
+        return date.getTime() === today.getTime()
     }
 
     const isWeekday = (date: Date) => {

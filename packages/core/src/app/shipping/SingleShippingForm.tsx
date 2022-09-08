@@ -167,7 +167,6 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
                     setArrivalDate={ setArrivalDate }
                 />
 
-                {/* <GiftMessageForm /> */}
             </Form>
         );
     }

@@ -1,6 +1,34 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { Fieldset, Legend } from "../../../ui/form";
+import GiftOptions from "./GiftOptions";
+import GiftMessageToggle from "./GiftMessageToggle";
+import GiftOrderForm from "./GiftOrderForm";
+import GiftMessageForm from "./GiftMessageForm";
 
-const GiftMessageForm = () => {
+const GiftMessage = () => {
+
+    const [isGiftOrder, setIsGiftOrder] = useState(false)
+    const [giftMessageToggle, setGiftMessageToggle] = useState(false)
+    const [giftMessage, setGiftMessage] = useState(String)
+    const [giftMessageIncluded, setGiftMessageIncluded] = useState(Boolean)
+    const [giftMessageLength, setGiftMessageLength] = useState(Number)
+
+    useEffect(() => {
+        if (!giftMessageToggle) {
+            setGiftMessage('')
+        }
+        console.log('Gift Order?', isGiftOrder)
+        console.log('Added Gift Message?', giftMessageToggle)
+    }, [isGiftOrder, giftMessageToggle])
+
+    useEffect(() => {
+        setGiftMessageIncluded(giftMessage.length > 0)
+        setGiftMessageLength(giftMessage.length)
+    }, [giftMessage])
+
+    useEffect(() => {
+        console.log('Gift Message Included?', giftMessageIncluded)
+    }, [giftMessageIncluded])
 
     // var checkoutId = props.id
     // var giftMessageConsignmentID = `field_32`
@@ -62,11 +90,23 @@ const GiftMessageForm = () => {
     //     console.log(error)
     // })
 
+    const handleToggle = () => {
+        setGiftMessageToggle(!giftMessageToggle)
+    }
+
     return(
-        <div className="gift-message-form-testing">
-            <h1>Gift Message Testing</h1>
-        </div>
+        <Fieldset id='gift-message'>
+            <Legend testId="gift-message-form-heading">Gift Options</Legend>
+            <GiftOptions>
+                <GiftOrderForm setIsGiftOrder={ setIsGiftOrder } />
+                <GiftMessageToggle 
+                    toggleGiftMessage={ handleToggle } 
+                    giftMessageToggle={ giftMessageToggle }
+                    giftMessageLength={ giftMessageLength } />
+                { giftMessageToggle && <GiftMessageForm setGiftMessage={setGiftMessage} /> }
+            </GiftOptions>
+        </Fieldset>
     )
 }
 
-export default GiftMessageForm
+export default GiftMessage
