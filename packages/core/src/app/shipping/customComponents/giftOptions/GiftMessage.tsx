@@ -96,14 +96,14 @@ const GiftMessage = () => {
 
     return(
         <Fieldset id='gift-message'>
-            <Legend testId="gift-message-form-heading">Gift Options</Legend>
+            <Legend testId="gift-message-form-heading"><span>Gift Options</span></Legend>
             <GiftOptions>
                 <GiftOrderForm setIsGiftOrder={ setIsGiftOrder } />
-                <GiftMessageToggle 
-                    toggleGiftMessage={ handleToggle } 
-                    giftMessageToggle={ giftMessageToggle }
-                    giftMessageLength={ giftMessageLength } />
-                { giftMessageToggle && <GiftMessageForm setGiftMessage={setGiftMessage} /> }
+                        <GiftMessageToggle 
+                            toggleGiftMessage={ handleToggle } 
+                            giftMessageToggle={ giftMessageToggle }
+                            giftMessageLength={ giftMessageLength } />
+                        { giftMessageToggle && <GiftMessageForm setGiftMessage={setGiftMessage} /> }
             </GiftOptions>
         </Fieldset>
     )
