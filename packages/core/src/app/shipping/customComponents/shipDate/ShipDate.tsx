@@ -58,7 +58,8 @@ const ShipDate = (props: any) => {
     }, [props])
 
     useEffect(() => {
-        if (Object.keys(address).length > 0 && Object.keys(selectedShippingOption).length > 0) {
+        if (Object.keys(address).length > 0 && selectedShippingOption) {
+            console.log('ADDRESS + SHIPPING OPTION =>', address, selectedShippingOption)
             fetchUPSEstimate()
         }
     }, [selectedDate, address, selectedShippingOption])

@@ -105,14 +105,17 @@ const OrderSummaryDrawer: FunctionComponent<OrderSummaryDrawerProps & OrderSumma
                         id="cart.item_count_text"
                     />
                 </h3>
-                <a>
-                    <TranslatedString id="cart.show_details_action" />
-                </a>
-            </div>
-            <div className="cartDrawer-actions">
                 <h3 className="cartDrawer-total optimizedCheckout-headingPrimary">
                     <ShopperCurrency amount={ total } />
                 </h3>
+                {/* <a>
+                    <TranslatedString id="cart.show_details_action" />
+                </a> */}
+            </div>
+            <div className="cartDrawer-actions">
+                {/* <h3 className="cartDrawer-total optimizedCheckout-headingPrimary">
+                    <ShopperCurrency amount={ total } />
+                </h3> */}
             </div>
         </div> }
     </ModalTrigger>;

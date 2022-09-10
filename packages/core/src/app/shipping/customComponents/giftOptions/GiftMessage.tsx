@@ -5,11 +5,12 @@ import GiftMessageToggle from "./GiftMessageToggle";
 import GiftOrderForm from "./GiftOrderForm";
 import GiftMessageForm from "./GiftMessageForm";
 
-const GiftMessage = () => {
+const GiftMessage = (props: any) => {
 
+    const { giftMessage, setGiftMessage } = props
     const [isGiftOrder, setIsGiftOrder] = useState(false)
     const [giftMessageToggle, setGiftMessageToggle] = useState(false)
-    const [giftMessage, setGiftMessage] = useState(String)
+    // const [giftMessage, setGiftMessage] = useState(String)
     const [giftMessageIncluded, setGiftMessageIncluded] = useState(Boolean)
     const [giftMessageLength, setGiftMessageLength] = useState(Number)
 
@@ -98,12 +99,14 @@ const GiftMessage = () => {
         <Fieldset id='gift-message'>
             <Legend testId="gift-message-form-heading"><span>Gift Options</span></Legend>
             <GiftOptions>
-                <GiftOrderForm setIsGiftOrder={ setIsGiftOrder } />
+                <GiftOrderForm 
+                    setIsGiftOrder={ setIsGiftOrder }
+                    additionalClassName='form-isGiftOrder' />
                         <GiftMessageToggle 
                             toggleGiftMessage={ handleToggle } 
                             giftMessageToggle={ giftMessageToggle }
                             giftMessageLength={ giftMessageLength } />
-                        { giftMessageToggle && <GiftMessageForm setGiftMessage={setGiftMessage} /> }
+                        { giftMessageToggle && <GiftMessageForm setGiftMessage={ setGiftMessage } /> }
             </GiftOptions>
         </Fieldset>
     )

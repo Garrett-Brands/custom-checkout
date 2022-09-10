@@ -86,6 +86,8 @@ class MultiShippingForm extends PureComponent<MultiShippingFormProps & WithLangu
         } = this.props;
 
         const { items, itemAddingAddress, createCustomerAddressError } = this.state;
+
+        const giftMessage = ''
         
         const setShipDate = (shipDate: Date) => {
             console.log('Multiship - Ship Date Set', shipDate)
@@ -94,6 +96,10 @@ class MultiShippingForm extends PureComponent<MultiShippingFormProps & WithLangu
         const setArrivalDate = (arrivalDate: Date) => {
             console.log('Multiship - Estimated Arrival Set', arrivalDate)
         }
+
+        const setGiftMessage = (giftMessage: String) => [
+            console.log('Multiship - Gift Message Set', giftMessage)
+        ]
 
         if (isGuest) {
             return (
@@ -162,6 +168,8 @@ class MultiShippingForm extends PureComponent<MultiShippingFormProps & WithLangu
                         consignments={ consignments }
                         setShipDate={ setShipDate }
                         setArrivalDate={ setArrivalDate }
+                        giftMessage={ giftMessage }
+                        setGiftMessage={ setGiftMessage }
                     />
                 </Form>
             </Fragment>

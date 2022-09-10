@@ -28,6 +28,8 @@ export interface ShippingProps {
     navigateNextStep(isBillingSameAsShipping: boolean): void;
     setShipDate: Function;
     setArrivalDate: Function;
+    giftMessage: String;
+    setGiftMessage: Function;
 }
 
 export interface WithCheckoutShippingProps {
@@ -112,6 +114,8 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             onToggleMultiShipping,
             setShipDate,
             setArrivalDate,
+            giftMessage,
+            setGiftMessage,
             ...shippingFormProps
         } = this.props;
 
@@ -147,6 +151,8 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
                         updateAddress={ updateShippingAddress }
                         setShipDate={ setShipDate }
                         setArrivalDate={ setArrivalDate }
+                        giftMessage={ giftMessage }
+                        setGiftMessage={ setGiftMessage }
                     />
                     
                 </LoadingOverlay>

@@ -42,6 +42,8 @@ export interface SingleShippingFormProps {
     updateAddress(address: Partial<Address>, options?: RequestOptions<CheckoutParams>): Promise<CheckoutSelectors>;
     setShipDate: Function;
     setArrivalDate: Function;
+    giftMessage: String;
+    setGiftMessage: Function;
 }
 
 export interface SingleShippingFormValues {
@@ -113,7 +115,9 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
             values: { shippingAddress: addressForm },
             isShippingStepPending,
             setShipDate,
-            setArrivalDate
+            setArrivalDate,
+            giftMessage,
+            setGiftMessage
         } = this.props;
 
         const {
@@ -165,6 +169,8 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
                     consignments={ consignments }
                     setShipDate={ setShipDate }
                     setArrivalDate={ setArrivalDate }
+                    giftMessage={ giftMessage }
+                    setGiftMessage={ setGiftMessage }
                 />
 
             </Form>

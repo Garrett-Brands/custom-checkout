@@ -23,7 +23,7 @@ import CheckoutStep from './CheckoutStep';
 import CheckoutStepStatus from './CheckoutStepStatus';
 import CheckoutStepType from './CheckoutStepType';
 import CheckoutSupport from './CheckoutSupport';
-import ShippingSummary from './customComponents/shippingSummary';
+import ShippingSummary from './customComponents/ShippingSummary';
 
 const Billing = lazy(() => retry(() => import(
     /* webpackChunkName: "billing" */
@@ -78,6 +78,7 @@ export interface CheckoutState {
     hasSelectedShippingOptions: boolean;
     shipDate: Date;
     arrivalDate: Date;
+    giftMessage: String
     isBuyNowCartEnabled: boolean;
 }
 
@@ -114,6 +115,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
         hasSelectedShippingOptions: false,
         shipDate: new Date(0),
         arrivalDate: new Date(0),
+        giftMessage: new String,
         isBuyNowCartEnabled: false,
     };
 
@@ -340,7 +342,8 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
             isBillingSameAsShipping,
             isMultiShippingMode,
             shipDate,
-            arrivalDate
+            arrivalDate,
+            giftMessage
         } = this.state;
 
         const setShipDate = (shipDate: Date) => {
@@ -349,6 +352,11 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
 
         const setArrivalDate = (arrivalDate: Date) => {
             this.setState({arrivalDate: arrivalDate})
+        }
+
+        const setGiftMessage = (giftMessage: String) => {
+            this.setState({giftMessage: giftMessage})
+            console.log(giftMessage)
         }
 
         if (!cart) {
@@ -371,7 +379,8 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                         />
                         <ShippingSummary 
                             shipDate={shipDate}
-                            arrivalDate={arrivalDate} />
+                            arrivalDate={arrivalDate}
+                            giftMessage={giftMessage} />
                     </div>) }
             >
                 <LazyContainer>
@@ -387,6 +396,8 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                         onUnhandledError={ this.handleUnhandledError }
                         setShipDate={ setShipDate }
                         setArrivalDate={ setArrivalDate }
+                        giftMessage={ giftMessage }
+                        setGiftMessage={ setGiftMessage}
                     />
                 </LazyContainer>
             </CheckoutStep>

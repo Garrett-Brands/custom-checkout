@@ -8,9 +8,10 @@ import { Button, ButtonVariant } from '../ui/button';
 import { Fieldset, Legend } from '../ui/form';
 import ShipDate from './customComponents/shipDate/ShipDate';
 import ShipDateDisabled from './customComponents/shipDate/ShipDateDisabled';
+import GiftMessage from './customComponents/giftOptions/GiftMessage';
+import GiftMessageDisabled from './customComponents/giftOptions/GiftMessageDisabled';
 
 import { ShippingOptions } from './shippingOption';
-import GiftMessage from './customComponents/giftOptions/GiftMessage';
 
 export interface ShippingFormFooterProps {
     cartHasChanged: boolean;
@@ -22,6 +23,8 @@ export interface ShippingFormFooterProps {
     consignments: Consignment[];
     setShipDate: Function;
     setArrivalDate: Function;
+    giftMessage: String;
+    setGiftMessage: Function;
 }
 
 class ShippingFormFooter extends PureComponent<ShippingFormFooterProps> {
@@ -35,7 +38,9 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps> {
             isLoading,
             consignments,
             setShipDate,
-            setArrivalDate
+            setArrivalDate,
+            giftMessage,
+            setGiftMessage
         } = this.props;
 
         return <>
@@ -71,8 +76,10 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps> {
             : <ShipDateDisabled /> }
 
             { shouldShowShippingOptions
-            ?   <GiftMessage />
-            :   null }
+            ?   <GiftMessage
+                    giftMessage={ giftMessage }
+                    setGiftMessage={ setGiftMessage } />
+            :   <GiftMessageDisabled /> }
 
             { shouldShowOrderComments &&
                 <OrderComments /> }
