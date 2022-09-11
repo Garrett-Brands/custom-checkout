@@ -10,26 +10,22 @@ const GiftMessage = (props: any) => {
     const { giftMessage, setGiftMessage } = props
     const [isGiftOrder, setIsGiftOrder] = useState(false)
     const [giftMessageToggle, setGiftMessageToggle] = useState(false)
-    // const [giftMessage, setGiftMessage] = useState(String)
     const [giftMessageIncluded, setGiftMessageIncluded] = useState(Boolean)
-    const [giftMessageLength, setGiftMessageLength] = useState(Number)
-
+    
     useEffect(() => {
-        if (!giftMessageToggle) {
-            setGiftMessage('')
-        }
-        console.log('Gift Order?', isGiftOrder)
-        console.log('Added Gift Message?', giftMessageToggle)
-    }, [isGiftOrder, giftMessageToggle])
+        setGiftMessageToggle(giftMessage.length > 0)
+    }, [])
 
     useEffect(() => {
         setGiftMessageIncluded(giftMessage.length > 0)
-        setGiftMessageLength(giftMessage.length)
     }, [giftMessage])
 
     useEffect(() => {
-        console.log('Gift Message Included?', giftMessageIncluded)
-    }, [giftMessageIncluded])
+        console.log('Gift Message Included? => ', giftMessageIncluded)
+        console.log('Gift Message Toggled? => ', giftMessageToggle )
+        console.log('Gift Message => ', giftMessage)
+        console.log('Is Gift Order? => ', isGiftOrder)
+    }, [giftMessage, giftMessageIncluded, giftMessageToggle, isGiftOrder])
 
     // var checkoutId = props.id
     // var giftMessageConsignmentID = `field_32`
@@ -95,6 +91,11 @@ const GiftMessage = (props: any) => {
         setGiftMessageToggle(!giftMessageToggle)
     }
 
+    const handleClear = () => {
+        setGiftMessage('')
+        setGiftMessageToggle(true)
+    }
+
     return(
         <Fieldset id='gift-message'>
             <Legend testId="gift-message-form-heading"><span>Gift Options</span></Legend>
@@ -105,8 +106,13 @@ const GiftMessage = (props: any) => {
                         <GiftMessageToggle 
                             toggleGiftMessage={ handleToggle } 
                             giftMessageToggle={ giftMessageToggle }
-                            giftMessageLength={ giftMessageLength } />
-                        { giftMessageToggle && <GiftMessageForm setGiftMessage={ setGiftMessage } /> }
+                            giftMessageLength={ giftMessage.length }
+                            clearGiftMessage={ handleClear } />
+
+                        { giftMessageToggle && 
+                        <GiftMessageForm 
+                            setGiftMessage={ setGiftMessage }
+                            giftMessage={ giftMessage } /> }
             </GiftOptions>
         </Fieldset>
     )

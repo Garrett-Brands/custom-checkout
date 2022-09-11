@@ -1,7 +1,7 @@
 import React from "react";
 import SelectedShipDate from "../../shipping/customComponents/shipDate/SelectedShipDate";
 import ArrivalDate from "../../shipping/customComponents/shipDate/ArrivalDate";
-import GiftMessageSummary from "./GiftMessageSummary";
+import GiftMessageSummary from "../../shipping/customComponents/giftOptions/GiftMessageSummary";
 
 const ShippingSummary = (props: any) => {
     const { shipDate, arrivalDate, giftMessage } = props
@@ -18,17 +18,11 @@ const ShippingSummary = (props: any) => {
         }
     }
 
-    const renderGiftMessage = () => {
-        if (giftMessage.length > 0) {
-            return <GiftMessageSummary giftMesage={ giftMessage } />
-        }
-    }
-
     return(
         <div className="shipping-summary-container">
             {renderShipDate()}
             {renderArrivalDate()}
-            {renderGiftMessage()}
+            <GiftMessageSummary giftMessage={ giftMessage } />
         </div >
     )
 }

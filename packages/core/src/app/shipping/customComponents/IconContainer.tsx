@@ -1,9 +1,9 @@
 import React from "react";
 
 const IconContainer = (props: any) => {
-    const { children, className } = props
+    const { children, className, onClick } = props
     return(
-        <div className={className}>{children}</div>
+        <div className={className} onClick={onClick}>{children}</div>
     )
 }
 
