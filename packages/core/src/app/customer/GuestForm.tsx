@@ -90,22 +90,21 @@ const GuestForm: FunctionComponent<GuestFormProps & WithLanguageProps & FormikPr
                         >
                             <TranslatedString id={ continueAsGuestButtonLabelId } />
                         </Button>
+                {
+                    !isLoading && 
+                            <Button
+                            className="customerEmail-button customerSignIn-button"
+                            id="checkout-customer-continue"
+                            testId="customer-continue-as-guest-button"
+                            type="submit"
+                            onClick={ onShowLogin }
+                            variant={ ButtonVariant.Primary }
+                            >
+                                <TranslatedString id="customer.login_action" />
+                            </Button>
+                }
                     </div>
                 </div>
-
-                {
-                    !isLoading && <p>
-                        <TranslatedString id="customer.login_text" />
-                        { ' ' }
-                        <a
-                            data-test="customer-continue-button"
-                            id="checkout-customer-login"
-                            onClick={ onShowLogin }
-                        >
-                            <TranslatedString id="customer.login_action" />
-                        </a>
-                    </p>
-                }
 
                 { checkoutButtons }
             </Fieldset>
