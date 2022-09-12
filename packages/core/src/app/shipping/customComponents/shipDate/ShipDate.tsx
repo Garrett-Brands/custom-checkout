@@ -9,7 +9,12 @@ import ShippingBanner from "./ShippingBanner";
 
 const ShipDate = (props: any) => {
     
-    const { setShipDate, setArrivalDate } = props
+    const { 
+        shipDate, 
+        setShipDate, 
+        arrivalDate, 
+        setArrivalDate 
+    } = props
 
     const today = new Date()
     const todayReset = today.setHours(0,0,0,0)
@@ -17,11 +22,9 @@ const ShipDate = (props: any) => {
     
     const [address, setAddress] = useState(Object)
     const [selectedShippingOption, setSelectedShippingOption] = useState(Object)
-    const [selectedDate, setSelectedDate] = useState(new Date)
     const [availableDates, setAvailableDates] = useState(new Array)
     const [blackoutDates, setBlackoutDates] = useState(new Array)
     const [nextAvailableDate, setNextAvailableDate] = useState(today)
-    const [estimatedArrival, setEstimatedArrival] = useState(new Date)
 
     useEffect(() => {
         fetchBlackoutDates()
@@ -32,22 +35,17 @@ const ShipDate = (props: any) => {
     }, [blackoutDates])
 
     useEffect(() => {
-        setSelectedDate(nextAvailableDate)
-    }, [nextAvailableDate])
-    
-    useEffect(() => {
         if (availableDates.length > 0) {
             setNextAvailableDate(availableDates[0])
         }
     }, [availableDates])
-
+    
     useEffect(() => {
-        setShipDate(selectedDate)
-    }, [selectedDate])
-
-    useEffect(() => {
-        setArrivalDate(estimatedArrival)
-    }, [estimatedArrival])
+        const currentShipDate = shipDate
+        currentShipDate.getYear() !== 69 && filterDates(currentShipDate)
+        ? setShipDate(currentShipDate)
+        : setShipDate(nextAvailableDate)
+    }, [nextAvailableDate])
 
     useEffect(() => {
         if (props.consignments[0]) {
@@ -59,10 +57,9 @@ const ShipDate = (props: any) => {
 
     useEffect(() => {
         if (Object.keys(address).length > 0 && selectedShippingOption) {
-            console.log('ADDRESS + SHIPPING OPTION =>', address, selectedShippingOption)
             fetchUPSEstimate()
         }
-    }, [selectedDate, address, selectedShippingOption])
+    }, [shipDate, address, selectedShippingOption])
 
     const getAvailableDates = (start: Date, end: Date) => {
         var dates = new Array
@@ -105,9 +102,9 @@ const ShipDate = (props: any) => {
 
     const fetchUPSEstimate = () => {
 
-        const year = selectedDate.getFullYear()
-        const month = String(selectedDate.getMonth() + 1).padStart(2, '0')
-        const date = String(selectedDate.getDate()).padStart(2, '0')
+        const year = shipDate.getFullYear()
+        const month = String(shipDate.getMonth() + 1).padStart(2, '0')
+        const date = String(shipDate.getDate()).padStart(2, '0')
         const formattedDate = [year, month, date].join('')
 
         var body = {
@@ -135,7 +132,7 @@ const ShipDate = (props: any) => {
         .then(resp => resp.json())
         .then(estimate => {
             const estimatedArrival = new Date(estimate.data.EstimatedArrival.Date.replaceAll('-', '/'))
-            setEstimatedArrival(estimatedArrival)
+            setArrivalDate(estimatedArrival)
         })
         .catch(error => {
             console.log('UPS ESTIMATED ARRIVAL ERROR =>', error)
@@ -143,14 +140,14 @@ const ShipDate = (props: any) => {
 
     }
 
-    const fetchBlackoutDates = () => {
+    const fetchBlackoutDates = async () => {
 
         const year = today.getFullYear()
         const month = String(today.getMonth() + 1).padStart(2, '0')
         const date = String(today.getDate()).padStart(2, '0')
         const formattedDate = [date, month, year].join('-')
 
-        var reqObj = {
+        const reqObj = {
             method: 'GET',
             headers: {
               "Content-Type": "application/json",
@@ -179,17 +176,17 @@ const ShipDate = (props: any) => {
                 <ShippingCalendar>
                         <DatePicker 
                             calendarClassName="ship-date-calendar"
-                            selected={selectedDate} 
-                            onChange={(date:Date) => setSelectedDate(date)}
+                            selected={shipDate} 
+                            onChange={(date:Date) => setShipDate(date)}
                             minDate={today}
                             maxDate={maxDate()}
                             filterDate={filterDates}
-                            highlightDates={[estimatedArrival]}
+                            highlightDates={[arrivalDate]}
                             inline />
                 </ShippingCalendar>
                 <ShippingInfo>
-                    <SelectedShipDate shipDate={selectedDate} />
-                    <ArrivalDate arrivalDate={estimatedArrival} />
+                    <SelectedShipDate shipDate={shipDate} />
+                    <ArrivalDate arrivalDate={arrivalDate} />
                 </ShippingInfo>
         </Fieldset>
     )

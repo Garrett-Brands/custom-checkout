@@ -21,7 +21,9 @@ export interface ShippingFormFooterProps {
     shouldDisableSubmit: boolean;
     isLoading: boolean;
     consignments: Consignment[];
+    shipDate: Date;
     setShipDate: Function;
+    arrivalDate: Date;
     setArrivalDate: Function;
     giftMessage: String;
     setGiftMessage: Function;
@@ -37,7 +39,9 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps> {
             shouldDisableSubmit,
             isLoading,
             consignments,
+            shipDate,
             setShipDate,
+            arrivalDate,
             setArrivalDate,
             giftMessage,
             setGiftMessage
@@ -71,7 +75,9 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps> {
             { shouldShowShippingOptions 
             ?   <ShipDate 
                     consignments={ consignments }
+                    shipDate={ shipDate }
                     setShipDate={ setShipDate }
+                    arrivalDate={ arrivalDate }
                     setArrivalDate={ setArrivalDate } /> 
             : <ShipDateDisabled /> }
 

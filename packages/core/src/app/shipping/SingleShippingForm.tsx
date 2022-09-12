@@ -40,7 +40,9 @@ export interface SingleShippingFormProps {
     onUnhandledError?(error: Error): void;
     signOut(options?: CustomerRequestOptions): void;
     updateAddress(address: Partial<Address>, options?: RequestOptions<CheckoutParams>): Promise<CheckoutSelectors>;
+    shipDate: Date;
     setShipDate: Function;
+    arrivalDate: Date;
     setArrivalDate: Function;
     giftMessage: String;
     setGiftMessage: Function;
@@ -114,7 +116,9 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
             deinitialize,
             values: { shippingAddress: addressForm },
             isShippingStepPending,
+            shipDate,
             setShipDate,
+            arrivalDate,
             setArrivalDate,
             giftMessage,
             setGiftMessage
@@ -167,7 +171,9 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
                     shouldShowOrderComments={ shouldShowOrderComments }
                     shouldShowShippingOptions={ isValid }
                     consignments={ consignments }
+                    shipDate={ shipDate }
                     setShipDate={ setShipDate }
+                    arrivalDate={ arrivalDate }
                     setArrivalDate={ setArrivalDate }
                     giftMessage={ giftMessage }
                     setGiftMessage={ setGiftMessage }

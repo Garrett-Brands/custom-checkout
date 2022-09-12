@@ -356,7 +356,6 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
 
         const setGiftMessage = (giftMessage: String) => {
             this.setState({giftMessage: giftMessage})
-            console.log(giftMessage)
         }
 
         if (!cart) {
@@ -394,7 +393,9 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                         onSignIn={ this.handleShippingSignIn }
                         onToggleMultiShipping={ this.handleToggleMultiShipping }
                         onUnhandledError={ this.handleUnhandledError }
+                        shipDate={ shipDate }
                         setShipDate={ setShipDate }
+                        arrivalDate={ arrivalDate }
                         setArrivalDate={ setArrivalDate }
                         giftMessage={ giftMessage }
                         setGiftMessage={ setGiftMessage}

@@ -10,22 +10,16 @@ const GiftMessage = (props: any) => {
     const { giftMessage, setGiftMessage } = props
     const [isGiftOrder, setIsGiftOrder] = useState(false)
     const [giftMessageToggle, setGiftMessageToggle] = useState(false)
-    const [giftMessageIncluded, setGiftMessageIncluded] = useState(Boolean)
     
     useEffect(() => {
         setGiftMessageToggle(giftMessage.length > 0)
     }, [])
 
     useEffect(() => {
-        setGiftMessageIncluded(giftMessage.length > 0)
-    }, [giftMessage])
-
-    useEffect(() => {
-        console.log('Gift Message Included? => ', giftMessageIncluded)
-        console.log('Gift Message Toggled? => ', giftMessageToggle )
-        console.log('Gift Message => ', giftMessage)
+        // console.log('Gift Message Toggled? => ', giftMessageToggle )
+        // console.log('Gift Message => ', giftMessage)
         console.log('Is Gift Order? => ', isGiftOrder)
-    }, [giftMessage, giftMessageIncluded, giftMessageToggle, isGiftOrder])
+    }, [giftMessage, giftMessageToggle, isGiftOrder])
 
     // var checkoutId = props.id
     // var giftMessageConsignmentID = `field_32`

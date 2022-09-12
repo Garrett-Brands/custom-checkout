@@ -284,7 +284,7 @@
             "instrument_manage_modal_title_text": "Manage stored payment methods",
             "instrument_manage_modal_empty_text": "You do not have any stored payment methods.",
             "instrument_manage_table_header_ending_in_text": "Ending in",
-            "instrument_manage_table_header_expiry_date_text": "Expiry date",
+            "instrument_manage_table_header_expiry_date_text": "Expiration date",
             "instrument_manage_table_header_payment_method_text": "Payment method",
             "instrument_manage_delete_server_error": "There was an error when attempting to delete that stored payment method, please try again.",
             "instrument_manage_delete_auth_error": "There was a problem authorizing your request. Please try signing in again",

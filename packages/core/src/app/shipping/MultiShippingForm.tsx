@@ -40,6 +40,10 @@ export interface MultiShippingFormProps {
     onSubmit(values: MultiShippingFormValues): void;
     onUnhandledError(error: Error): void;
     onUseNewAddress(address: Address, itemId: string): void;
+    shipDate: Date;
+    setShipDate: Function;
+    arrivalDate: Date;
+    setArrivalDate: Function;
 }
 
 interface ShippableItemId {
@@ -83,19 +87,15 @@ class MultiShippingForm extends PureComponent<MultiShippingFormProps & WithLangu
             countries,
             countriesWithAutocomplete,
             googleMapsApiKey,
+            shipDate,
+            setShipDate,
+            arrivalDate,
+            setArrivalDate
         } = this.props;
 
         const { items, itemAddingAddress, createCustomerAddressError } = this.state;
 
         const giftMessage = ''
-        
-        const setShipDate = (shipDate: Date) => {
-            console.log('Multiship - Ship Date Set', shipDate)
-        }
-
-        const setArrivalDate = (arrivalDate: Date) => {
-            console.log('Multiship - Estimated Arrival Set', arrivalDate)
-        }
 
         const setGiftMessage = (giftMessage: String) => [
             console.log('Multiship - Gift Message Set', giftMessage)
@@ -166,7 +166,9 @@ class MultiShippingForm extends PureComponent<MultiShippingFormProps & WithLangu
                         shouldShowOrderComments={ shouldShowOrderComments }
                         shouldShowShippingOptions={ !hasUnassignedLineItems(consignments, cart.lineItems) }
                         consignments={ consignments }
+                        shipDate={ shipDate }
                         setShipDate={ setShipDate }
+                        arrivalDate={ arrivalDate }
                         setArrivalDate={ setArrivalDate }
                         giftMessage={ giftMessage }
                         setGiftMessage={ setGiftMessage }
