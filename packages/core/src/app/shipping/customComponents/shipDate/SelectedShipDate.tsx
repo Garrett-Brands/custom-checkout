@@ -8,7 +8,7 @@ function SelectedShipDate(props: any) {
     return(
         <div className="ship-date-container">
             <IconContainer className='ship-date-icon-container'>
-                <ShipDateIcon imageSource='https://res.cloudinary.com/garrett-brands/image/upload/v1645542024/Garrett-Website/2022/2-February/Promo%20Details/icon-shipping.png' />
+                <ShipDateIcon imageSource='https://res.cloudinary.com/garrett-brands/image/upload/v1662948798/Garrett-Website/2022/2-February/Promo%20Details/shipping-icon-cropped.png' />
             </IconContainer>
             <p>Ships</p>
             <p>{formmattedShipDate}</p>
