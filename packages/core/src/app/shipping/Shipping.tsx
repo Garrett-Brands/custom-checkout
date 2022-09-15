@@ -212,6 +212,8 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
         const promises: Array<Promise<CheckoutSelectors>> = [];
         const hasRemoteBilling = this.hasRemoteBilling(methodId);
 
+        // CUSTOM FIELDS NOTES
+
         if (!isEqualAddress(updatedShippingAddress, shippingAddress)) {
             promises.push(updateShippingAddress(updatedShippingAddress || {}));
         }

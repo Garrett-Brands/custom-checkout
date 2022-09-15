@@ -28,6 +28,8 @@ export interface ShippingAddressProps {
     onFieldChange(name: string, value: string): void;
     onUnhandledError?(error: Error): void;
     onUseNewAddress(): void;
+    shipDate: Date;
+    giftMessage: String;
 }
 
 const ShippingAddress: FunctionComponent<ShippingAddressProps> = props => {
@@ -50,6 +52,8 @@ const ShippingAddress: FunctionComponent<ShippingAddressProps> = props => {
         shouldShowSaveAddress,
         onUnhandledError = noop,
         isShippingStepPending,
+        shipDate,
+        giftMessage
     } = props;
 
     const { setSubmitted } = useContext(FormContext);
@@ -61,11 +65,14 @@ const ShippingAddress: FunctionComponent<ShippingAddressProps> = props => {
         })
     )), []);
 
+    // CUSTOM FIELDS NOTE
+
     const handleFieldChange: (fieldName: string, value: string) => void = (fieldName, value) => {
         if (hasRequestedShippingOptions) {
             setSubmitted(true);
         }
-
+        // console.log('FIELD NAME =>', fieldName)
+        // console.log('FIELD VALUE =>', value)
         onFieldChange(fieldName, value);
     };
 
@@ -131,6 +138,8 @@ const ShippingAddress: FunctionComponent<ShippingAddressProps> = props => {
             onFieldChange={ handleFieldChange }
             onUseNewAddress={ onUseNewAddress }
             shouldShowSaveAddress={ shouldShowSaveAddress }
+            shipDate={ shipDate }
+            giftMessage={ giftMessage }
         />
     );
 };

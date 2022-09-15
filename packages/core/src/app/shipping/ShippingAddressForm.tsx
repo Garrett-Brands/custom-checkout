@@ -21,6 +21,8 @@ export interface ShippingAddressFormProps {
     onUseNewAddress(): void;
     onFieldChange(fieldName: string, value: string): void;
     onAddressSelect(address: Address): void;
+    shipDate: Date;
+    giftMessage: String;
 }
 
 const addressFieldName = 'shippingAddress';
@@ -38,6 +40,8 @@ class ShippingAddressForm extends Component<ShippingAddressFormProps & ConnectFo
             formFields,
             isLoading,
             googleMapsApiKey,
+            shipDate,
+            giftMessage,
             formik: {
                 values: {
                     shippingAddress: formAddress,
@@ -47,6 +51,20 @@ class ShippingAddressForm extends Component<ShippingAddressFormProps & ConnectFo
 
         const hasAddresses = addresses && addresses.length > 0;
         const hasValidCustomerAddress = isValidCustomerAddress(shippingAddress, addresses, formFields);
+
+        // CUSTOM FIELDS NOTE
+
+        // if (shipDate) {
+        //     const fieldName = 'field_30'
+        //     const fieldValue = shipDate.toDateString()
+        //     this.setFieldValue(fieldName, fieldValue)
+        // }
+
+        // if (giftMessage) {
+        //     const fieldName = 'field_32'
+        //     const fieldValue = giftMessage.toString()
+        //     this.setFieldValue(fieldName, fieldValue)
+        // }
 
         return (
             <Fieldset id="checkoutShippingAddress">
@@ -75,11 +93,15 @@ class ShippingAddressForm extends Component<ShippingAddressFormProps & ConnectFo
                             onChange={ this.handleChange }
                             setFieldValue={ this.setFieldValue }
                             shouldShowSaveAddress={ shouldShowSaveAddress }
+                            shipDate={ shipDate }
+                            giftMessage={ giftMessage }
                         />
                     </LoadingOverlay> }
             </Fieldset>
         );
     }
+
+    // CUSTOM FIELDS NOTE
 
     private setFieldValue: (fieldName: string, fieldValue: string) => void = (fieldName, fieldValue) => {
         const {

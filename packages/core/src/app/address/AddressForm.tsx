@@ -1,7 +1,7 @@
 import { Address, Country, FormField } from '@bigcommerce/checkout-sdk';
 import { memoize } from '@bigcommerce/memoize';
 import { forIn, noop } from 'lodash';
-import React, { createRef, Component, ReactNode, RefObject } from 'react';
+import React, { createRef, Component, ReactNode, RefObject, useState } from 'react';
 
 import { withLanguage, TranslatedString, WithLanguageProps } from '../locale';
 import { AutocompleteItem } from '../ui/autocomplete';
@@ -24,6 +24,8 @@ export interface AddressFormProps {
     onAutocompleteToggle?(state: { inputValue: string; isOpen: boolean }): void;
     onChange?(fieldName: string, value: string | string[]): void;
     setFieldValue?(fieldName: string, value: string | string[]): void;
+    shipDate: Date;
+    giftMessage: String;
 }
 
 const LABEL: AddressKeyMap = {
@@ -86,7 +88,10 @@ class AddressForm extends Component<AddressFormProps & WithLanguageProps> {
             countryCode,
             googleMapsApiKey,
             onAutocompleteToggle,
+            // setFieldValue,
             shouldShowSaveAddress,
+            shipDate,
+            giftMessage
         } = this.props;
 
         return (<>
@@ -95,6 +100,24 @@ class AddressForm extends Component<AddressFormProps & WithLanguageProps> {
                     { formFields.map(field => {
                         const addressFieldName = field.name;
                         const translatedPlaceholderId = PLACEHOLDER[addressFieldName];
+
+                        // CUSTOM FIELD NOTE
+
+                        if (field.custom) {
+                            console.log('CUSTOM FIELD =>', field, field.label, field.name)
+                        }
+
+                        if (shipDate) {
+                            const fieldName = 'field_30'
+                            const fieldValue = shipDate.toDateString()
+                            this.setCustomFieldValues(fieldName, fieldValue)
+                        }
+
+                        if (giftMessage.length > 0) {
+                            const fieldName = 'field_32'
+                            const fieldValue = giftMessage.toString()
+                            this.setCustomFieldValues(fieldName, fieldValue)
+                        }
 
                         if (addressFieldName === 'address1' && googleMapsApiKey && countriesWithAutocomplete) {
                             return (
@@ -199,6 +222,17 @@ class AddressForm extends Component<AddressFormProps & WithLanguageProps> {
         }
 
         onChange(fieldName, value);
+    };
+
+    private setCustomFieldValues: (
+        fieldName: string,
+        value: string | string[]
+    ) => void = (fieldName, value) => {
+        const {
+            setFieldValue = noop,
+        } = this.props;
+
+        setFieldValue(fieldName, value)
     };
 }
 

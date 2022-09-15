@@ -155,6 +155,8 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
                         onUseNewAddress={ this.onUseNewAddress }
                         shippingAddress={ shippingAddress }
                         shouldShowSaveAddress={ shouldShowSaveAddress }
+                        shipDate={ shipDate }
+                        giftMessage={ giftMessage}
                     />
                     {
                         shouldShowBillingSameAsShipping && <div className="form-body">
