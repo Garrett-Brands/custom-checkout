@@ -206,13 +206,23 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             shippingAddress,
             billingAddress,
             methodId,
+            shipDate,
+            giftMessage
         } = this.props;
+
+        // CUSTOM FIELDS NOTE
+        // Update Gift Message and Ship Date custom fields when shipping step is completed.
+
+        if (addressValues) {
+            const shipDateValue = shipDate.toString()
+            const giftMessageValue = giftMessage.toString()
+            addressValues.customFields.field_30 = shipDateValue
+            addressValues.customFields.field_32 = giftMessageValue 
+        }
 
         const updatedShippingAddress = addressValues && mapAddressFromFormValues(addressValues);
         const promises: Array<Promise<CheckoutSelectors>> = [];
         const hasRemoteBilling = this.hasRemoteBilling(methodId);
-
-        // CUSTOM FIELDS NOTES
 
         if (!isEqualAddress(updatedShippingAddress, shippingAddress)) {
             promises.push(updateShippingAddress(updatedShippingAddress || {}));

@@ -155,8 +155,6 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
                         onUseNewAddress={ this.onUseNewAddress }
                         shippingAddress={ shippingAddress }
                         shouldShowSaveAddress={ shouldShowSaveAddress }
-                        shipDate={ shipDate }
-                        giftMessage={ giftMessage}
                     />
                     {
                         shouldShowBillingSameAsShipping && <div className="form-body">
@@ -204,6 +202,9 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
     };
 
     private handleFieldChange: (name: string) => void = async name => {
+        
+        console.log('SINGLE SHIPPING FORM FIELD CHANGE =>', name)
+
         const {
             setFieldValue,
         } = this.props;
@@ -311,6 +312,7 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
 
 export default withLanguage(withFormik<SingleShippingFormProps & WithLanguageProps, SingleShippingFormValues>({
     handleSubmit: (values, { props: { onSubmit } }) => {
+        console.log('HANDLE SUBMIT =>', values)
         onSubmit(values);
     },
     mapPropsToValues: ({ getFields, shippingAddress, isBillingSameAsShipping, customerMessage }) => ({

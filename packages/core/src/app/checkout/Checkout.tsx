@@ -346,7 +346,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
             giftMessage
         } = this.state;
 
-        const setShipDate = (shipDate: Date) => {
+        const setShipDate = (shipDate: any) => {
             this.setState({shipDate: shipDate})
         }
 
@@ -357,6 +357,30 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
         const setGiftMessage = (giftMessage: String) => {
             this.setState({giftMessage: giftMessage})
         }
+
+        // CUSTOM FIELD NOTE
+
+        // var savedShipDate
+        // var savedGiftMessage
+
+        // if (consignments[0]) {
+        //     savedShipDate = consignments[0].shippingAddress.customFields.find(customField => customField.fieldId === 'field_30')
+        //     savedGiftMessage = consignments[0].shippingAddress.customFields.find(customField => customField.fieldId === 'field_32')
+        // }
+
+        // if (savedShipDate) {
+        //     setShipDate(new Date(savedShipDate.fieldValue))
+        //     // this.setState({
+        //     //     shipDate: new Date(savedShipDate.fieldValue)
+        //     // })
+        // }
+
+        // if (savedGiftMessage) {
+        //     setGiftMessage(new String(savedGiftMessage.fieldValue))
+        //     // this.setState({
+        //     //     giftMessage: new String(savedGiftMessage.fieldValue)
+        //     // })
+        // }
 
         if (!cart) {
             return;

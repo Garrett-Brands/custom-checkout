@@ -97,6 +97,8 @@ class BillingForm extends PureComponent<BillingFormProps & WithLanguageProps & F
                                 googleMapsApiKey={ googleMapsApiKey }
                                 setFieldValue={ setFieldValue }
                                 shouldShowSaveAddress={ !isGuest }
+                                // shipDate={ new Date }
+                                // giftMessage={ new String }
                             />
                         </LoadingOverlay> }
                 </Fieldset>
