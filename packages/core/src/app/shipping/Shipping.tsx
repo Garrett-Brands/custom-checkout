@@ -207,7 +207,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             billingAddress,
             methodId,
             shipDate,
-            giftMessage
+            giftMessage,
         } = this.props;
 
         // CUSTOM FIELDS NOTE

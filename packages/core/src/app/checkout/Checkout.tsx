@@ -368,6 +368,10 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
         //     savedGiftMessage = consignments[0].shippingAddress.customFields.find(customField => customField.fieldId === 'field_32')
         // }
 
+        // if (savedGiftMessage) {
+        //     savedGiftMessage = savedGiftMessage.fieldValue
+        // }
+
         // if (savedShipDate) {
         //     setShipDate(new Date(savedShipDate.fieldValue))
         //     // this.setState({
