@@ -95,7 +95,6 @@ class ShippingAddressForm extends Component<ShippingAddressFormProps & ConnectFo
             `customFields.${fieldName}` :
             fieldName;
 
-        console.log('SET FIELD VALUES 3 =>', fieldName, fieldValue)
         setFieldValue(`${addressFieldName}.${formFieldName}`, fieldValue);
     };
 
