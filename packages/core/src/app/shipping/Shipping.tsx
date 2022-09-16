@@ -69,6 +69,7 @@ export interface WithCheckoutShippingProps {
 
 interface ShippingState {
     isInitializing: boolean;
+    isGiftOrder: boolean;
 }
 
 class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, ShippingState> {
@@ -77,6 +78,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
 
         this.state = {
             isInitializing: true,
+            isGiftOrder: false
         };
     }
 
@@ -125,7 +127,12 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
 
         const {
             isInitializing,
+            isGiftOrder
         } = this.state;
+
+        const setIsGiftOrder = (isGiftOrder: boolean) => {
+            this.setState({isGiftOrder: isGiftOrder})
+        }
 
         return (
             <div className="checkout-form">
@@ -159,6 +166,8 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
                         setArrivalDate={ setArrivalDate }
                         giftMessage={ giftMessage }
                         setGiftMessage={ setGiftMessage }
+                        isGiftOrder={ isGiftOrder }
+                        setIsGiftOrder={ setIsGiftOrder }
                     />
                     
                 </LoadingOverlay>
@@ -210,6 +219,8 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             giftMessage,
         } = this.props;
 
+        const { isGiftOrder } = this.state;
+
         // CUSTOM FIELDS NOTE
         // Update Gift Message and Ship Date custom fields when shipping step is completed.
 
@@ -217,7 +228,8 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             const shipDateValue = shipDate.toString()
             const giftMessageValue = giftMessage.toString()
             addressValues.customFields.field_30 = shipDateValue
-            addressValues.customFields.field_32 = giftMessageValue 
+            addressValues.customFields.field_32 = giftMessageValue
+            addressValues.customFields.field_34 = [isGiftOrder]
         }
 
         const updatedShippingAddress = addressValues && mapAddressFromFormValues(addressValues);

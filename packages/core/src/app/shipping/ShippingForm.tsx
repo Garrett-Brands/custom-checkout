@@ -45,6 +45,8 @@ export interface ShippingFormProps {
     setArrivalDate: Function;
     giftMessage: String;
     setGiftMessage: Function;
+    isGiftOrder: boolean;
+    setIsGiftOrder: Function;
 }
 
 class ShippingForm extends Component<ShippingFormProps & WithLanguageProps> {
@@ -87,7 +89,9 @@ class ShippingForm extends Component<ShippingFormProps & WithLanguageProps> {
             arrivalDate,
             setArrivalDate,
             giftMessage,
-            setGiftMessage
+            setGiftMessage,
+            isGiftOrder,
+            setIsGiftOrder
         } = this.props;
 
         return isMultiShippingMode ?
@@ -149,6 +153,8 @@ class ShippingForm extends Component<ShippingFormProps & WithLanguageProps> {
                 setArrivalDate={ setArrivalDate }
                 giftMessage={ giftMessage }
                 setGiftMessage={ setGiftMessage }
+                isGiftOrder={ isGiftOrder }
+                setIsGiftOrder={ setIsGiftOrder }
             />;
     }
 }

@@ -358,34 +358,6 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
             this.setState({giftMessage: giftMessage})
         }
 
-        // CUSTOM FIELD NOTE
-
-        // var savedShipDate
-        // var savedGiftMessage
-
-        // if (consignments[0]) {
-        //     savedShipDate = consignments[0].shippingAddress.customFields.find(customField => customField.fieldId === 'field_30')
-        //     savedGiftMessage = consignments[0].shippingAddress.customFields.find(customField => customField.fieldId === 'field_32')
-        // }
-
-        // if (savedGiftMessage) {
-        //     savedGiftMessage = savedGiftMessage.fieldValue
-        // }
-
-        // if (savedShipDate) {
-        //     setShipDate(new Date(savedShipDate.fieldValue))
-        //     // this.setState({
-        //     //     shipDate: new Date(savedShipDate.fieldValue)
-        //     // })
-        // }
-
-        // if (savedGiftMessage) {
-        //     setGiftMessage(new String(savedGiftMessage.fieldValue))
-        //     // this.setState({
-        //     //     giftMessage: new String(savedGiftMessage.fieldValue)
-        //     // })
-        // }
-
         if (!cart) {
             return;
         }

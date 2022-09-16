@@ -9,7 +9,8 @@ import ShippingBanner from "./ShippingBanner";
 
 const ShipDate = (props: any) => {
     
-    const { 
+    const {
+        consignments, 
         shipDate, 
         setShipDate, 
         arrivalDate, 
@@ -42,9 +43,16 @@ const ShipDate = (props: any) => {
     
     useEffect(() => {
         const currentShipDate = shipDate
-        currentShipDate.getYear() !== 69 && filterDates(currentShipDate)
+        var savedShipDate
+        if (consignments[0]) {
+            savedShipDate = consignments[0].shippingAddress.customFields.find((customField: { fieldId: string; }) => customField.fieldId === 'field_30')
+            savedShipDate = new Date(savedShipDate.fieldValue)
+        }
+        savedShipDate && isAfterNextAvailable(savedShipDate) && filterDates(savedShipDate)
+        ? setShipDate(savedShipDate)
+        : ( currentShipDate.getYear() !== 69 && filterDates(currentShipDate)
         ? setShipDate(currentShipDate)
-        : setShipDate(nextAvailableDate)
+        : setShipDate(nextAvailableDate) )
     }, [nextAvailableDate])
 
     useEffect(() => {
@@ -75,6 +83,10 @@ const ShipDate = (props: any) => {
 
     const filterDates = (date: Date) => {
         return !isToday(date) && isWeekday(date) && !isBlackoutDate(date)
+    }
+
+    const isAfterNextAvailable = (date: Date) => {
+        return date.getTime() > nextAvailableDate.getTime()
     }
 
     const isToday = (date: Date) => {

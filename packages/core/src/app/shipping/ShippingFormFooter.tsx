@@ -27,6 +27,8 @@ export interface ShippingFormFooterProps {
     setArrivalDate: Function;
     giftMessage: String;
     setGiftMessage: Function;
+    isGiftOrder: boolean;
+    setIsGiftOrder: Function;
 }
 
 class ShippingFormFooter extends PureComponent<ShippingFormFooterProps> {
@@ -44,7 +46,9 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps> {
             arrivalDate,
             setArrivalDate,
             giftMessage,
-            setGiftMessage
+            setGiftMessage,
+            isGiftOrder,
+            setIsGiftOrder
         } = this.props;
 
         return <>
@@ -83,8 +87,11 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps> {
 
             { shouldShowShippingOptions
             ?   <GiftMessage
+                    consignments={ consignments }
                     giftMessage={ giftMessage }
-                    setGiftMessage={ setGiftMessage } />
+                    setGiftMessage={ setGiftMessage }
+                    isGiftOrder={ isGiftOrder }
+                    setIsGiftOrder={ setIsGiftOrder } />
             :   <GiftMessageDisabled /> }
 
             { shouldShowOrderComments &&

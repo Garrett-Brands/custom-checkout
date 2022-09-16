@@ -46,6 +46,8 @@ export interface SingleShippingFormProps {
     setArrivalDate: Function;
     giftMessage: String;
     setGiftMessage: Function;
+    isGiftOrder: boolean;
+    setIsGiftOrder: Function;
 }
 
 export interface SingleShippingFormValues {
@@ -121,7 +123,9 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
             arrivalDate,
             setArrivalDate,
             giftMessage,
-            setGiftMessage
+            setGiftMessage,
+            isGiftOrder,
+            setIsGiftOrder
         } = this.props;
 
         const {
@@ -177,6 +181,8 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
                     setArrivalDate={ setArrivalDate }
                     giftMessage={ giftMessage }
                     setGiftMessage={ setGiftMessage }
+                    isGiftOrder={ isGiftOrder }
+                    setIsGiftOrder={ setIsGiftOrder }
                 />
 
             </Form>
@@ -203,8 +209,6 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
 
     private handleFieldChange: (name: string) => void = async name => {
         
-        console.log('SINGLE SHIPPING FORM FIELD CHANGE =>', name)
-
         const {
             setFieldValue,
         } = this.props;
@@ -312,7 +316,6 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
 
 export default withLanguage(withFormik<SingleShippingFormProps & WithLanguageProps, SingleShippingFormValues>({
     handleSubmit: (values, { props: { onSubmit } }) => {
-        console.log('HANDLE SUBMIT =>', values)
         onSubmit(values);
     },
     mapPropsToValues: ({ getFields, shippingAddress, isBillingSameAsShipping, customerMessage }) => ({

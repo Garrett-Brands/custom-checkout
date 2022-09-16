@@ -26,8 +26,8 @@ const GiftMessageForm = (props: any) => {
                 maxLength={maxLength} 
                 rows={maxRows} 
                 placeholder={placeholder} 
-                onChange={event => setGiftMessage(event.target.value)}>
-                    {renderGiftMessage()}
+                onChange={event => setGiftMessage(event.target.value)}
+                defaultValue={renderGiftMessage()}>
             </textarea>
         </>
     )
