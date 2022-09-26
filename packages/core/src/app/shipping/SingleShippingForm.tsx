@@ -14,6 +14,7 @@ import BillingSameAsShippingField from './BillingSameAsShippingField';
 import ShippingAddress from './ShippingAddress';
 import { SHIPPING_ADDRESS_FIELDS } from './ShippingAddressFields';
 import ShippingFormFooter from './ShippingFormFooter';
+import GiftOrderForm from './customComponents/giftOptions/GiftOrderForm';
 
 export interface SingleShippingFormProps {
     addresses: CustomerAddress[];
@@ -165,6 +166,11 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
                             <BillingSameAsShippingField />
                         </div>
                     }
+
+                    <GiftOrderForm
+                        isGiftOrder={ isGiftOrder} 
+                        setIsGiftOrder={ setIsGiftOrder }
+                        additionalClassName='form-isGiftOrder' />
                 </Fieldset>
 
                 <ShippingFormFooter
@@ -182,8 +188,6 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
                     setArrivalDate={ setArrivalDate }
                     giftMessage={ giftMessage }
                     setGiftMessage={ setGiftMessage }
-                    isGiftOrder={ isGiftOrder }
-                    setIsGiftOrder={ setIsGiftOrder }
                 />
 
             </Form>

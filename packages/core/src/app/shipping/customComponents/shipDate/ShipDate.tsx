@@ -15,7 +15,7 @@ const ShipDate = (props: any) => {
         setShipDate, 
         arrivalDate, 
         setArrivalDate,
-        isNewCart
+        isActiveCart
     } = props
 
     const today = new Date()
@@ -46,7 +46,7 @@ const ShipDate = (props: any) => {
     useEffect(() => {
         const currentShipDate = shipDate
         var savedShipDate
-        if (customFields && isNewCart) {
+        if (customFields && isActiveCart) {
             savedShipDate = consignments[0].shippingAddress.customFields.find((customField: { fieldId: string; }) => customField.fieldId === 'field_30')
             savedShipDate = new Date(savedShipDate.fieldValue)
         }

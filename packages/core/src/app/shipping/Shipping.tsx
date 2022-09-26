@@ -206,6 +206,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
         orderComment,
     }) => {
         const {
+            cart,
             customerMessage,
             updateCheckout,
             updateShippingAddress,
@@ -220,17 +221,18 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
         } = this.props;
 
         const { isGiftOrder } = this.state;
-        console.log('Is Gift Order =>', isGiftOrder)
 
         // CUSTOM FIELDS NOTE
-        // Update Gift Message and Ship Date custom fields when shipping step is completed.
+        // Update Ship Date, Gift Message, Gift Order custom fields when shipping step is completed.
 
         if (addressValues) {
             const shipDateValue = shipDate.toString()
             const giftMessageValue = giftMessage.toString()
+            const cartID = cart.id
             addressValues.customFields.field_30 = shipDateValue
             addressValues.customFields.field_32 = giftMessageValue
-            // addressValues.customFields.field_34 = [isGiftOrder]
+            isGiftOrder ? addressValues.customFields.field_34 = ['0'] : addressValues.customFields.field_34 = []
+            addressValues.customFields.field_36 = cartID
         }
 
         const updatedShippingAddress = addressValues && mapAddressFromFormValues(addressValues);

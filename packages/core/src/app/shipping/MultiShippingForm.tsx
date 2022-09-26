@@ -96,14 +96,9 @@ class MultiShippingForm extends PureComponent<MultiShippingFormProps & WithLangu
         const { items, itemAddingAddress, createCustomerAddressError } = this.state;
 
         const giftMessage = ''
-        const isGiftOrder = false
 
         const setGiftMessage = (giftMessage: String) => {
             console.log('Multiship - Gift Message Set =>', giftMessage)
-        }
-
-        const setIsGiftOrder = (isGiftOrder: boolean) => {
-            console.log('Multiship - Is Gift Order? Set =>', isGiftOrder)
         }
 
         if (isGuest) {
@@ -164,6 +159,7 @@ class MultiShippingForm extends PureComponent<MultiShippingFormProps & WithLangu
                     </ul>
 
                     <ShippingFormFooter
+                        cart={ cart }
                         cartHasChanged={ cartHasChanged }
                         isLoading={ isLoading }
                         isMultiShippingMode={ true }
@@ -177,8 +173,6 @@ class MultiShippingForm extends PureComponent<MultiShippingFormProps & WithLangu
                         setArrivalDate={ setArrivalDate }
                         giftMessage={ giftMessage }
                         setGiftMessage={ setGiftMessage }
-                        isGiftOrder={ isGiftOrder }
-                        setIsGiftOrder={ setIsGiftOrder }
                     />
                 </Form>
             </Fragment>

@@ -28,8 +28,6 @@ export interface ShippingFormFooterProps {
     setArrivalDate: Function;
     giftMessage: String;
     setGiftMessage: Function;
-    isGiftOrder: boolean;
-    setIsGiftOrder: Function;
 }
 
 class ShippingFormFooter extends PureComponent<ShippingFormFooterProps> {
@@ -49,16 +47,13 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps> {
             setArrivalDate,
             giftMessage,
             setGiftMessage,
-            isGiftOrder,
-            setIsGiftOrder
         } = this.props;
 
-        if (cart) {
-            var isNewCart
-            var cartUpdated = new Date(cart.updatedTime).toISOString()
-            var current = new Date().toISOString()
-            var sinceUpdated = Date.parse(current) - Date.parse(cartUpdated)
-            isNewCart = sinceUpdated < 300000
+        if (cart && consignments[0]) {
+            var isActiveCart
+            var savedCartID
+            savedCartID = consignments[0].shippingAddress.customFields.find((customField: { fieldId: string; }) => customField.fieldId === 'field_36')
+            isActiveCart = cart.id === savedCartID?.fieldValue
         }
 
         return <>
@@ -93,7 +88,7 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps> {
                     setShipDate={ setShipDate }
                     arrivalDate={ arrivalDate }
                     setArrivalDate={ setArrivalDate }
-                    isNewCart={ isNewCart } /> 
+                    isActiveCart={ isActiveCart } /> 
             : <ShipDateDisabled /> }
 
             { shouldShowShippingOptions
@@ -101,9 +96,7 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps> {
                     consignments={ consignments }
                     giftMessage={ giftMessage }
                     setGiftMessage={ setGiftMessage }
-                    isGiftOrder={ isGiftOrder }
-                    setIsGiftOrder={ setIsGiftOrder }
-                    isNewCart={ isNewCart } />
+                    isActiveCart={ isActiveCart } />
             :   <GiftMessageDisabled /> }
 
             { shouldShowOrderComments &&
