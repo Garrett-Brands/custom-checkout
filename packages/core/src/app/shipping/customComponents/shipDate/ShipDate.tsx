@@ -20,6 +20,7 @@ const ShipDate = (props: any) => {
     const today = new Date()
     const todayReset = today.setHours(0,0,0,0)
     const bannerMessage = 'Schedule shipping up to 25 days in advance on select items.'
+    const customFields = consignments[0]?.shippingAddress.customFields.length > 0
     
     const [address, setAddress] = useState(Object)
     const [selectedShippingOption, setSelectedShippingOption] = useState(Object)
@@ -44,7 +45,7 @@ const ShipDate = (props: any) => {
     useEffect(() => {
         const currentShipDate = shipDate
         var savedShipDate
-        if (consignments[0]) {
+        if (customFields) {
             savedShipDate = consignments[0].shippingAddress.customFields.find((customField: { fieldId: string; }) => customField.fieldId === 'field_30')
             savedShipDate = new Date(savedShipDate.fieldValue)
         }
@@ -68,6 +69,14 @@ const ShipDate = (props: any) => {
             fetchUPSEstimate()
         }
     }, [shipDate, address, selectedShippingOption])
+
+    useEffect(() => {
+        window.scroll(0, 0)
+        const calendarDays: NodeListOf<HTMLDivElement> | null = document.querySelectorAll('.react-datepicker__day')
+        if (calendarDays instanceof NodeList) {
+            calendarDays.forEach(day => day.removeAttribute('tabIndex'))
+        }
+    }, [])
 
     const getAvailableDates = (start: Date, end: Date) => {
         var dates = new Array

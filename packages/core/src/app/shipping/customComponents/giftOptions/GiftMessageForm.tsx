@@ -22,7 +22,6 @@ const GiftMessageForm = (props: any) => {
             </IconContainer>
             <textarea
                 className="gift-message-input" 
-                autoFocus 
                 maxLength={maxLength} 
                 rows={maxRows} 
                 placeholder={placeholder} 

@@ -15,11 +15,12 @@ const GiftMessage = (props: any) => {
         setIsGiftOrder
      } = props
 
+    const customFields = consignments[0]?.shippingAddress.customFields.length > 0
     const [giftMessageToggle, setGiftMessageToggle] = useState(false)
 
     useEffect(() => {
         var savedGiftMessage
-        if (consignments[0]) {
+        if (customFields) {
             savedGiftMessage = consignments[0].shippingAddress.customFields.find((customField: { fieldId: string; }) => customField.fieldId === 'field_32')
             savedGiftMessage = savedGiftMessage.fieldValue
             setGiftMessage(savedGiftMessage)

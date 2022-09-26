@@ -142,13 +142,18 @@ export default class CheckoutStep extends Component<CheckoutStepProps, CheckoutS
         this.timeoutRef = window.setTimeout(() => {
             const input = this.getChildInput();
             const position = this.getScrollPosition();
-            const { type, onExpanded = noop } = this.props;
+            const { type, onExpanded = noop, isActive } = this.props;
+            window.scrollBy(0, 20 * window.innerHeight/100)
 
-            if (input) {
+            if (type !== 'shipping' && input) {
                 input.focus();
             }
 
-            if (position !== undefined && !isNaN(position)) {
+            if (isActive && type === 'shipping') {
+                window.scrollTo(0, 0);
+            }
+
+            if (position !== undefined && !isNaN(position) && type !== 'shipping') {
                 window.scrollTo(0, position);
             }
 
@@ -181,7 +186,7 @@ export default class CheckoutStep extends Component<CheckoutStepProps, CheckoutS
         const topOffset = isComplete ? 0 : window.innerHeight / 5;
         const containerOffset = container.getBoundingClientRect().top + (window.scrollY || window.pageYOffset);
 
-        return containerOffset - topOffset;
+        return containerOffset - topOffset + 75;
     }
 
     // For now, we need to find the parent container because `CheckoutStep`
