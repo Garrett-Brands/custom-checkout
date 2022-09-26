@@ -12,7 +12,8 @@ const GiftMessage = (props: any) => {
         giftMessage, 
         setGiftMessage,
         isGiftOrder,
-        setIsGiftOrder
+        setIsGiftOrder,
+        isNewCart
      } = props
 
     const customFields = consignments[0]?.shippingAddress.customFields.length > 0
@@ -20,7 +21,7 @@ const GiftMessage = (props: any) => {
 
     useEffect(() => {
         var savedGiftMessage
-        if (customFields) {
+        if (customFields && isNewCart) {
             savedGiftMessage = consignments[0].shippingAddress.customFields.find((customField: { fieldId: string; }) => customField.fieldId === 'field_32')
             savedGiftMessage = savedGiftMessage.fieldValue
             setGiftMessage(savedGiftMessage)

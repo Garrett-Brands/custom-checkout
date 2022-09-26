@@ -1,5 +1,5 @@
 import React, { PureComponent, ReactNode } from 'react';
-import { Consignment } from '@bigcommerce/checkout-sdk';
+import { Consignment, Cart } from '@bigcommerce/checkout-sdk';
 
 import { TranslatedString } from '../locale';
 import { OrderComments } from '../orderComments';
@@ -14,6 +14,7 @@ import GiftMessageDisabled from './customComponents/giftOptions/GiftMessageDisab
 import { ShippingOptions } from './shippingOption';
 
 export interface ShippingFormFooterProps {
+    cart: Cart;
     cartHasChanged: boolean;
     isMultiShippingMode: boolean;
     shouldShowOrderComments: boolean;
@@ -34,6 +35,7 @@ export interface ShippingFormFooterProps {
 class ShippingFormFooter extends PureComponent<ShippingFormFooterProps> {
     render(): ReactNode {
         const {
+            cart,
             cartHasChanged,
             isMultiShippingMode,
             shouldShowOrderComments,
@@ -50,6 +52,14 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps> {
             isGiftOrder,
             setIsGiftOrder
         } = this.props;
+
+        if (cart) {
+            var isNewCart
+            var cartUpdated = new Date(cart.updatedTime).toISOString()
+            var current = new Date().toISOString()
+            var sinceUpdated = Date.parse(current) - Date.parse(cartUpdated)
+            isNewCart = sinceUpdated < 300000
+        }
 
         return <>
             <Fieldset
@@ -82,7 +92,8 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps> {
                     shipDate={ shipDate }
                     setShipDate={ setShipDate }
                     arrivalDate={ arrivalDate }
-                    setArrivalDate={ setArrivalDate } /> 
+                    setArrivalDate={ setArrivalDate }
+                    isNewCart={ isNewCart } /> 
             : <ShipDateDisabled /> }
 
             { shouldShowShippingOptions
@@ -91,7 +102,8 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps> {
                     giftMessage={ giftMessage }
                     setGiftMessage={ setGiftMessage }
                     isGiftOrder={ isGiftOrder }
-                    setIsGiftOrder={ setIsGiftOrder } />
+                    setIsGiftOrder={ setIsGiftOrder }
+                    isNewCart={ isNewCart } />
             :   <GiftMessageDisabled /> }
 
             { shouldShowOrderComments &&
