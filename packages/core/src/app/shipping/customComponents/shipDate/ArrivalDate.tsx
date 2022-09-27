@@ -8,7 +8,7 @@ function ArrivalDate(props: any) {
     return(
         <div className="arrival-date-container">
             <IconContainer className='arrival-date-icon-container'>
-                <ArrivalDateIcon imageSource='https://res.cloudinary.com/garrett-brands/image/upload/v1662948798/Garrett-Website/2022/2-February/Promo%20Details/shipping-icon-cropped.png' />
+                <ArrivalDateIcon imageSource='https://res.cloudinary.com/garrett-brands/image/upload/v1663968753/Garrett-Website/2022/9-September/Checkout%20Icons/arrival-estimate.svg' />
             </IconContainer>
             <p>Arrives</p>
             <p>{formattedArrivalDate}</p>
