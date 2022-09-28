@@ -223,12 +223,12 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
 
         const { isGiftOrder } = this.state;
 
-        // CUSTOM FIELDS NOTE
+        // CHECKOUT CUSTOM FIELDS
         // Update Ship Date, Arrival Date, Gift Message, Gift Order custom fields when shipping step is completed.
 
         if (addressValues) {
-            const shipDateValue = shipDate.toString()
-            const arrivalDateValue = arrivalDate.toString()
+            const shipDateValue = shipDate.toLocaleDateString('en-US')
+            const arrivalDateValue = arrivalDate.toLocaleDateString('en-US')
             const giftMessageValue = giftMessage.toString()
             const cartID = cart.id
             addressValues.customFields.field_30 = shipDateValue
