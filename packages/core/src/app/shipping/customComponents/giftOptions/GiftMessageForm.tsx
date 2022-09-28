@@ -2,7 +2,6 @@ import React from "react";
 import IconContainer from "../IconContainer";
 import GiftMessageIcon from "../CustomIcon";
 
-
 const GiftMessageForm = (props: any) => {
     const { giftMessage, setGiftMessage } = props
     const maxLength = 350
