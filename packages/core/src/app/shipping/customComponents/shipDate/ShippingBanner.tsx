@@ -1,9 +1,12 @@
 import React from "react";
 
 const ShippingBanner = (props: any) => {
-    const { bannerMessage } = props
+    const { mainMessage, secondMessage, className } = props
     return(
-        <p className="shipping-banner">{bannerMessage}</p>
+        <div className={className}>
+            { mainMessage ? <p className="banner-main-message">{mainMessage}</p> : null }
+            { secondMessage ? <p className="banner-second-message">{secondMessage}</p> : null }
+        </div>
     )
 }
 

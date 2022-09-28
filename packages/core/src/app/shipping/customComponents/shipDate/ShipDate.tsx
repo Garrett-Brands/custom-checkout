@@ -3,6 +3,7 @@ import { Legend, Fieldset } from "../../../ui/form";
 import ShippingCalendar from "./ShippingCalendar";
 import DatePicker from 'react-datepicker'
 import ShippingInfo from "./ShippingInfo";
+import DatesSummary from "./DatesSummary";
 import SelectedShipDate from "./SelectedShipDate";
 import ArrivalDate from "./ArrivalDate";
 import ShippingBanner from "./ShippingBanner";
@@ -20,7 +21,9 @@ const ShipDate = (props: any) => {
 
     const today = new Date()
     const todayReset = today.setHours(0,0,0,0)
-    const bannerMessage = 'Schedule shipping up to 25 days in advance on select items.'
+    const advanceShippingMessage = 'Schedule shipping up to 25 days in advance on select items.'
+    const shipDateMessage = 'Ship date is the date your order is expected to leave our kitchen.'
+    const arrivalDateMessage = 'Estimated arrival window depends on the ship date and method you choose.'
     const customFields = consignments[0]?.shippingAddress.customFields.length > 0
     
     const [address, setAddress] = useState(Object)
@@ -193,8 +196,9 @@ const ShipDate = (props: any) => {
     return(
         <Fieldset id='ship-date'>
             <Legend testId="ship-date-form-heading">Ship Date</Legend>
-                    <ShippingBanner 
-                        bannerMessage={bannerMessage} />
+                    <ShippingBanner
+                        className='advance-shipping-banner'
+                        mainMessage={advanceShippingMessage} />
                 <ShippingCalendar>
                         <DatePicker 
                             calendarClassName="ship-date-calendar"
@@ -207,8 +211,14 @@ const ShipDate = (props: any) => {
                             inline />
                 </ShippingCalendar>
                 <ShippingInfo>
-                    <SelectedShipDate shipDate={shipDate} />
-                    <ArrivalDate arrivalDate={arrivalDate} />
+                    <DatesSummary>
+                        <SelectedShipDate shipDate={shipDate} />
+                        <ArrivalDate arrivalDate={arrivalDate} />
+                    </DatesSummary>
+                        <ShippingBanner
+                            className='shipping-info-banner'
+                            mainMessage={shipDateMessage}
+                            secondMessage={arrivalDateMessage} />
                 </ShippingInfo>
         </Fieldset>
     )

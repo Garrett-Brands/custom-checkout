@@ -217,19 +217,22 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             billingAddress,
             methodId,
             shipDate,
+            arrivalDate,
             giftMessage,
         } = this.props;
 
         const { isGiftOrder } = this.state;
 
         // CUSTOM FIELDS NOTE
-        // Update Ship Date, Gift Message, Gift Order custom fields when shipping step is completed.
+        // Update Ship Date, Arrival Date, Gift Message, Gift Order custom fields when shipping step is completed.
 
         if (addressValues) {
             const shipDateValue = shipDate.toString()
+            const arrivalDateValue = arrivalDate.toString()
             const giftMessageValue = giftMessage.toString()
             const cartID = cart.id
             addressValues.customFields.field_30 = shipDateValue
+            addressValues.customFields.field_38 = arrivalDateValue
             addressValues.customFields.field_32 = giftMessageValue
             isGiftOrder ? addressValues.customFields.field_34 = ['0'] : addressValues.customFields.field_34 = []
             addressValues.customFields.field_36 = cartID
