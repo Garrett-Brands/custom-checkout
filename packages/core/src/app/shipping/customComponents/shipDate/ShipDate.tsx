@@ -11,29 +11,35 @@ import ShippingBanner from "./ShippingBanner";
 const ShipDate = (props: any) => {
     
     const {
+        cart,
         consignments, 
         shipDate, 
         setShipDate, 
         arrivalDate, 
         setArrivalDate,
-        isActiveCart
+        isActiveCart,
+        dateUnavailable,
+        setDateUnvailable
     } = props
 
     const today = new Date()
     const todayReset = today.setHours(0,0,0,0)
-    const advanceShippingMessage = 'Schedule shipping up to 25 days in advance on select items.'
-    const shipDateMessage = 'Ship date is the date your order is expected to leave our kitchen.'
-    const arrivalDateMessage = 'Estimated arrival window depends on the ship date and method you choose.'
+    const advanceShippingMessage = "Ordering to enjoy at a later date? Schedule your shipping date up to 25 days in advance. Available on select items."
+    const shipDateMessage = 'Cook and ship date is when your order is cooked, it leaves our kitchen on the same day.'
+    const arrivalDateMessage = 'Estimated arrival date depends on the ship date and UPS shipping method chosen.'
+    const unavailableDateMessage = 'You have a promotional item in your cart. The promo period ends before your selected cook and ship date. Please select a date within the promo period or remove the item from your cart.'
     const customFields = consignments[0]?.shippingAddress.customFields.length > 0
     
     const [address, setAddress] = useState(Object)
     const [selectedShippingOption, setSelectedShippingOption] = useState(Object)
     const [availableDates, setAvailableDates] = useState(new Array)
     const [blackoutDates, setBlackoutDates] = useState(new Array)
+    const [shipByDates, setShipByDates] = useState(new Array)
     const [nextAvailableDate, setNextAvailableDate] = useState(today)
 
     useEffect(() => {
         fetchBlackoutDates()
+        fetchShipByDates()
     }, [])
 
     useEffect(() => {
@@ -73,6 +79,12 @@ const ShipDate = (props: any) => {
             fetchUPSEstimate()
         }
     }, [shipDate, address, selectedShippingOption])
+
+    useEffect(() => {
+        if (shipByDates) {
+            setDateUnvailable(isAfterShipByDates(shipDate))
+        }
+    }, [shipDate, shipByDates])
 
     useEffect(() => {
         window.scroll(0, 0)
@@ -117,6 +129,18 @@ const ShipDate = (props: any) => {
         const day = String(date.getDate()).padStart(2, '0')
         const formattedDate = [year, month, day].join('-')
         return blackoutDates.includes(formattedDate)
+    }
+
+    const isAfterShipByDates = (date: Date) => {
+        var isAfter = false
+        shipByDates.map(shipByDate => {
+            const [year, month, day] = shipByDate.split('-')
+            const formattedDate = new Date([month, day, year].join('-'))
+            if (date.getTime() > formattedDate.getTime()) {
+                isAfter = true
+            }
+        })
+        return isAfter
     }
 
     const maxDate = () => {
@@ -193,23 +217,70 @@ const ShipDate = (props: any) => {
         })
     }
 
+    const fetchShipByDates = async () => {
+
+        const reqObj = {
+            method: 'GET',
+            headers: {
+              "Content-Type": "application/json",
+              "Accept": "application/json",
+              "x-access-key": "XM9xCpdv7TC1ZrzZ3ZeNYKUoCK1GHbZw"
+            }
+          }
+
+        // PRODUCTION
+        // fetch(`https://api.gbdev.cloud/v1/ship-dates/must-ship-dates/`, reqObj)
+        fetch(`https://api-dev.gbdev.cloud/v1/ship-dates/must-ship-dates/`, reqObj)
+        .then(resp => resp.json())
+        .then(({results}) => {
+            var productIds = new Array
+            var productSKUs = new Array
+            var dates = new Array
+            cart.lineItems.physicalItems.map((item: { productId: Number, sku: String }) => {
+                productIds.push(item.productId.toString())
+                productSKUs.push(item.sku)
+            })
+            results.map((item: { productSKU: String, mustShipDate: String }) => {
+                const date = item.mustShipDate.split('-')
+                const formattedDate = [date[2], date[1], date[0]].join('-')
+                if (productIds.includes(item.productSKU) || productSKUs.includes(item.productSKU)) {
+                    dates.push(formattedDate)
+                }
+            } )
+            setShipByDates(dates)
+        })
+        .catch(error => {
+            console.log('SHIP BY DATES ERROR =>', error)
+        })
+    }
+
     return(
         <Fieldset id='ship-date'>
-            <Legend testId="ship-date-form-heading">Ship Date</Legend>
+            <Legend testId="ship-date-form-heading">Cooking and Shipping Date</Legend>
                     <ShippingBanner
                         className='advance-shipping-banner'
-                        mainMessage={advanceShippingMessage} />
+                        mainMessage={advanceShippingMessage} 
+                    />
                 <ShippingCalendar>
                         <DatePicker 
                             calendarClassName="ship-date-calendar"
-                            selected={shipDate} 
+                            selected={shipDate}
                             onChange={(date:Date) => setShipDate(date)}
                             minDate={today}
                             maxDate={maxDate()}
                             filterDate={filterDates}
                             highlightDates={[arrivalDate]}
-                            inline />
+                            inline 
+                        />
                 </ShippingCalendar>
+                
+                    { dateUnavailable && 
+                        <ShippingBanner
+                        className='unavailable-date-alert-banner'
+                        mainMessage={unavailableDateMessage} />
+                    }
+
+            { !dateUnavailable &&
                 <ShippingInfo>
                     <DatesSummary>
                         <SelectedShipDate shipDate={shipDate} />
@@ -218,8 +289,10 @@ const ShipDate = (props: any) => {
                         <ShippingBanner
                             className='shipping-info-banner'
                             mainMessage={shipDateMessage}
-                            secondMessage={arrivalDateMessage} />
+                            secondMessage={arrivalDateMessage}
+                        />
                 </ShippingInfo>
+            }    
         </Fieldset>
     )
 }

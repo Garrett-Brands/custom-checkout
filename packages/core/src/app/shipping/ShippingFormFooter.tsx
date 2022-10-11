@@ -30,7 +30,18 @@ export interface ShippingFormFooterProps {
     setGiftMessage: Function;
 }
 
-class ShippingFormFooter extends PureComponent<ShippingFormFooterProps> {
+interface ShippingFormFooterState {
+    dateUnavailable: boolean;
+}
+
+class ShippingFormFooter extends PureComponent<ShippingFormFooterProps, ShippingFormFooterState> {
+    constructor(props: ShippingFormFooterProps) {
+        super(props);
+        this.state = {
+            dateUnavailable: false
+        };
+    }
+
     render(): ReactNode {
         const {
             cart,
@@ -54,6 +65,12 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps> {
             var savedCartID
             savedCartID = consignments[0].shippingAddress.customFields.find((customField: { fieldId: string; }) => customField.fieldId === 'field_36')
             isActiveCart = cart.id === savedCartID?.fieldValue
+        }
+
+        const { dateUnavailable } = this.state;
+
+        const setDateUnavailable = (status: boolean) => {
+            this.setState({dateUnavailable: status})
         }
 
         return <>
@@ -82,16 +99,19 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps> {
             </Fieldset>
 
             { shouldShowShippingOptions 
-            ?   <ShipDate 
+            ?   <ShipDate
+                    cart={ cart }
                     consignments={ consignments }
                     shipDate={ shipDate }
                     setShipDate={ setShipDate }
                     arrivalDate={ arrivalDate }
                     setArrivalDate={ setArrivalDate }
-                    isActiveCart={ isActiveCart } /> 
+                    isActiveCart={ isActiveCart }
+                    dateUnavailable={ dateUnavailable }
+                    setDateUnvailable={ setDateUnavailable } /> 
             : <ShipDateDisabled /> }
 
-            { shouldShowShippingOptions
+            { shouldShowShippingOptions && !dateUnavailable
             ?   <GiftMessage
                     consignments={ consignments }
                     giftMessage={ giftMessage }
@@ -104,7 +124,7 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps> {
 
             <div className="form-actions">
                 <Button
-                    disabled={ shouldDisableSubmit }
+                    disabled={ shouldDisableSubmit || dateUnavailable }
                     id="checkout-shipping-continue"
                     isLoading={ isLoading }
                     type="submit"
