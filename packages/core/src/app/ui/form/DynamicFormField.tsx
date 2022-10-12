@@ -60,6 +60,11 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps>  = ({
                         <TranslatedString id="common.optional_text" />
                     </small>
                 </> }
+            { required &&
+            <>
+                { ' ' }
+                <small className="optimizedCheckout-contentSecondary">(Required)</small>
+            </> }
         </Label>
     ), [
         fieldInputId,

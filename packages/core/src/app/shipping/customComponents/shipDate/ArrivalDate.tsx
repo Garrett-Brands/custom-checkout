@@ -10,8 +10,8 @@ function ArrivalDate(props: any) {
             <IconContainer className='arrival-date-icon-container'>
                 <ArrivalDateIcon imageSource='https://res.cloudinary.com/garrett-brands/image/upload/v1663968753/Garrett-Website/2022/9-September/Checkout%20Icons/arrival-estimate.svg' />
             </IconContainer>
-            <p>Arrives</p>
-            <p>est. {formattedArrivalDate}</p>
+            <p>Estimated Arrival</p>
+            <p>{formattedArrivalDate}</p>
         </div>
     )
 }

@@ -19,7 +19,9 @@ const ShipDate = (props: any) => {
         setArrivalDate,
         isActiveCart,
         dateUnavailable,
-        setDateUnvailable
+        setDateUnvailable,
+        unavailableItems,
+        setUnavailableItems
     } = props
 
     const today = new Date()
@@ -27,7 +29,7 @@ const ShipDate = (props: any) => {
     const advanceShippingMessage = "Ordering to enjoy at a later date? Schedule your shipping date up to 25 days in advance. Available on select items."
     const shipDateMessage = 'Cook and ship date is when your order is cooked, it leaves our kitchen on the same day.'
     const arrivalDateMessage = 'Estimated arrival date depends on the ship date and UPS shipping method chosen.'
-    const unavailableDateMessage = 'You have a promotional item in your cart. The promo period ends before your selected cook and ship date. Please select a date within the promo period or remove the item from your cart.'
+    const unavailableDateMessage = 'Selected Cook and Ship date is not available for promotional or seasonal items in your cart. Please select an earlier date or choose a different item.'
     const customFields = consignments[0]?.shippingAddress.customFields.length > 0
     
     const [address, setAddress] = useState(Object)
@@ -36,10 +38,12 @@ const ShipDate = (props: any) => {
     const [blackoutDates, setBlackoutDates] = useState(new Array)
     const [shipByDates, setShipByDates] = useState(new Array)
     const [nextAvailableDate, setNextAvailableDate] = useState(today)
+    const [inventoryData, setInventoryData] = useState(new Array)
 
     useEffect(() => {
         fetchBlackoutDates()
         fetchShipByDates()
+        fetchInventoryData()
     }, [])
 
     useEffect(() => {
@@ -93,6 +97,18 @@ const ShipDate = (props: any) => {
             calendarDays.forEach(day => day.removeAttribute('tabIndex'))
         }
     }, [])
+
+    useEffect(() => {
+        var unavailableItems = new Array
+        inventoryData.map(item => {
+            if (item.quantity > item.qty_available || item.status === 'OOS') {
+                unavailableItems.push(item)
+            }
+        })
+        if (unavailableItems.length > 0) {
+            setUnavailableItems(unavailableItems)
+        }
+    }, [inventoryData.length > 0])
 
     const getAvailableDates = (start: Date, end: Date) => {
         var dates = new Array
@@ -254,6 +270,45 @@ const ShipDate = (props: any) => {
         })
     }
 
+    const fetchInventoryData = async () => {
+        var skus = new Array
+        cart.lineItems.physicalItems.map((item: {sku: String, quantity: String, name: String, options: Object}) => {
+            skus.push({
+                'sku': item.sku, 
+                'quantity': item.quantity,
+                'name': item.name,
+                'options': item.options
+            })
+        })
+
+        var body = {
+            "inventoryList": skus
+        }
+
+        const reqObj = {
+            method: 'POST',
+            headers: {
+              "Content-Type": "application/json",
+              "Accept": "application/json",
+              "x-access-key": "XM9xCpdv7TC1ZrzZ3ZeNYKUoCK1GHbZw"
+            },
+            body: JSON.stringify(body)
+          }
+
+        fetch(`https://api.gbdev.cloud/v1/client/inventory/check-quantities`, reqObj)
+        .then(resp => resp.json())
+        .then(({data}) => {
+            data.map((item: {qty_available: Number, status: String}, index: any) => {
+                skus[index].qty_available = item.qty_available
+                skus[index].status = item.status
+            })
+            setInventoryData(skus)
+        })
+        .catch(error => {
+            console.log('INVENTORY REQUEST ERROR =>', error)
+        })
+    }
+
     return(
         <Fieldset id='ship-date'>
             <Legend testId="ship-date-form-heading">Cooking and Shipping Date</Legend>
@@ -276,8 +331,8 @@ const ShipDate = (props: any) => {
                 
                     { dateUnavailable && 
                         <ShippingBanner
-                        className='unavailable-date-alert-banner'
-                        mainMessage={unavailableDateMessage} />
+                            className='unavailable-date-alert-banner'
+                            mainMessage={unavailableDateMessage} />
                     }
 
             { !dateUnavailable &&
@@ -288,6 +343,8 @@ const ShipDate = (props: any) => {
                     </DatesSummary>
                         <ShippingBanner
                             className='shipping-info-banner'
+                            mainMessageIcon={'https://res.cloudinary.com/garrett-brands/image/upload/v1665017783/Garrett-Website/2022/9-September/Checkout%20Icons/cook-date.svg'}
+                            secondMessageIcon={'https://res.cloudinary.com/garrett-brands/image/upload/v1663968753/Garrett-Website/2022/9-September/Checkout%20Icons/arrival-estimate.svg'}
                             mainMessage={shipDateMessage}
                             secondMessage={arrivalDateMessage}
                         />

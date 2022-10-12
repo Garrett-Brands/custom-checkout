@@ -420,7 +420,7 @@
         },
         "shipping": {
             "cart_change_error": "An update to your shopping cart has been detected and your available shipping costs have been updated. Please re-select a shipping method to continue.",
-            "enter_shipping_address_text": "Please enter a shipping address in order to see shipping quotes",
+            "enter_shipping_address_text": "Please enter a shipping address and phone number in order to see shipping quotes",
             "order_comment_label": "Order Comments",
             "assign_item_error": "An error occurred while assigning item to address. Please try again",
             "assign_item_invalid_address_error_heading": "Invalid Address",

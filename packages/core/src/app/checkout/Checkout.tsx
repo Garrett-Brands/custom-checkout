@@ -179,6 +179,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
             const consignments = data.getConsignments();
             const cart = data.getCart();
 
+
             const hasMultiShippingEnabled = data.getConfig()?.checkoutSettings?.hasMultiShippingEnabled;
             const checkoutBillingSameAsShippingEnabled = data.getConfig()?.checkoutSettings?.checkoutBillingSameAsShippingEnabled ?? true;
             const buyNowCartFlag = data.getConfig()?.checkoutSettings?.features['CHECKOUT-3190.enable_buy_now_cart'] ?? false;
