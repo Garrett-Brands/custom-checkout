@@ -18,10 +18,9 @@ const ShipDate = (props: any) => {
         arrivalDate, 
         setArrivalDate,
         isActiveCart,
-        dateUnavailable,
-        setDateUnvailable,
-        unavailableItems,
-        setUnavailableItems
+        setUnavailableItems,
+        itemsUnavailableToShip,
+        setItemsUnavailableToShip,
     } = props
 
     const today = new Date()
@@ -29,14 +28,14 @@ const ShipDate = (props: any) => {
     const advanceShippingMessage = "Ordering to enjoy at a later date? Schedule your shipping date up to 25 days in advance. Available on select items."
     const shipDateMessage = 'Cook and ship date is when your order is cooked, it leaves our kitchen on the same day.'
     const arrivalDateMessage = 'Estimated arrival date depends on the ship date and UPS shipping method chosen.'
-    const unavailableDateMessage = 'Selected Cook and Ship date is not available for promotional or seasonal items in your cart. Please select an earlier date or choose a different item.'
+    // const unavailableDateMessage = 'Selected Cook and Ship date is not available for promotional or seasonal items in your cart. Please select an earlier date or choose a different item.'
     const customFields = consignments[0]?.shippingAddress.customFields.length > 0
     
     const [address, setAddress] = useState(Object)
     const [selectedShippingOption, setSelectedShippingOption] = useState(Object)
     const [availableDates, setAvailableDates] = useState(new Array)
     const [blackoutDates, setBlackoutDates] = useState(new Array)
-    const [shipByDates, setShipByDates] = useState(new Array)
+    const [promotionalItems, setPromotionalItems] = useState(new Array)
     const [nextAvailableDate, setNextAvailableDate] = useState(today)
     const [inventoryData, setInventoryData] = useState(new Array)
 
@@ -85,10 +84,17 @@ const ShipDate = (props: any) => {
     }, [shipDate, address, selectedShippingOption])
 
     useEffect(() => {
-        if (shipByDates) {
-            setDateUnvailable(isAfterShipByDates(shipDate))
+        var itemsUnavailableToShip = new Array
+        if (promotionalItems.length > 0) {
+            promotionalItems.map(item => {
+                if (endsAfterShipDate(shipDate, item)) {
+                    itemsUnavailableToShip.push(item)
+                }
+            })
+            setItemsUnavailableToShip(itemsUnavailableToShip)
+            // setDateUnvailable(isAfterShipByDates(shipDate))
         }
-    }, [shipDate, shipByDates])
+    }, [shipDate, promotionalItems])
 
     useEffect(() => {
         window.scroll(0, 0)
@@ -147,15 +153,14 @@ const ShipDate = (props: any) => {
         return blackoutDates.includes(formattedDate)
     }
 
-    const isAfterShipByDates = (date: Date) => {
+    const endsAfterShipDate = (date: Date, item: { mustShipDate: String }) => {
         var isAfter = false
-        shipByDates.map(shipByDate => {
-            const [year, month, day] = shipByDate.split('-')
+            const shipByDate = item.mustShipDate
+            const [day, month, year] = shipByDate.split('-')
             const formattedDate = new Date([month, day, year].join('-'))
             if (date.getTime() > formattedDate.getTime()) {
                 isAfter = true
             }
-        })
         return isAfter
     }
 
@@ -251,19 +256,17 @@ const ShipDate = (props: any) => {
         .then(({results}) => {
             var productIds = new Array
             var productSKUs = new Array
-            var dates = new Array
+            var promotionalItems = new Array
             cart.lineItems.physicalItems.map((item: { productId: Number, sku: String }) => {
                 productIds.push(item.productId.toString())
                 productSKUs.push(item.sku)
             })
-            results.map((item: { productSKU: String, mustShipDate: String }) => {
-                const date = item.mustShipDate.split('-')
-                const formattedDate = [date[2], date[1], date[0]].join('-')
+            results.map((item: { productSKU: String, productName: String, mustShipDate: String }) => {
                 if (productIds.includes(item.productSKU) || productSKUs.includes(item.productSKU)) {
-                    dates.push(formattedDate)
+                    promotionalItems.push(item)
                 }
             } )
-            setShipByDates(dates)
+            setPromotionalItems(promotionalItems)
         })
         .catch(error => {
             console.log('SHIP BY DATES ERROR =>', error)
@@ -308,6 +311,22 @@ const ShipDate = (props: any) => {
             console.log('INVENTORY REQUEST ERROR =>', error)
         })
     }
+    
+    const renderUnavailableToShipMessage = (type: string) => {
+        var products = new Array
+        itemsUnavailableToShip.map((item: { productName: string, mustShipDate: any }) => {
+            const shipByDate = item.mustShipDate
+            const [day, month, year] = shipByDate.split('-')
+            const formattedShipDate = new Date([month, day, year].join('-')).toLocaleDateString('en-us', { weekday:"short", month:"short", day:"numeric"})
+            var productDetails = { message: `${item.productName} must ship by ${formattedShipDate}` }
+            products.push(productDetails)
+        })
+        var message = [`Selected Cook and Ship date (${shipDate.toLocaleDateString('en-us', { weekday:"short", month:"short", day:"numeric"})}) is not available for ${products.length} ${products.length > 0 ? 'promotional or seasonal items in your cart.': 'promotional or seasonal item in your cart.' } Please select an earlier date or choose a different item.`]
+        return type === 'main'
+        ? message
+        : products
+    }
+
 
     return(
         <Fieldset id='ship-date'>
@@ -328,14 +347,15 @@ const ShipDate = (props: any) => {
                             inline 
                         />
                 </ShippingCalendar>
-                
-                    { dateUnavailable && 
+
+                    { itemsUnavailableToShip.length > 0 &&
                         <ShippingBanner
                             className='unavailable-date-alert-banner'
-                            mainMessage={unavailableDateMessage} />
+                            mainMessage={renderUnavailableToShipMessage('main')}
+                            listItems={renderUnavailableToShipMessage('second')}/>
                     }
 
-            { !dateUnavailable &&
+            { itemsUnavailableToShip.length === 0 &&
                 <ShippingInfo>
                     <DatesSummary>
                         <SelectedShipDate shipDate={shipDate} />

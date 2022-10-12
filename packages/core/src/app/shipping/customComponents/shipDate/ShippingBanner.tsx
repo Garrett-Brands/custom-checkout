@@ -3,7 +3,7 @@ import CustomIcon from "../CustomIcon";
 import IconContainer from "../IconContainer";
 
 const ShippingBanner = (props: any) => {
-    const { mainMessage, mainMessageIcon, secondMessage, secondMessageIcon, className } = props
+    const { mainMessage, mainMessageIcon, secondMessage, secondMessageIcon, className, listItems } = props
 
     const renderIcon = (source: String) => {
         return(
@@ -22,11 +22,18 @@ const ShippingBanner = (props: any) => {
         )
     }
 
+    const ListItem = (item: { message: string}) => {
+        return (
+            <p className="banner-second-message">{ item.message }</p>
+        )
+    }
+
     const MessageContainer = () => {
         return (
             <div className="banner-message-container">
                 { mainMessage && <p className="banner-main-message">{ mainMessage }</p> }
                 { secondMessage && <p className="banner-second-message">{ secondMessage }</p> }
+                { listItems && listItems.length > 0 && listItems.map((item: any) => <ListItem {...item} /> ) }
             </div>
         )
     }

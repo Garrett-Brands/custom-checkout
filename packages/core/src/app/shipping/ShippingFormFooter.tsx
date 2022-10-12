@@ -32,16 +32,16 @@ export interface ShippingFormFooterProps {
 }
 
 interface ShippingFormFooterState {
-    dateUnavailable: boolean;
     unavailableItems: Array<any>;
+    itemsUnavailableToShip: Array<any>;
 }
 
 class ShippingFormFooter extends PureComponent<ShippingFormFooterProps, ShippingFormFooterState> {
     constructor(props: ShippingFormFooterProps) {
         super(props);
         this.state = {
-            dateUnavailable: false,
-            unavailableItems: []
+            unavailableItems: [],
+            itemsUnavailableToShip: []
         };
     }
 
@@ -70,18 +70,18 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps, Shipping
             isActiveCart = cart.id === savedCartID?.fieldValue
         }
 
-        const { dateUnavailable, unavailableItems } = this.state;
-
-        const setDateUnavailable = (status: boolean) => {
-            this.setState({dateUnavailable: status})
-        }
+        const { unavailableItems, itemsUnavailableToShip } = this.state;
 
         const setUnavailableItems = (unavailableItems: Array<any>) => {
             this.setState({unavailableItems: unavailableItems})
         }
 
+        const setItemsUnavailableToShip = (unavailableItems: Array<any>) => {
+            this.setState({itemsUnavailableToShip: unavailableItems})
+        }
+
         const renderItemAvailabilityMessage = (type: string) => {
-            var message = [' no longer available. Please update your cart to complete your checkout.']
+            var message = ['no longer available. Please update your cart to complete your checkout.']
             var products = new Array
             unavailableItems.map((item: { name: string, options: any }) => {
                 var options = new Array
@@ -91,11 +91,11 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps, Shipping
                 options.unshift(item.name)
                 products.push(options.join(' - '))
             })
-            message.unshift(products.length > 1 ? ' product' : ' product')
+            message.unshift(products.length > 1 ? 'products are ' : ' product is ')
             message.unshift(products.length.toString())
             return type === 'main'
             ? message
-            : products.join(', ')
+            : products
         }
 
         return <>
@@ -132,8 +132,8 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps, Shipping
                     arrivalDate={ arrivalDate }
                     setArrivalDate={ setArrivalDate }
                     isActiveCart={ isActiveCart }
-                    dateUnavailable={ dateUnavailable }
-                    setDateUnvailable={ setDateUnavailable }
+                    itemsUnavailableToShip={ itemsUnavailableToShip }
+                    setItemsUnavailableToShip={ setItemsUnavailableToShip }
                     unavailableItems={ unavailableItems }
                     setUnavailableItems={ setUnavailableItems } /> 
             : <ShipDateDisabled /> }
@@ -142,10 +142,10 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps, Shipping
                 <ShippingBanner
                     className='unavailable-items-alert-banner'
                     mainMessage={renderItemAvailabilityMessage('main')}
-                    secondMessage={renderItemAvailabilityMessage('second')} />
+                    listItems={renderItemAvailabilityMessage('second')} />
             }
 
-            { shouldShowShippingOptions && !dateUnavailable && unavailableItems.length === 0
+            { shouldShowShippingOptions && unavailableItems.length === 0 && itemsUnavailableToShip.length === 0
             ?   <GiftMessage
                     consignments={ consignments }
                     giftMessage={ giftMessage }
@@ -158,7 +158,7 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps, Shipping
 
             <div className="form-actions">
                 <Button
-                    disabled={ shouldDisableSubmit || dateUnavailable || unavailableItems.length > 0 }
+                    disabled={ shouldDisableSubmit || unavailableItems.length > 0 || itemsUnavailableToShip.length > 0 }
                     id="checkout-shipping-continue"
                     isLoading={ isLoading }
                     type="submit"
