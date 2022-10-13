@@ -1,4 +1,4 @@
-import { Address, CheckoutParams, CheckoutSelectors, Consignment, Country, CustomerAddress, CustomerRequestOptions, FormField, RequestOptions, ShippingInitializeOptions, ShippingRequestOptions } from '@bigcommerce/checkout-sdk';
+import { Address, Cart, CheckoutParams, CheckoutSelectors, Consignment, Country, CustomerAddress, CustomerRequestOptions, FormField, RequestOptions, ShippingInitializeOptions, ShippingRequestOptions } from '@bigcommerce/checkout-sdk';
 import { withFormik, FormikProps } from 'formik';
 import { debounce, noop } from 'lodash';
 import React, { PureComponent, ReactNode } from 'react';
@@ -14,9 +14,11 @@ import BillingSameAsShippingField from './BillingSameAsShippingField';
 import ShippingAddress from './ShippingAddress';
 import { SHIPPING_ADDRESS_FIELDS } from './ShippingAddressFields';
 import ShippingFormFooter from './ShippingFormFooter';
+import GiftOrderForm from './customComponents/giftOptions/GiftOrderForm';
 
 export interface SingleShippingFormProps {
     addresses: CustomerAddress[];
+    cart: Cart;
     isBillingSameAsShipping: boolean;
     cartHasChanged: boolean;
     consignments: Consignment[];
@@ -39,6 +41,14 @@ export interface SingleShippingFormProps {
     onUnhandledError?(error: Error): void;
     signOut(options?: CustomerRequestOptions): void;
     updateAddress(address: Partial<Address>, options?: RequestOptions<CheckoutParams>): Promise<CheckoutSelectors>;
+    shipDate: Date;
+    setShipDate: Function;
+    arrivalDate: Date;
+    setArrivalDate: Function;
+    giftMessage: String;
+    setGiftMessage: Function;
+    isGiftOrder: boolean;
+    setIsGiftOrder: Function;
 }
 
 export interface SingleShippingFormValues {
@@ -92,6 +102,7 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
     render(): ReactNode {
         const {
             addresses,
+            cart,
             cartHasChanged,
             isLoading,
             onUnhandledError,
@@ -108,6 +119,14 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
             deinitialize,
             values: { shippingAddress: addressForm },
             isShippingStepPending,
+            shipDate,
+            setShipDate,
+            arrivalDate,
+            setArrivalDate,
+            giftMessage,
+            setGiftMessage,
+            isGiftOrder,
+            setIsGiftOrder
         } = this.props;
 
         const {
@@ -147,16 +166,30 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
                             <BillingSameAsShippingField />
                         </div>
                     }
+
+                    <GiftOrderForm
+                        isGiftOrder={ isGiftOrder} 
+                        setIsGiftOrder={ setIsGiftOrder }
+                        additionalClassName='form-isGiftOrder' />
                 </Fieldset>
 
                 <ShippingFormFooter
+                    cart={ cart }
                     cartHasChanged={ cartHasChanged }
                     isLoading={ isLoading || isUpdatingShippingData }
                     isMultiShippingMode={ false }
                     shouldDisableSubmit={ this.shouldDisableSubmit() }
                     shouldShowOrderComments={ shouldShowOrderComments }
                     shouldShowShippingOptions={ isValid }
+                    consignments={ consignments }
+                    shipDate={ shipDate }
+                    setShipDate={ setShipDate }
+                    arrivalDate={ arrivalDate }
+                    setArrivalDate={ setArrivalDate }
+                    giftMessage={ giftMessage }
+                    setGiftMessage={ setGiftMessage }
                 />
+
             </Form>
         );
     }
@@ -180,6 +213,7 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
     };
 
     private handleFieldChange: (name: string) => void = async name => {
+        
         const {
             setFieldValue,
         } = this.props;

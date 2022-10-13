@@ -26,6 +26,12 @@ export interface ShippingProps {
     onUnhandledError(error: Error): void;
     onSignIn(): void;
     navigateNextStep(isBillingSameAsShipping: boolean): void;
+    shipDate: Date;
+    setShipDate: Function;
+    arrivalDate: Date;
+    setArrivalDate: Function;
+    giftMessage: String;
+    setGiftMessage: Function;
 }
 
 export interface WithCheckoutShippingProps {
@@ -63,6 +69,7 @@ export interface WithCheckoutShippingProps {
 
 interface ShippingState {
     isInitializing: boolean;
+    isGiftOrder: boolean;
 }
 
 class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, ShippingState> {
@@ -71,6 +78,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
 
         this.state = {
             isInitializing: true,
+            isGiftOrder: false
         };
     }
 
@@ -108,12 +116,23 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             deinitializeShippingMethod,
             isMultiShippingMode,
             onToggleMultiShipping,
+            shipDate,
+            setShipDate,
+            arrivalDate,
+            setArrivalDate,
+            giftMessage,
+            setGiftMessage,
             ...shippingFormProps
         } = this.props;
 
         const {
             isInitializing,
+            isGiftOrder
         } = this.state;
+
+        const setIsGiftOrder = (isGiftOrder: boolean) => {
+            this.setState({isGiftOrder: isGiftOrder})
+        }
 
         return (
             <div className="checkout-form">
@@ -141,7 +160,16 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
                         onUseNewAddress={ this.handleUseNewAddress }
                         shouldShowSaveAddress={ !isGuest }
                         updateAddress={ updateShippingAddress }
+                        shipDate={ shipDate }
+                        setShipDate={ setShipDate }
+                        arrivalDate={ arrivalDate }
+                        setArrivalDate={ setArrivalDate }
+                        giftMessage={ giftMessage }
+                        setGiftMessage={ setGiftMessage }
+                        isGiftOrder={ isGiftOrder }
+                        setIsGiftOrder={ setIsGiftOrder }
                     />
+                    
                 </LoadingOverlay>
             </div>
         );
@@ -178,6 +206,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
         orderComment,
     }) => {
         const {
+            cart,
             customerMessage,
             updateCheckout,
             updateShippingAddress,
@@ -187,7 +216,27 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             shippingAddress,
             billingAddress,
             methodId,
+            shipDate,
+            arrivalDate,
+            giftMessage,
         } = this.props;
+
+        const { isGiftOrder } = this.state;
+
+        // CHECKOUT CUSTOM FIELDS
+        // Update Ship Date, Arrival Date, Gift Message, Gift Order custom fields when shipping step is completed.
+
+        if (addressValues) {
+            const shipDateValue = shipDate.toLocaleDateString('en-US')
+            const arrivalDateValue = arrivalDate.toLocaleDateString('en-US')
+            const giftMessageValue = giftMessage.toString()
+            const cartID = cart.id
+            addressValues.customFields.field_43 = shipDateValue
+            addressValues.customFields.field_47 = arrivalDateValue
+            addressValues.customFields.field_45 = giftMessageValue
+            isGiftOrder ? addressValues.customFields.field_51 = ['0'] : addressValues.customFields.field_51 = []
+            addressValues.customFields.field_49 = cartID
+        }
 
         const updatedShippingAddress = addressValues && mapAddressFromFormValues(addressValues);
         const promises: Array<Promise<CheckoutSelectors>> = [];

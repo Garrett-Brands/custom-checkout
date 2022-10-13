@@ -40,6 +40,10 @@ export interface MultiShippingFormProps {
     onSubmit(values: MultiShippingFormValues): void;
     onUnhandledError(error: Error): void;
     onUseNewAddress(address: Address, itemId: string): void;
+    shipDate: Date;
+    setShipDate: Function;
+    arrivalDate: Date;
+    setArrivalDate: Function;
 }
 
 interface ShippableItemId {
@@ -83,9 +87,19 @@ class MultiShippingForm extends PureComponent<MultiShippingFormProps & WithLangu
             countries,
             countriesWithAutocomplete,
             googleMapsApiKey,
+            shipDate,
+            setShipDate,
+            arrivalDate,
+            setArrivalDate
         } = this.props;
 
         const { items, itemAddingAddress, createCustomerAddressError } = this.state;
+
+        const giftMessage = ''
+
+        const setGiftMessage = (giftMessage: String) => {
+            console.log('Multiship - Gift Message Set =>', giftMessage)
+        }
 
         if (isGuest) {
             return (
@@ -145,12 +159,20 @@ class MultiShippingForm extends PureComponent<MultiShippingFormProps & WithLangu
                     </ul>
 
                     <ShippingFormFooter
+                        cart={ cart }
                         cartHasChanged={ cartHasChanged }
                         isLoading={ isLoading }
                         isMultiShippingMode={ true }
                         shouldDisableSubmit={ this.shouldDisableSubmit() }
                         shouldShowOrderComments={ shouldShowOrderComments }
                         shouldShowShippingOptions={ !hasUnassignedLineItems(consignments, cart.lineItems) }
+                        consignments={ consignments }
+                        shipDate={ shipDate }
+                        setShipDate={ setShipDate }
+                        arrivalDate={ arrivalDate }
+                        setArrivalDate={ setArrivalDate }
+                        giftMessage={ giftMessage }
+                        setGiftMessage={ setGiftMessage }
                     />
                 </Form>
             </Fragment>

@@ -65,7 +65,6 @@ const ShippingAddress: FunctionComponent<ShippingAddressProps> = props => {
         if (hasRequestedShippingOptions) {
             setSubmitted(true);
         }
-
         onFieldChange(fieldName, value);
     };
 

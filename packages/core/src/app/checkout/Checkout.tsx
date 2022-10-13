@@ -23,6 +23,7 @@ import CheckoutStep from './CheckoutStep';
 import CheckoutStepStatus from './CheckoutStepStatus';
 import CheckoutStepType from './CheckoutStepType';
 import CheckoutSupport from './CheckoutSupport';
+import ShippingSummary from './customComponents/ShippingSummary';
 
 const Billing = lazy(() => retry(() => import(
     /* webpackChunkName: "billing" */
@@ -75,6 +76,9 @@ export interface CheckoutState {
     isCartEmpty: boolean;
     isRedirecting: boolean;
     hasSelectedShippingOptions: boolean;
+    shipDate: Date;
+    arrivalDate: Date;
+    giftMessage: String
     isBuyNowCartEnabled: boolean;
 }
 
@@ -109,6 +113,9 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
         isRedirecting: false,
         isMultiShippingMode: false,
         hasSelectedShippingOptions: false,
+        shipDate: new Date(0),
+        arrivalDate: new Date(0),
+        giftMessage: new String,
         isBuyNowCartEnabled: false,
     };
 
@@ -171,6 +178,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
 
             const consignments = data.getConsignments();
             const cart = data.getCart();
+
 
             const hasMultiShippingEnabled = data.getConfig()?.checkoutSettings?.hasMultiShippingEnabled;
             const checkoutBillingSameAsShippingEnabled = data.getConfig()?.checkoutSettings?.checkoutBillingSameAsShippingEnabled ?? true;
@@ -334,7 +342,22 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
         const {
             isBillingSameAsShipping,
             isMultiShippingMode,
+            shipDate,
+            arrivalDate,
+            giftMessage
         } = this.state;
+
+        const setShipDate = (shipDate: any) => {
+            this.setState({shipDate: shipDate})
+        }
+
+        const setArrivalDate = (arrivalDate: Date) => {
+            this.setState({arrivalDate: arrivalDate})
+        }
+
+        const setGiftMessage = (giftMessage: String) => {
+            this.setState({giftMessage: giftMessage})
+        }
 
         if (!cart) {
             return;
@@ -354,6 +377,10 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                             compactView={ consignments.length < 2 }
                             consignment={ consignment }
                         />
+                        <ShippingSummary 
+                            shipDate={shipDate}
+                            arrivalDate={arrivalDate}
+                            giftMessage={giftMessage} />
                     </div>) }
             >
                 <LazyContainer>
@@ -367,6 +394,12 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                         onSignIn={ this.handleShippingSignIn }
                         onToggleMultiShipping={ this.handleToggleMultiShipping }
                         onUnhandledError={ this.handleUnhandledError }
+                        shipDate={ shipDate }
+                        setShipDate={ setShipDate }
+                        arrivalDate={ arrivalDate }
+                        setArrivalDate={ setArrivalDate }
+                        giftMessage={ giftMessage }
+                        setGiftMessage={ setGiftMessage}
                     />
                 </LazyContainer>
             </CheckoutStep>

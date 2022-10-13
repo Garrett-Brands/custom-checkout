@@ -39,6 +39,14 @@ export interface ShippingFormProps {
     onUseNewAddress(address: Address, itemId: string): void;
     signOut(options?: CustomerRequestOptions): void;
     updateAddress(address: Partial<Address>, options: RequestOptions<CheckoutParams>): Promise<CheckoutSelectors>;
+    shipDate: Date;
+    setShipDate: Function;
+    arrivalDate: Date;
+    setArrivalDate: Function;
+    giftMessage: String;
+    setGiftMessage: Function;
+    isGiftOrder: boolean;
+    setIsGiftOrder: Function;
 }
 
 class ShippingForm extends Component<ShippingFormProps & WithLanguageProps> {
@@ -76,6 +84,14 @@ class ShippingForm extends Component<ShippingFormProps & WithLanguageProps> {
             signOut,
             updateAddress,
             isShippingStepPending,
+            shipDate,
+            setShipDate,
+            arrivalDate,
+            setArrivalDate,
+            giftMessage,
+            setGiftMessage,
+            isGiftOrder,
+            setIsGiftOrder
         } = this.props;
 
         return isMultiShippingMode ?
@@ -101,9 +117,14 @@ class ShippingForm extends Component<ShippingFormProps & WithLanguageProps> {
                 onUseNewAddress={ onUseNewAddress }
                 shouldShowAddAddressInCheckout={ shouldShowAddAddressInCheckout }
                 shouldShowOrderComments={ shouldShowOrderComments }
+                shipDate={ shipDate }
+                setShipDate={ setShipDate }
+                arrivalDate={ arrivalDate }
+                setArrivalDate={ setArrivalDate }
             /> :
             <SingleShippingForm
                 addresses={ addresses }
+                cart={ cart }
                 cartHasChanged={ cartHasChanged }
                 consignments={ consignments }
                 countries={ countries }
@@ -126,6 +147,14 @@ class ShippingForm extends Component<ShippingFormProps & WithLanguageProps> {
                 shouldShowSaveAddress={ shouldShowSaveAddress }
                 signOut={ signOut }
                 updateAddress={ updateAddress }
+                shipDate={ shipDate }
+                setShipDate={ setShipDate }
+                arrivalDate={ arrivalDate }
+                setArrivalDate={ setArrivalDate }
+                giftMessage={ giftMessage }
+                setGiftMessage={ setGiftMessage }
+                isGiftOrder={ isGiftOrder }
+                setIsGiftOrder={ setIsGiftOrder }
             />;
     }
 }
