@@ -231,11 +231,11 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             const arrivalDateValue = arrivalDate.toLocaleDateString('en-US')
             const giftMessageValue = giftMessage.toString()
             const cartID = cart.id
-            addressValues.customFields.field_30 = shipDateValue
-            addressValues.customFields.field_38 = arrivalDateValue
-            addressValues.customFields.field_32 = giftMessageValue
-            isGiftOrder ? addressValues.customFields.field_34 = ['0'] : addressValues.customFields.field_34 = []
-            addressValues.customFields.field_36 = cartID
+            addressValues.customFields.field_43 = shipDateValue
+            addressValues.customFields.field_47 = arrivalDateValue
+            addressValues.customFields.field_45 = giftMessageValue
+            isGiftOrder ? addressValues.customFields.field_51 = ['0'] : addressValues.customFields.field_51 = []
+            addressValues.customFields.field_49 = cartID
         }
 
         const updatedShippingAddress = addressValues && mapAddressFromFormValues(addressValues);

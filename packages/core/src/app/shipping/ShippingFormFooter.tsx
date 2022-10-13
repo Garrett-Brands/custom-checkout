@@ -66,7 +66,7 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps, Shipping
         if (cart && consignments[0]) {
             var isActiveCart
             var savedCartID
-            savedCartID = consignments[0].shippingAddress.customFields.find((customField: { fieldId: string; }) => customField.fieldId === 'field_36')
+            savedCartID = consignments[0].shippingAddress.customFields.find((customField: { fieldId: string; }) => customField.fieldId === 'field_49')
             isActiveCart = cart.id === savedCartID?.fieldValue
         }
 
