@@ -248,9 +248,7 @@ const ShipDate = (props: any) => {
             }
           }
 
-        // PRODUCTION
-        // fetch(`https://api.gbdev.cloud/v1/ship-dates/must-ship-dates/`, reqObj)
-        fetch(`https://api-dev.gbdev.cloud/v1/ship-dates/must-ship-dates/`, reqObj)
+        fetch(`https://api.gbdev.cloud/v1/ship-dates/must-ship-dates/`, reqObj)
         .then(resp => resp.json())
         .then(({results}) => {
             var productIds = new Array
