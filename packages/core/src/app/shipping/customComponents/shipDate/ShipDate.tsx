@@ -29,8 +29,6 @@ const ShipDate = (props: any) => {
     const advanceShippingMessage = "Ordering to enjoy at a later date? Schedule your shipping date up to 25 days in advance. Available on select items."
     const shipDateMessage = 'Cook and ship date is when your order is cooked, it leaves our kitchen on the same day.'
     const arrivalDateMessage = 'Estimated arrival date depends on the ship date and UPS shipping method chosen.'
-    // const mainMessageIcon = 'https://res.cloudinary.com/garrett-brands/image/upload/v1665017783/Garrett-Website/2022/9-September/Checkout%20Icons/cook-date.svg'
-    // const secondMessageIcon = 'https://res.cloudinary.com/garrett-brands/image/upload/v1663968753/Garrett-Website/2022/9-September/Checkout%20Icons/arrival-estimate.svg'
     const customFields = consignments[0]?.shippingAddress.customFields.length > 0
     
     const [address, setAddress] = useState(Object)
@@ -332,7 +330,6 @@ const ShipDate = (props: any) => {
         : products
     }
 
-
     return(
         <Fieldset id='ship-date'>
             <Legend testId="ship-date-form-heading">Cooking and Shipping Date</Legend>
@@ -352,14 +349,12 @@ const ShipDate = (props: any) => {
                             inline 
                         />
                 </ShippingCalendar>
-
                     { itemsUnavailableToShip.length > 0 &&
                         <ShippingBanner
                             className='unavailable-date-alert-banner'
                             mainMessage={renderUnavailableToShipMessage('main')}
                             listItems={renderUnavailableToShipMessage('second')}/>
                     }
-
             { itemsUnavailableToShip.length === 0 &&
                 <ShippingInfo>
                     <DatesSummary>
@@ -370,17 +365,8 @@ const ShipDate = (props: any) => {
                             mainMessage={shipDateMessage}
                             secondMessage={arrivalDateMessage}
                         />
-                        {/* <ShippingBanner
-                            className='shipping-info-banner'
-                            mainMessageIcon={mainMessageIcon}
-                            secondMessageIcon={secondMessageIcon}
-                            // mainMessageIcon={'https://res.cloudinary.com/garrett-brands/image/upload/v1665017783/Garrett-Website/2022/9-September/Checkout%20Icons/cook-date.svg'}
-                            // secondMessageIcon={'https://res.cloudinary.com/garrett-brands/image/upload/v1663968753/Garrett-Website/2022/9-September/Checkout%20Icons/arrival-estimate.svg'}
-                            mainMessage={shipDateMessage}
-                            secondMessage={arrivalDateMessage}
-                        /> */}
                 </ShippingInfo>
-            }    
+            }
         </Fieldset>
     )
 }

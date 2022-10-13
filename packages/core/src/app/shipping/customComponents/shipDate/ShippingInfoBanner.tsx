@@ -5,7 +5,6 @@ import IconContainer from "../IconContainer";
 
 const ShippingInfoBanner = (props: any) => {
     const { mainMessage, secondMessage } = props
-
     return(
         <div className="shipping-info-banner">
             <div className="banner-icons-container">
