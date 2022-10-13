@@ -33,7 +33,7 @@ const ShippingBanner = (props: any) => {
             <div className="banner-message-container">
                 { mainMessage && <p className="banner-main-message">{ mainMessage }</p> }
                 { secondMessage && <p className="banner-second-message">{ secondMessage }</p> }
-                { listItems && listItems.length > 0 && listItems.map((item: any) => <ListItem {...item} /> ) }
+                { listItems && listItems.length > 0 && listItems.map((item: any, index: number) => <ListItem key={index} {...item} /> ) }
             </div>
         )
     }

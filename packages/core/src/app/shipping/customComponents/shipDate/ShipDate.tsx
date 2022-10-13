@@ -7,6 +7,7 @@ import DatesSummary from "./DatesSummary";
 import SelectedShipDate from "./SelectedShipDate";
 import ArrivalDate from "./ArrivalDate";
 import ShippingBanner from "./ShippingBanner";
+import ShippingInfoBanner from "./ShippingInfoBanner";
 
 const ShipDate = (props: any) => {
     
@@ -28,7 +29,8 @@ const ShipDate = (props: any) => {
     const advanceShippingMessage = "Ordering to enjoy at a later date? Schedule your shipping date up to 25 days in advance. Available on select items."
     const shipDateMessage = 'Cook and ship date is when your order is cooked, it leaves our kitchen on the same day.'
     const arrivalDateMessage = 'Estimated arrival date depends on the ship date and UPS shipping method chosen.'
-    // const unavailableDateMessage = 'Selected Cook and Ship date is not available for promotional or seasonal items in your cart. Please select an earlier date or choose a different item.'
+    // const mainMessageIcon = 'https://res.cloudinary.com/garrett-brands/image/upload/v1665017783/Garrett-Website/2022/9-September/Checkout%20Icons/cook-date.svg'
+    // const secondMessageIcon = 'https://res.cloudinary.com/garrett-brands/image/upload/v1663968753/Garrett-Website/2022/9-September/Checkout%20Icons/arrival-estimate.svg'
     const customFields = consignments[0]?.shippingAddress.customFields.length > 0
     
     const [address, setAddress] = useState(Object)
@@ -92,7 +94,6 @@ const ShipDate = (props: any) => {
                 }
             })
             setItemsUnavailableToShip(itemsUnavailableToShip)
-            // setDateUnvailable(isAfterShipByDates(shipDate))
         }
     }, [shipDate, promotionalItems])
 
@@ -301,9 +302,13 @@ const ShipDate = (props: any) => {
         fetch(`https://api.gbdev.cloud/v1/client/inventory/check-quantities`, reqObj)
         .then(resp => resp.json())
         .then(({data}) => {
-            data.map((item: {qty_available: Number, status: String}, index: any) => {
-                skus[index].qty_available = item.qty_available
-                skus[index].status = item.status
+            data.map((item: {qty_available: Number, status: String, variant_sku: string}) => {
+                skus.find(sku => {
+                    if (sku.sku === item.variant_sku) {
+                        sku.qty_available = item.qty_available
+                        sku.status = item.status
+                    }
+                })
             })
             setInventoryData(skus)
         })
@@ -321,7 +326,7 @@ const ShipDate = (props: any) => {
             var productDetails = { message: `${item.productName} must ship by ${formattedShipDate}` }
             products.push(productDetails)
         })
-        var message = [`Selected Cook and Ship date (${shipDate.toLocaleDateString('en-us', { weekday:"short", month:"short", day:"numeric"})}) is not available for ${products.length} ${products.length > 0 ? 'promotional or seasonal items in your cart.': 'promotional or seasonal item in your cart.' } Please select an earlier date or choose a different item.`]
+        var message = [`Selected Cook and Ship date (${shipDate.toLocaleDateString('en-us', { weekday:"short", month:"short", day:"numeric"})}) is not available for ${products.length} ${products.length > 1 ? 'promotional or seasonal items in your cart.': 'promotional or seasonal item in your cart.' } Please select an earlier date or choose a different item.`]
         return type === 'main'
         ? message
         : products
@@ -361,13 +366,19 @@ const ShipDate = (props: any) => {
                         <SelectedShipDate shipDate={shipDate} />
                         <ArrivalDate arrivalDate={arrivalDate} />
                     </DatesSummary>
-                        <ShippingBanner
-                            className='shipping-info-banner'
-                            mainMessageIcon={'https://res.cloudinary.com/garrett-brands/image/upload/v1665017783/Garrett-Website/2022/9-September/Checkout%20Icons/cook-date.svg'}
-                            secondMessageIcon={'https://res.cloudinary.com/garrett-brands/image/upload/v1663968753/Garrett-Website/2022/9-September/Checkout%20Icons/arrival-estimate.svg'}
+                        <ShippingInfoBanner
                             mainMessage={shipDateMessage}
                             secondMessage={arrivalDateMessage}
                         />
+                        {/* <ShippingBanner
+                            className='shipping-info-banner'
+                            mainMessageIcon={mainMessageIcon}
+                            secondMessageIcon={secondMessageIcon}
+                            // mainMessageIcon={'https://res.cloudinary.com/garrett-brands/image/upload/v1665017783/Garrett-Website/2022/9-September/Checkout%20Icons/cook-date.svg'}
+                            // secondMessageIcon={'https://res.cloudinary.com/garrett-brands/image/upload/v1663968753/Garrett-Website/2022/9-September/Checkout%20Icons/arrival-estimate.svg'}
+                            mainMessage={shipDateMessage}
+                            secondMessage={arrivalDateMessage}
+                        /> */}
                 </ShippingInfo>
             }    
         </Fieldset>

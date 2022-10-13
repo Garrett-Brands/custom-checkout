@@ -81,7 +81,7 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps, Shipping
         }
 
         const renderItemAvailabilityMessage = (type: string) => {
-            var message = ['no longer available. Please update your cart to complete your checkout.']
+            var message = ['no longer available. Please update your cart to complete checkout.']
             var products = new Array
             unavailableItems.map((item: { name: string, options: any }) => {
                 var options = new Array
@@ -89,9 +89,10 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps, Shipping
                     item.options.map((option: any) => options.push(option.value))
                 }
                 options.unshift(item.name)
-                products.push(options.join(' - '))
+                var productDetails = { message: options.join(' - ') }
+                products.push(productDetails)
             })
-            message.unshift(products.length > 1 ? 'products are ' : ' product is ')
+            message.unshift(products.length > 1 ? ' products are ' : ' product is ')
             message.unshift(products.length.toString())
             return type === 'main'
             ? message
