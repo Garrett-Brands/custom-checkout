@@ -1,4 +1,4 @@
-import { Address, AddressRequestBody, Cart, CheckoutRequestBody, CheckoutSelectors, Consignment, ConsignmentAssignmentRequestBody, Country, Customer, CustomerRequestOptions, FormField, ShippingInitializeOptions, ShippingRequestOptions } from '@bigcommerce/checkout-sdk';
+import { Address, AddressRequestBody, Cart, CheckoutRequestBody, CheckoutSelectors, Consignment, ConsignmentAssignmentRequestBody, ConsignmentLineItem, ConsignmentUpdateRequestBody, Country, Customer, CustomerRequestOptions, FormField, ShippingInitializeOptions, ShippingRequestOptions } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
 import React, { Component, ReactNode } from 'react';
 import { createSelector } from 'reselect';
@@ -9,6 +9,7 @@ import { EMPTY_ARRAY } from '../common/utility';
 import { LoadingOverlay } from '../ui/loading';
 
 import { UnassignItemError } from './errors';
+import findLineItems from './findLineItems';
 import getShippableItemsCount from './getShippableItemsCount';
 import getShippingMethodId from './getShippingMethodId';
 import { MultiShippingFormValues } from './MultiShippingForm';
@@ -65,6 +66,7 @@ export interface WithCheckoutShippingProps {
     updateBillingAddress(address: Partial<Address>): Promise<CheckoutSelectors>;
     updateCheckout(payload: CheckoutRequestBody): Promise<CheckoutSelectors>;
     updateShippingAddress(address: Partial<Address>): Promise<CheckoutSelectors>;
+    updateConsignment(consignment: ConsignmentUpdateRequestBody): Promise<CheckoutSelectors>;
 }
 
 interface ShippingState {
@@ -112,6 +114,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             customer,
             unassignItem,
             updateShippingAddress,
+            updateConsignment,
             initializeShippingMethod,
             deinitializeShippingMethod,
             isMultiShippingMode,
@@ -293,13 +296,71 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
 
     private handleMultiShippingSubmit: (values: MultiShippingFormValues) => void = async ({ orderComment }) => {
         const {
+            consignments,
             customerMessage,
             updateCheckout,
+            updateConsignment,
             navigateNextStep,
             onUnhandledError,
+            shipDate,
+            cart
+            // arrivalDate,
+            // giftMessage
         } = this.props;
 
+        // const { isGiftOrder } = this.state;
+
+        interface ConsignmentUpdateRequestBody {
+            id: string;
+            shippingAddress?: AddressRequestBody;
+            lineItems?: Array<any>;
+        }
+
+        const promises: Array<Promise<CheckoutSelectors>> = [];
+        
+        const updateConsignmentCustomFields = async (consignment: Consignment) => {
+            const shipDateValue = shipDate.toLocaleDateString('en-US')
+            const cartID = cart.id.toString()
+            var customFields = [
+                { fieldId: "field_30", fieldValue: shipDateValue },
+                { fieldId: "field_36", fieldValue: cartID }
+            ]
+            consignment.shippingAddress.customFields = customFields
+            var consignmentLineItems: { itemId: string | number; quantity: number; }[] = []
+            const lineItems = findLineItems(cart, consignment)
+            lineItems.map(lineItem => consignmentLineItems.push({ itemId: lineItem.id, quantity: lineItem.quantity}))
+
+            const payload: ConsignmentUpdateRequestBody = {
+                id: consignment.id,
+                // address: consignment.address,
+                shippingAddress: consignment.shippingAddress,
+                lineItems: consignmentLineItems
+            };
+            await promises.push(updateConsignment(payload || {}))
+        }
+
+        if (consignments.length > 1) {
+            consignments.map((consignment) => {
+                updateConsignmentCustomFields(consignment)
+            })
+        }
+
+        // if (consignments.length > 1) {
+        //     this.setState({ isInitializing: true });
+        //     try {
+        //         consignments.map((consignment, index) => {
+        //             updateConsignmentCustomFields(consignment, index)
+        //         })
+        //     } catch (error) {
+        //         onUnhandledError(error);
+        //     } finally {
+        //         this.setState({ isInitializing: false });
+        //     }
+        // }
+
         try {
+            await Promise.all(promises);
+
             if (customerMessage !== orderComment) {
                 await updateCheckout({ customerMessage: orderComment });
             }
@@ -431,6 +492,7 @@ export function mapToShippingProps({
         updateBillingAddress: checkoutService.updateBillingAddress,
         updateCheckout: checkoutService.updateCheckout,
         updateShippingAddress: checkoutService.updateShippingAddress,
+        updateConsignment: checkoutService.updateConsignment,
     };
 }
 

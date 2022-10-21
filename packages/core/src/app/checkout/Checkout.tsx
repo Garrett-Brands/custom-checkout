@@ -408,6 +408,11 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
 
     private renderBillingStep(step: CheckoutStepStatus): ReactNode {
         const { billingAddress } = this.props;
+        const {
+            shipDate,
+            arrivalDate,
+            giftMessage
+        } = this.state;
 
         return (
             <CheckoutStep
@@ -423,6 +428,9 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                         navigateNextStep={ this.navigateToNextIncompleteStep }
                         onReady={ this.handleReady }
                         onUnhandledError={ this.handleUnhandledError }
+                        shipDate={ shipDate }
+                        arrivalDate={ arrivalDate }
+                        giftMessage={ giftMessage }
                     />
                 </LazyContainer>
             </CheckoutStep>

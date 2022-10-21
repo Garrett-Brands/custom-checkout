@@ -146,13 +146,16 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps, Shipping
                     listItems={renderItemAvailabilityMessage('second')} />
             }
 
-            { shouldShowShippingOptions && unavailableItems.length === 0 && itemsUnavailableToShip.length === 0
+            { shouldShowShippingOptions 
+            && unavailableItems.length === 0 
+            && itemsUnavailableToShip.length === 0
+            && !isMultiShippingMode
             ?   <GiftMessage
                     consignments={ consignments }
                     giftMessage={ giftMessage }
                     setGiftMessage={ setGiftMessage }
                     isActiveCart={ isActiveCart } />
-            :   <GiftMessageDisabled /> }
+            :   ( !isMultiShippingMode ? <GiftMessageDisabled /> :  null ) }
 
             { shouldShowOrderComments &&
                 <OrderComments /> }

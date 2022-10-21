@@ -19,7 +19,7 @@ const GiftMessage = (props: any) => {
     useEffect(() => {
         var savedGiftMessage
         if (customFields && isActiveCart) {
-            savedGiftMessage = consignments[0].shippingAddress.customFields.find((customField: { fieldId: string; }) => customField.fieldId === 'field_32')
+            savedGiftMessage = consignments[0].shippingAddress.customFields.find((customField: { fieldId: string, fieldValue: string }) => customField.fieldId === 'field_32')
             savedGiftMessage = savedGiftMessage.fieldValue
             setGiftMessage(savedGiftMessage)
         }
