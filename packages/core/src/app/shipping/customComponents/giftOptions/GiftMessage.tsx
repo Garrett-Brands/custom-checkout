@@ -41,7 +41,7 @@ const GiftMessage = (props: any) => {
     return(
         <Fieldset id='gift-message'>
             <Legend testId="gift-message-form-heading"><span>Gift Options</span></Legend>
-            <GiftOptions>
+            <GiftOptions className='gift-options-container'>
                 <GiftMessageToggle 
                     toggleGiftMessage={ handleToggle } 
                     giftMessageToggle={ giftMessageToggle }

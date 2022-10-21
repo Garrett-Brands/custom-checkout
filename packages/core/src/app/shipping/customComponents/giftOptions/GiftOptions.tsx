@@ -1,8 +1,9 @@
 import React from "react";
 
 const GiftOptions = (props: any) => {
+    const { className } = props
     return(
-        <div className="gift-options-container">
+        <div className={className}>
             {props.children}
         </div>
     )

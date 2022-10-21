@@ -44,6 +44,8 @@ export interface MultiShippingFormProps {
     setShipDate: Function;
     arrivalDate: Date;
     setArrivalDate: Function;
+    giftMessages: Array<any>;
+    setGiftMessages: Function;
 }
 
 interface ShippableItemId {
@@ -90,7 +92,9 @@ class MultiShippingForm extends PureComponent<MultiShippingFormProps & WithLangu
             shipDate,
             setShipDate,
             arrivalDate,
-            setArrivalDate
+            setArrivalDate,
+            giftMessages,
+            setGiftMessages
         } = this.props;
 
         const { items, itemAddingAddress, createCustomerAddressError } = this.state;
@@ -173,6 +177,8 @@ class MultiShippingForm extends PureComponent<MultiShippingFormProps & WithLangu
                         setArrivalDate={ setArrivalDate }
                         giftMessage={ giftMessage }
                         setGiftMessage={ setGiftMessage }
+                        giftMessages={ giftMessages }
+                        setGiftMessages={ setGiftMessages }
                     />
                 </Form>
             </Fragment>

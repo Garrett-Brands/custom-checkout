@@ -1,4 +1,4 @@
-import { Address, AddressRequestBody, Cart, CheckoutRequestBody, CheckoutSelectors, Consignment, ConsignmentAssignmentRequestBody, ConsignmentLineItem, ConsignmentUpdateRequestBody, Country, Customer, CustomerRequestOptions, FormField, ShippingInitializeOptions, ShippingRequestOptions } from '@bigcommerce/checkout-sdk';
+import { Address, AddressRequestBody, Cart, CheckoutRequestBody, CheckoutSelectors, Consignment, ConsignmentAssignmentRequestBody, ConsignmentUpdateRequestBody, Country, Customer, CustomerRequestOptions, FormField, ShippingInitializeOptions, ShippingRequestOptions } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
 import React, { Component, ReactNode } from 'react';
 import { createSelector } from 'reselect';
@@ -72,6 +72,7 @@ export interface WithCheckoutShippingProps {
 interface ShippingState {
     isInitializing: boolean;
     isGiftOrder: boolean;
+    giftMessages: Array<any>;
 }
 
 class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, ShippingState> {
@@ -80,7 +81,8 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
 
         this.state = {
             isInitializing: true,
-            isGiftOrder: false
+            isGiftOrder: false,
+            giftMessages: new Array
         };
     }
 
@@ -130,12 +132,20 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
 
         const {
             isInitializing,
-            isGiftOrder
+            isGiftOrder,
+            giftMessages
         } = this.state;
 
         const setIsGiftOrder = (isGiftOrder: boolean) => {
             this.setState({isGiftOrder: isGiftOrder})
         }
+
+        const setGiftMessages = (giftMessages: Array<any>) => {
+            debugger
+            this.setState({giftMessages: giftMessages})
+        }
+
+        console.log(giftMessages)
 
         return (
             <div className="checkout-form">
@@ -171,6 +181,8 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
                         setGiftMessage={ setGiftMessage }
                         isGiftOrder={ isGiftOrder }
                         setIsGiftOrder={ setIsGiftOrder }
+                        giftMessages={ giftMessages }
+                        setGiftMessages={ setGiftMessages }
                     />
                     
                 </LoadingOverlay>
@@ -304,7 +316,6 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             onUnhandledError,
             shipDate,
             cart
-            // arrivalDate,
             // giftMessage
         } = this.props;
 
@@ -332,10 +343,10 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
 
             const payload: ConsignmentUpdateRequestBody = {
                 id: consignment.id,
-                // address: consignment.address,
                 shippingAddress: consignment.shippingAddress,
                 lineItems: consignmentLineItems
             };
+
             await promises.push(updateConsignment(payload || {}))
         }
 
@@ -344,19 +355,6 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
                 updateConsignmentCustomFields(consignment)
             })
         }
-
-        // if (consignments.length > 1) {
-        //     this.setState({ isInitializing: true });
-        //     try {
-        //         consignments.map((consignment, index) => {
-        //             updateConsignmentCustomFields(consignment, index)
-        //         })
-        //     } catch (error) {
-        //         onUnhandledError(error);
-        //     } finally {
-        //         this.setState({ isInitializing: false });
-        //     }
-        // }
 
         try {
             await Promise.all(promises);
