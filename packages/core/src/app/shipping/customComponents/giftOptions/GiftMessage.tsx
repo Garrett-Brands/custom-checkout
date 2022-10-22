@@ -22,12 +22,13 @@ const GiftMessage = (props: any) => {
             savedGiftMessage = consignments[0].shippingAddress.customFields.find((customField: { fieldId: string, fieldValue: string }) => customField.fieldId === 'field_32')
             savedGiftMessage = savedGiftMessage.fieldValue
             setGiftMessage(savedGiftMessage)
+            setGiftMessageToggle(savedGiftMessage.length > 0)
         }
     }, [])
     
-    useEffect(() => {
-        setGiftMessageToggle(giftMessage.length > 0)
-    }, [])
+    // useEffect(() => {
+    //     setGiftMessageToggle(giftMessage.length > 0)
+    // }, [])
 
     const handleToggle = () => {
         setGiftMessageToggle(!giftMessageToggle)

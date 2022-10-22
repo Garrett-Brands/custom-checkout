@@ -9,29 +9,44 @@ const GiftMessageMulti = (props: any) => {
 
     const {
         consignment,
-        // giftMessage,
-        // setGiftMessage,
+        giftMessages,
+        setGiftMessages,
         isActiveCart
      } = props
 
-    const customFields = consignment?.shippingAddress.customFields.length > 0
     const [giftMessageToggle, setGiftMessageToggle] = useState(false)
     const [giftMessage, setGiftMessage] = useState('')
 
+    // useEffect(() => {
+    //     var savedGiftMessage
+    //     if (customFields && isActiveCart) {
+    //         savedGiftMessage = consignment.shippingAddress.customFields.find((customField: { fieldId: string, fieldValue: string }) => customField.fieldId === 'field_32')
+    //         if (savedGiftMessage) {
+    //             savedGiftMessage = savedGiftMessage.fieldValue
+    //             setGiftMessage(savedGiftMessage)
+    //         }
+    //     }
+    // }, [])
+
     useEffect(() => {
-        var savedGiftMessage
-        if (customFields && isActiveCart) {
-            savedGiftMessage = consignment.shippingAddress.customFields.find((customField: { fieldId: string, fieldValue: string }) => customField.fieldId === 'field_32')
-            if (savedGiftMessage) {
-                savedGiftMessage = savedGiftMessage.fieldValue
-                setGiftMessage(savedGiftMessage)
+        giftMessages.map((item: any) => {
+            if (item.consignmentId === consignment.id && isActiveCart) {
+                setGiftMessage(item.giftMessage)
+                setGiftMessageToggle(item.giftMessage.length > 0)
             }
-        }
+        })
     }, [])
-    
+
     useEffect(() => {
-        setGiftMessageToggle(giftMessage.length > 0)
-    }, [])
+        setGiftMessages({
+            consignmentId: consignment.id,
+            giftMessage: giftMessage
+        })
+    }, [giftMessage])
+    
+    // useEffect(() => {
+    //     setGiftMessageToggle(giftMessage.length > 0)
+    // }, [])
 
     const handleToggle = () => {
         setGiftMessageToggle(!giftMessageToggle)

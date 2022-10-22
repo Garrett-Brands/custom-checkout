@@ -95,10 +95,13 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             onUnhandledError = noop,
         } = this.props;
 
+        var toggleMulti = false
+
         try {
             await Promise.all([
                 loadShippingAddressFields(),
                 loadShippingOptions(),
+                this.loadGiftMessages(toggleMulti)
             ]);
 
             onReady();
@@ -141,12 +144,15 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             this.setState({isGiftOrder: isGiftOrder})
         }
 
-        const setGiftMessages = (giftMessages: Array<any>) => {
-            debugger
-            this.setState({giftMessages: giftMessages})
+        const setGiftMessages = (giftMessage: any) => {
+            var updatedGiftMessages = giftMessages
+            updatedGiftMessages.map(item => {
+                if (item.consignmentId === giftMessage.consignmentId) {
+                    item.giftMessage = giftMessage.giftMessage
+                }
+            })
+            this.setState({ giftMessages: updatedGiftMessages })
         }
-
-        console.log(giftMessages)
 
         return (
             <div className="checkout-form">
@@ -197,6 +203,32 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
         );
     }
 
+    private loadGiftMessages: (toggleMulti: boolean) => void = async (toggleMulti: boolean) => {
+        const {
+            consignments,
+            isMultiShippingMode
+        } = this.props
+
+        var giftMessages = new Array
+
+        if (isMultiShippingMode || toggleMulti) {
+            consignments.map((consignment: Consignment) => {
+                var giftMessage
+                var consignmentId
+                giftMessage = consignment.shippingAddress.customFields.find(customField => customField.fieldId === 'field_32')
+                consignmentId = consignment.id
+                if (consignmentId) {
+                    giftMessages.push({
+                        consignmentId: consignmentId,
+                        giftMessage: giftMessage && giftMessage.fieldValue || ''
+                    })
+                }
+            })
+    
+            this.setState({ giftMessages: giftMessages })
+        }
+    }
+
     private handleMultiShippingModeSwitch: () => void = async () => {
         const {
             consignments,
@@ -218,7 +250,9 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
                 this.setState({ isInitializing: false });
             }
         }
-
+        
+        var toggleMulti = true
+        this.loadGiftMessages(toggleMulti)
         onToggleMultiShipping();
     };
 
@@ -296,7 +330,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
     };
 
     private handleUseNewAddress: (address: Address, itemId: string) => void = async (address, itemId) => {
-        const { unassignItem, onUnhandledError } = this.props;
+        const { unassignItem, onUnhandledError, isMultiShippingMode } = this.props;
 
         try {
             await unassignItem({
@@ -311,6 +345,8 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
         } catch (e) {
             onUnhandledError(new UnassignItemError(e));
         }
+
+        this.loadGiftMessages(isMultiShippingMode)
     };
 
     private handleMultiShippingSubmit: (values: MultiShippingFormValues) => void = async ({ orderComment }) => {
@@ -323,10 +359,9 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             onUnhandledError,
             shipDate,
             cart
-            // giftMessage
         } = this.props;
 
-        // const { isGiftOrder } = this.state;
+        const { giftMessages } = this.state;
 
         interface ConsignmentUpdateRequestBody {
             id: string;
@@ -335,14 +370,25 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
         }
 
         const promises: Array<Promise<CheckoutSelectors>> = [];
+
+        // CHECKOUT CUSTOM FIELDS
+        // Update Ship Date, Arrival Date, Gift Message, Gift Order custom fields when shipping step is completed.
         
         const updateConsignmentCustomFields = async (consignment: Consignment) => {
+
+            if (giftMessages.length > 0) {
+                var giftMessage
+                giftMessage = giftMessages.find(item => item.consignmentId === consignment.id).giftMessage
+            }
             const shipDateValue = shipDate.toLocaleDateString('en-US')
             const cartID = cart.id.toString()
+
             var customFields = [
                 { fieldId: "field_30", fieldValue: shipDateValue },
-                { fieldId: "field_36", fieldValue: cartID }
+                { fieldId: "field_36", fieldValue: cartID },
+                { fieldId: "field_32", fieldValue: giftMessage && giftMessage || '' }
             ]
+
             consignment.shippingAddress.customFields = customFields
             var consignmentLineItems: { itemId: string | number; quantity: number; }[] = []
             const lineItems = findLineItems(cart, consignment)

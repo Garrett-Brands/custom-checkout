@@ -64,8 +64,6 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps, Shipping
             setArrivalDate,
             giftMessage,
             setGiftMessage,
-            giftMessages,
-            setGiftMessages
         } = this.props;
 
         if (cart && consignments[0]) {
@@ -84,8 +82,6 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps, Shipping
         const setItemsUnavailableToShip = (unavailableItems: Array<any>) => {
             this.setState({itemsUnavailableToShip: unavailableItems})
         }
-
-        console.log(giftMessages, setGiftMessages)
 
         const renderItemAvailabilityMessage = (type: string) => {
             var message = ['no longer available. Please update your cart to complete checkout.']
@@ -163,21 +159,14 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps, Shipping
                     giftMessage={ giftMessage }
                     setGiftMessage={ setGiftMessage }
                     isActiveCart={ isActiveCart } />
-            :   ( !isMultiShippingMode ? <GiftMessageDisabled /> :  null ) }
-
-            { shouldShowShippingOptions
-            && unavailableItems.length === 0
-            && itemsUnavailableToShip.length === 0
-            && isMultiShippingMode && <Fieldset id='gift-message'>
-                                        <Legend testId="gift-message-form-heading"><span>Gift Options</span></Legend>
-                                    </Fieldset> }
-
-            { shouldShowShippingOptions
-            && unavailableItems.length === 0
-            && itemsUnavailableToShip.length === 0
-            && isMultiShippingMode
-            ? consignments.map((consignment, index) => this.renderGiftMessageMulti(consignment, index))
-            : <GiftMessageDisabled /> }
+            : ( isMultiShippingMode
+            ? <>
+                <Fieldset id='gift-message'>
+                    <Legend testId="gift-message-form-heading"><span>Gift Options</span></Legend>
+                </Fieldset>
+                    {consignments.map((consignment, index) => this.renderGiftMessageMulti(consignment, index))}
+              </>
+            : <GiftMessageDisabled /> ) }
 
             { shouldShowOrderComments &&
                 <OrderComments /> }
@@ -197,7 +186,11 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps, Shipping
     }
 
     private renderGiftMessageMulti(consignment: Consignment, index: number): ReactNode {
-        const { cart } = this.props;
+        const { 
+            cart,
+            giftMessages,
+            setGiftMessages
+        } = this.props;
 
         if (cart && consignment) {
             var isActiveCart
@@ -210,7 +203,9 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps, Shipping
             <GiftMessageMulti
                 key={index}
                 consignment={ consignment }
-                isActiveCart={ isActiveCart } />
+                isActiveCart={ isActiveCart }
+                giftMessages={ giftMessages }
+                setGiftMessages={ setGiftMessages } />
         );
     }
 }

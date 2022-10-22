@@ -24,6 +24,7 @@ import CheckoutStepStatus from './CheckoutStepStatus';
 import CheckoutStepType from './CheckoutStepType';
 import CheckoutSupport from './CheckoutSupport';
 import ShippingSummary from './customComponents/ShippingSummary';
+import ShippingSummaryMulti from './customComponents/ShippingSummaryMulti';
 
 const Billing = lazy(() => retry(() => import(
     /* webpackChunkName: "billing" */
@@ -377,10 +378,21 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                             compactView={ consignments.length < 2 }
                             consignment={ consignment }
                         />
-                        <ShippingSummary 
-                            shipDate={shipDate}
-                            arrivalDate={arrivalDate}
-                            giftMessage={giftMessage} />
+                        { !isMultiShippingMode &&
+                            <ShippingSummary 
+                                shipDate={ shipDate }
+                                arrivalDate={ arrivalDate }
+                                giftMessage={ giftMessage }
+                                cart={ cart }
+                                consignment={ consignment } />
+                        }
+                        { isMultiShippingMode && 
+                            <ShippingSummaryMulti
+                                shipDate={ shipDate }
+                                arrivalDate={ arrivalDate }
+                                cart={ cart }
+                                consignment={ consignment } />
+                        }
                     </div>) }
             >
                 <LazyContainer>
