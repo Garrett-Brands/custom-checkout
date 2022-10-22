@@ -13,6 +13,7 @@ const ShipDate = (props: any) => {
     
     const {
         cart,
+        isMultiShippingMode,
         consignments, 
         shipDate, 
         setShipDate, 
@@ -78,7 +79,7 @@ const ShipDate = (props: any) => {
     }, [props])
 
     useEffect(() => {
-        if (Object.keys(address).length > 0 && selectedShippingOption) {
+        if (Object.keys(address).length > 0 && selectedShippingOption && !isMultiShippingMode) {
             fetchUPSEstimate()
         }
     }, [shipDate, address, selectedShippingOption])
@@ -330,6 +331,15 @@ const ShipDate = (props: any) => {
         : products
     }
 
+    const highlightDates = () => {
+        if (!isMultiShippingMode) {
+            return [arrivalDate]
+        }
+        else {
+            return []
+        }
+    }
+
     return(
         <Fieldset id='ship-date'>
             <Legend testId="ship-date-form-heading">Cooking and Shipping Date</Legend>
@@ -345,7 +355,7 @@ const ShipDate = (props: any) => {
                             minDate={today}
                             maxDate={maxDate()}
                             filterDate={filterDates}
-                            highlightDates={[arrivalDate]}
+                            highlightDates={highlightDates()}
                             inline 
                         />
                 </ShippingCalendar>
@@ -359,7 +369,7 @@ const ShipDate = (props: any) => {
                 <ShippingInfo>
                     <DatesSummary>
                         <SelectedShipDate shipDate={shipDate} />
-                        <ArrivalDate arrivalDate={arrivalDate} />
+                        { !isMultiShippingMode && <ArrivalDate arrivalDate={arrivalDate} /> }
                     </DatesSummary>
                         <ShippingInfoBanner
                             mainMessage={shipDateMessage}

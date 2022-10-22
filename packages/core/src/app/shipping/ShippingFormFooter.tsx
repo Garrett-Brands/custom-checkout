@@ -134,6 +134,7 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps, Shipping
             { shouldShowShippingOptions && unavailableItems.length === 0
             ?   <ShipDate
                     cart={ cart }
+                    isMultiShippingMode={ isMultiShippingMode }
                     consignments={ consignments }
                     shipDate={ shipDate }
                     setShipDate={ setShipDate }

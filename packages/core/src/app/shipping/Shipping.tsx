@@ -16,6 +16,7 @@ import { MultiShippingFormValues } from './MultiShippingForm';
 import ShippingForm from './ShippingForm';
 import ShippingHeader from './ShippingHeader';
 import { SingleShippingFormValues } from './SingleShippingForm';
+import ShippingBanner from './customComponents/shipDate/ShippingBanner';
 
 export interface ShippingProps {
     isBillingSameAsShipping: boolean;
@@ -149,6 +150,12 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
 
         return (
             <div className="checkout-form">
+                { isMultiShippingMode && 
+                    <ShippingBanner
+                        className='multi-ship-alert-banner'
+                        mainMessage={'You may experience increased screen loading times for orders with multiple destinations.'}
+                    />
+                }
                 <ShippingHeader
                     isGuest={ isGuest }
                     isMultiShippingMode={ isMultiShippingMode }
