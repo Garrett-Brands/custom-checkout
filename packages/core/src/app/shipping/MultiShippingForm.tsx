@@ -46,6 +46,7 @@ export interface MultiShippingFormProps {
     setArrivalDate: Function;
     giftMessages: Array<any>;
     setGiftMessages: Function;
+    loadGiftMessages: Function;
 }
 
 interface ShippableItemId {
@@ -94,7 +95,7 @@ class MultiShippingForm extends PureComponent<MultiShippingFormProps & WithLangu
             arrivalDate,
             setArrivalDate,
             giftMessages,
-            setGiftMessages
+            setGiftMessages,
         } = this.props;
 
         const { items, itemAddingAddress, createCustomerAddressError } = this.state;
@@ -213,11 +214,11 @@ class MultiShippingForm extends PureComponent<MultiShippingFormProps & WithLangu
     };
 
     private handleUseNewAddress: (address: Address, itemId: string, itemKey: string) => void = (address, itemId, itemKey) => {
-        const { onUseNewAddress, shouldShowAddAddressInCheckout } = this.props;
+        const { onUseNewAddress, shouldShowAddAddressInCheckout, loadGiftMessages } = this.props;
 
         if (!shouldShowAddAddressInCheckout) {
             onUseNewAddress(address, itemId);
-
+            loadGiftMessages()
             return;
         }
 
@@ -240,6 +241,7 @@ class MultiShippingForm extends PureComponent<MultiShippingFormProps & WithLangu
             assignItem,
             onUnhandledError,
             getFields,
+            loadGiftMessages
         } = this.props;
 
         if (!isValidAddress(address, getFields(address.countryCode))) {
@@ -256,6 +258,7 @@ class MultiShippingForm extends PureComponent<MultiShippingFormProps & WithLangu
             });
 
             this.syncItems(itemKey, address, data);
+            loadGiftMessages()
         } catch (e) {
             onUnhandledError(new AssignItemFailedError(e));
         }
@@ -273,6 +276,7 @@ class MultiShippingForm extends PureComponent<MultiShippingFormProps & WithLangu
         data: CheckoutStoreSelector
     ) => void = (key, address, data) => {
         const { items: currentItems } = this.state;
+        debugger
         const items = updateShippableItems(
             currentItems,
             {

@@ -47,6 +47,7 @@ export interface ShippingFormProps {
     setGiftMessage: Function;
     giftMessages: Array<any>;
     setGiftMessages: Function;
+    loadGiftMessages: Function;
     isGiftOrder: boolean;
     setIsGiftOrder: Function;
 }
@@ -94,6 +95,7 @@ class ShippingForm extends Component<ShippingFormProps & WithLanguageProps> {
             setGiftMessage,
             giftMessages,
             setGiftMessages,
+            loadGiftMessages,
             isGiftOrder,
             setIsGiftOrder
         } = this.props;
@@ -127,6 +129,7 @@ class ShippingForm extends Component<ShippingFormProps & WithLanguageProps> {
                 setArrivalDate={ setArrivalDate }
                 giftMessages={ giftMessages }
                 setGiftMessages={ setGiftMessages }
+                loadGiftMessages={ loadGiftMessages }
             /> :
             <SingleShippingForm
                 addresses={ addresses }

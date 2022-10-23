@@ -96,12 +96,12 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
         } = this.props;
 
         var toggleMulti = false
+        this.loadGiftMessages(toggleMulti)
 
         try {
             await Promise.all([
                 loadShippingAddressFields(),
                 loadShippingOptions(),
-                this.loadGiftMessages(toggleMulti)
             ]);
 
             onReady();
@@ -196,6 +196,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
                         setIsGiftOrder={ setIsGiftOrder }
                         giftMessages={ giftMessages }
                         setGiftMessages={ setGiftMessages }
+                        loadGiftMessages={ this.loadGiftMessages }
                     />
                     
                 </LoadingOverlay>
@@ -330,6 +331,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
     };
 
     private handleUseNewAddress: (address: Address, itemId: string) => void = async (address, itemId) => {
+        debugger
         const { unassignItem, onUnhandledError, isMultiShippingMode } = this.props;
 
         try {
