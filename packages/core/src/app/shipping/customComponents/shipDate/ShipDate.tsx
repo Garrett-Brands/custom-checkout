@@ -157,7 +157,7 @@ const ShipDate = (props: any) => {
         var isAfter = false
             const shipByDate = item.mustShipDate
             const [day, month, year] = shipByDate.split('-')
-            const formattedDate = new Date([month, day, year].join('-'))
+            const formattedDate = new Date([month, day, year].join('/'))
             if (date.getTime() > formattedDate.getTime()) {
                 isAfter = true
             }
@@ -210,23 +210,21 @@ const ShipDate = (props: any) => {
 
     }
 
-    const fetchBlackoutDates = async () => {
+    const fetchBlackoutDates = () => {
 
         const year = today.getFullYear()
         const month = String(today.getMonth() + 1).padStart(2, '0')
         const date = String(today.getDate()).padStart(2, '0')
         const formattedDate = [date, month, year].join('-')
 
-        const reqObj = {
+        fetch(`https://api.gbdev.cloud/v1/ship-dates/blackout-dates?afterDate=${formattedDate}`, {
             method: 'GET',
             headers: {
               "Content-Type": "application/json",
               "Accept": "application/json",
               "x-access-key": "XM9xCpdv7TC1ZrzZ3ZeNYKUoCK1GHbZw"
             }
-          }
-
-        fetch(`https://api.gbdev.cloud/v1/ship-dates/blackout-dates?afterDate=${formattedDate}`, reqObj)
+        })
         .then(resp => resp.json())
         .then(({results}) => {
             const dates = results.map((result: any) => result.blackoutDate.split('-'))
@@ -238,22 +236,21 @@ const ShipDate = (props: any) => {
         })
     }
 
-    const fetchShipByDates = async () => {
+    const fetchShipByDates = () => {
 
-        const reqObj = {
+        // PRODUCTION
+        // fetch(`https://api.gbdev.cloud/v1/ship-dates/must-ship-dates/`, reqObj)
+        fetch(`https://api-dev.gbdev.cloud/v1/ship-dates/must-ship-dates/`, {
             method: 'GET',
             headers: {
               "Content-Type": "application/json",
               "Accept": "application/json",
               "x-access-key": "XM9xCpdv7TC1ZrzZ3ZeNYKUoCK1GHbZw"
             }
-          }
-
-        // PRODUCTION
-        // fetch(`https://api.gbdev.cloud/v1/ship-dates/must-ship-dates/`, reqObj)
-        fetch(`https://api-dev.gbdev.cloud/v1/ship-dates/must-ship-dates/`, reqObj)
+        })
         .then(resp => resp.json())
         .then(({results}) => {
+            console.log('SHIP DATES RESULTS =>', results)
             var productIds = new Array
             var productSKUs = new Array
             var promotionalItems = new Array
@@ -273,7 +270,7 @@ const ShipDate = (props: any) => {
         })
     }
 
-    const fetchInventoryData = async () => {
+    const fetchInventoryData = () => {
         var skus = new Array
         cart.lineItems.physicalItems.map((item: {sku: String, quantity: String, name: String, options: Object}) => {
             skus.push({
@@ -321,7 +318,7 @@ const ShipDate = (props: any) => {
         itemsUnavailableToShip.map((item: { productName: string, mustShipDate: any }) => {
             const shipByDate = item.mustShipDate
             const [day, month, year] = shipByDate.split('-')
-            const formattedShipDate = new Date([month, day, year].join('-')).toLocaleDateString('en-us', { weekday:"short", month:"short", day:"numeric"})
+            const formattedShipDate = new Date([month, day, year].join('/')).toLocaleDateString('en-us', { weekday:"short", month:"short", day:"numeric"})
             var productDetails = { message: `${item.productName} must ship by ${formattedShipDate}` }
             products.push(productDetails)
         })

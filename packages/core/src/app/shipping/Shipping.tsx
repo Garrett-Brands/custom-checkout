@@ -331,7 +331,6 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
     };
 
     private handleUseNewAddress: (address: Address, itemId: string) => void = async (address, itemId) => {
-        debugger
         const { unassignItem, onUnhandledError, isMultiShippingMode } = this.props;
 
         try {

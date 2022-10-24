@@ -276,7 +276,6 @@ class MultiShippingForm extends PureComponent<MultiShippingFormProps & WithLangu
         data: CheckoutStoreSelector
     ) => void = (key, address, data) => {
         const { items: currentItems } = this.state;
-        debugger
         const items = updateShippableItems(
             currentItems,
             {

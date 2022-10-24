@@ -25,8 +25,6 @@ export default function updateShippableItems(
         isEqualAddress(consignment.shippingAddress, address)
     );
 
-    debugger
-
     const newId = findNewItemId(items[updatedItemIndex], cart, updatedConsignment);
 
     return items.map((item, i) => {
