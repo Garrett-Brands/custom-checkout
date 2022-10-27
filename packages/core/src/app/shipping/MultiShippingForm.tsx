@@ -44,6 +44,9 @@ export interface MultiShippingFormProps {
     setShipDate: Function;
     arrivalDate: Date;
     setArrivalDate: Function;
+    giftMessages: Array<any>;
+    setGiftMessages: Function;
+    loadGiftMessages: Function;
 }
 
 interface ShippableItemId {
@@ -90,7 +93,9 @@ class MultiShippingForm extends PureComponent<MultiShippingFormProps & WithLangu
             shipDate,
             setShipDate,
             arrivalDate,
-            setArrivalDate
+            setArrivalDate,
+            giftMessages,
+            setGiftMessages,
         } = this.props;
 
         const { items, itemAddingAddress, createCustomerAddressError } = this.state;
@@ -173,6 +178,8 @@ class MultiShippingForm extends PureComponent<MultiShippingFormProps & WithLangu
                         setArrivalDate={ setArrivalDate }
                         giftMessage={ giftMessage }
                         setGiftMessage={ setGiftMessage }
+                        giftMessages={ giftMessages }
+                        setGiftMessages={ setGiftMessages }
                     />
                 </Form>
             </Fragment>
@@ -207,11 +214,11 @@ class MultiShippingForm extends PureComponent<MultiShippingFormProps & WithLangu
     };
 
     private handleUseNewAddress: (address: Address, itemId: string, itemKey: string) => void = (address, itemId, itemKey) => {
-        const { onUseNewAddress, shouldShowAddAddressInCheckout } = this.props;
+        const { onUseNewAddress, shouldShowAddAddressInCheckout, loadGiftMessages } = this.props;
 
         if (!shouldShowAddAddressInCheckout) {
             onUseNewAddress(address, itemId);
-
+            loadGiftMessages()
             return;
         }
 
@@ -234,6 +241,7 @@ class MultiShippingForm extends PureComponent<MultiShippingFormProps & WithLangu
             assignItem,
             onUnhandledError,
             getFields,
+            loadGiftMessages
         } = this.props;
 
         if (!isValidAddress(address, getFields(address.countryCode))) {
@@ -250,6 +258,7 @@ class MultiShippingForm extends PureComponent<MultiShippingFormProps & WithLangu
             });
 
             this.syncItems(itemKey, address, data);
+            loadGiftMessages()
         } catch (e) {
             onUnhandledError(new AssignItemFailedError(e));
         }

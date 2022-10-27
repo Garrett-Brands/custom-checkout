@@ -47,6 +47,8 @@ export interface SingleShippingFormProps {
     setArrivalDate: Function;
     giftMessage: String;
     setGiftMessage: Function;
+    giftMessages: Array<any>;
+    setGiftMessages: Function;
     isGiftOrder: boolean;
     setIsGiftOrder: Function;
 }
@@ -125,6 +127,8 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
             setArrivalDate,
             giftMessage,
             setGiftMessage,
+            giftMessages,
+            setGiftMessages,
             isGiftOrder,
             setIsGiftOrder
         } = this.props;
@@ -188,6 +192,8 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
                     setArrivalDate={ setArrivalDate }
                     giftMessage={ giftMessage }
                     setGiftMessage={ setGiftMessage }
+                    giftMessages={ giftMessages }
+                    setGiftMessages={ setGiftMessages }
                 />
 
             </Form>

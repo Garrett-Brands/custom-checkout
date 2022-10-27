@@ -5,10 +5,10 @@ import DatePicker from 'react-datepicker'
 import ShippingBanner from "./ShippingBanner";
 
 const ShipDateDisabled = () => {
-    const bannerMessage = 'Please enter a shipping address in order to select a ship date.'
+    const bannerMessage = 'Please enter a valid shipping address and phone number in order to select a ship date.'
     return(
         <Fieldset id='ship-date'>
-            <Legend testId="ship-date-form-heading">Ship Date</Legend>
+            <Legend testId="ship-date-form-heading">Cooking and Shipping Date</Legend>
                 <ShippingBanner bannerMessage={bannerMessage} />
                 <ShippingCalendar disabled={true}>
                         <DatePicker 

@@ -1,4 +1,4 @@
-import { Address, AddressRequestBody, Cart, CheckoutRequestBody, CheckoutSelectors, Consignment, ConsignmentAssignmentRequestBody, Country, Customer, CustomerRequestOptions, FormField, ShippingInitializeOptions, ShippingRequestOptions } from '@bigcommerce/checkout-sdk';
+import { Address, AddressRequestBody, Cart, CheckoutRequestBody, CheckoutSelectors, Consignment, ConsignmentAssignmentRequestBody, ConsignmentUpdateRequestBody, Country, Customer, CustomerRequestOptions, FormField, ShippingInitializeOptions, ShippingRequestOptions } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
 import React, { Component, ReactNode } from 'react';
 import { createSelector } from 'reselect';
@@ -9,12 +9,14 @@ import { EMPTY_ARRAY } from '../common/utility';
 import { LoadingOverlay } from '../ui/loading';
 
 import { UnassignItemError } from './errors';
+import findLineItems from './findLineItems';
 import getShippableItemsCount from './getShippableItemsCount';
 import getShippingMethodId from './getShippingMethodId';
 import { MultiShippingFormValues } from './MultiShippingForm';
 import ShippingForm from './ShippingForm';
 import ShippingHeader from './ShippingHeader';
 import { SingleShippingFormValues } from './SingleShippingForm';
+import ShippingBanner from './customComponents/shipDate/ShippingBanner';
 
 export interface ShippingProps {
     isBillingSameAsShipping: boolean;
@@ -65,11 +67,13 @@ export interface WithCheckoutShippingProps {
     updateBillingAddress(address: Partial<Address>): Promise<CheckoutSelectors>;
     updateCheckout(payload: CheckoutRequestBody): Promise<CheckoutSelectors>;
     updateShippingAddress(address: Partial<Address>): Promise<CheckoutSelectors>;
+    updateConsignment(consignment: ConsignmentUpdateRequestBody): Promise<CheckoutSelectors>;
 }
 
 interface ShippingState {
     isInitializing: boolean;
     isGiftOrder: boolean;
+    giftMessages: Array<any>;
 }
 
 class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, ShippingState> {
@@ -78,7 +82,8 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
 
         this.state = {
             isInitializing: true,
-            isGiftOrder: false
+            isGiftOrder: false,
+            giftMessages: new Array
         };
     }
 
@@ -89,6 +94,9 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             onReady = noop,
             onUnhandledError = noop,
         } = this.props;
+
+        var toggleMulti = false
+        this.loadGiftMessages(toggleMulti)
 
         try {
             await Promise.all([
@@ -112,6 +120,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             customer,
             unassignItem,
             updateShippingAddress,
+            updateConsignment,
             initializeShippingMethod,
             deinitializeShippingMethod,
             isMultiShippingMode,
@@ -127,15 +136,32 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
 
         const {
             isInitializing,
-            isGiftOrder
+            isGiftOrder,
+            giftMessages
         } = this.state;
 
         const setIsGiftOrder = (isGiftOrder: boolean) => {
             this.setState({isGiftOrder: isGiftOrder})
         }
 
+        const setGiftMessages = (giftMessage: any) => {
+            var updatedGiftMessages = giftMessages
+            updatedGiftMessages.map(item => {
+                if (item.consignmentId === giftMessage.consignmentId) {
+                    item.giftMessage = giftMessage.giftMessage
+                }
+            })
+            this.setState({ giftMessages: updatedGiftMessages })
+        }
+
         return (
             <div className="checkout-form">
+                { isMultiShippingMode && !isGuest &&
+                    <ShippingBanner
+                        className='multi-ship-alert-banner'
+                        mainMessage={'You may experience increased screen loading times for orders with multiple destinations.'}
+                    />
+                }
                 <ShippingHeader
                     isGuest={ isGuest }
                     isMultiShippingMode={ isMultiShippingMode }
@@ -168,11 +194,40 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
                         setGiftMessage={ setGiftMessage }
                         isGiftOrder={ isGiftOrder }
                         setIsGiftOrder={ setIsGiftOrder }
+                        giftMessages={ giftMessages }
+                        setGiftMessages={ setGiftMessages }
+                        loadGiftMessages={ this.loadGiftMessages }
                     />
                     
                 </LoadingOverlay>
             </div>
         );
+    }
+
+    private loadGiftMessages: (toggleMulti: boolean) => void = async (toggleMulti: boolean) => {
+        const {
+            consignments,
+            isMultiShippingMode
+        } = this.props
+
+        var giftMessages = new Array
+
+        if (isMultiShippingMode || toggleMulti) {
+            consignments.map((consignment: Consignment) => {
+                var giftMessage
+                var consignmentId
+                giftMessage = consignment.shippingAddress.customFields.find(customField => customField.fieldId === 'field_45')
+                consignmentId = consignment.id
+                if (consignmentId) {
+                    giftMessages.push({
+                        consignmentId: consignmentId,
+                        giftMessage: giftMessage && giftMessage.fieldValue || ''
+                    })
+                }
+            })
+    
+            this.setState({ giftMessages: giftMessages })
+        }
     }
 
     private handleMultiShippingModeSwitch: () => void = async () => {
@@ -196,7 +251,9 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
                 this.setState({ isInitializing: false });
             }
         }
-
+        
+        var toggleMulti = true
+        this.loadGiftMessages(toggleMulti)
         onToggleMultiShipping();
     };
 
@@ -274,7 +331,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
     };
 
     private handleUseNewAddress: (address: Address, itemId: string) => void = async (address, itemId) => {
-        const { unassignItem, onUnhandledError } = this.props;
+        const { unassignItem, onUnhandledError, isMultiShippingMode } = this.props;
 
         try {
             await unassignItem({
@@ -289,17 +346,73 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
         } catch (e) {
             onUnhandledError(new UnassignItemError(e));
         }
+
+        this.loadGiftMessages(isMultiShippingMode)
     };
 
     private handleMultiShippingSubmit: (values: MultiShippingFormValues) => void = async ({ orderComment }) => {
         const {
+            consignments,
             customerMessage,
             updateCheckout,
+            updateConsignment,
             navigateNextStep,
             onUnhandledError,
+            shipDate,
+            cart
         } = this.props;
 
+        const { giftMessages } = this.state;
+
+        interface ConsignmentUpdateRequestBody {
+            id: string;
+            shippingAddress?: AddressRequestBody;
+            lineItems?: Array<any>;
+        }
+
+        const promises: Array<Promise<CheckoutSelectors>> = [];
+
+        // CHECKOUT CUSTOM FIELDS
+        // Update Ship Date, Arrival Date, Gift Message, Gift Order custom fields when shipping step is completed.
+        
+        const updateConsignmentCustomFields = async (consignment: Consignment) => {
+
+            if (giftMessages.length > 0) {
+                var giftMessage
+                giftMessage = giftMessages.find(item => item.consignmentId === consignment.id).giftMessage
+            }
+            const shipDateValue = shipDate.toLocaleDateString('en-US')
+            const cartID = cart.id.toString()
+
+            var customFields = [
+                { fieldId: "field_43", fieldValue: shipDateValue },
+                { fieldId: "field_49", fieldValue: cartID },
+                { fieldId: "field_45", fieldValue: giftMessage && giftMessage || '' }
+            ]
+
+            consignment.shippingAddress.customFields = customFields
+            var consignmentLineItems: { itemId: string | number; quantity: number; }[] = []
+            const lineItems = findLineItems(cart, consignment)
+            lineItems.map(lineItem => consignmentLineItems.push({ itemId: lineItem.id, quantity: lineItem.quantity}))
+
+            const payload: ConsignmentUpdateRequestBody = {
+                id: consignment.id,
+                shippingAddress: consignment.shippingAddress,
+                lineItems: consignmentLineItems
+            };
+
+            await promises.push(updateConsignment(payload || {}))
+        }
+
+        if (consignments.length > 1) {
+            consignments.map((consignment) => {
+                updateConsignmentCustomFields(consignment)
+            })
+        }
+
         try {
+            await Promise.all(promises);
+
             if (customerMessage !== orderComment) {
                 await updateCheckout({ customerMessage: orderComment });
             }
@@ -431,6 +544,7 @@ export function mapToShippingProps({
         updateBillingAddress: checkoutService.updateBillingAddress,
         updateCheckout: checkoutService.updateCheckout,
         updateShippingAddress: checkoutService.updateShippingAddress,
+        updateConsignment: checkoutService.updateConsignment,
     };
 }
 

@@ -17,6 +17,9 @@ export interface BillingProps {
     navigateNextStep(): void;
     onReady?(): void;
     onUnhandledError(error: Error): void;
+    shipDate: Date;
+    arrivalDate: Date;
+    giftMessage: String;
 }
 
 export interface WithCheckoutBillingProps {
@@ -56,6 +59,9 @@ class Billing extends Component<BillingProps & WithCheckoutBillingProps> {
         const {
             updateAddress,
             isInitializing,
+            shipDate,
+            arrivalDate,
+            giftMessage,
             ...props
         } = this.props;
 
@@ -92,7 +98,22 @@ class Billing extends Component<BillingProps & WithCheckoutBillingProps> {
             billingAddress,
             navigateNextStep,
             onUnhandledError,
+            shipDate,
+            arrivalDate,
+            giftMessage
         } = this.props;
+
+        // CHECKOUT CUSTOM FIELDS
+        // Update Ship Date, Arrival Date, Gift Message, Gift Order custom fields when billing step is completed.
+
+        if (addressValues) {
+            const shipDateValue = shipDate.toLocaleDateString('en-US')
+            const arrivalDateValue = arrivalDate.toLocaleDateString('en-US')
+            const giftMessageValue = giftMessage.toString()
+            addressValues.customFields.field_43 = shipDateValue
+            addressValues.customFields.field_47 = arrivalDateValue
+            addressValues.customFields.field_45 = giftMessageValue
+        }
 
         const promises: Array<Promise<CheckoutSelectors>> = [];
         const address = mapAddressFromFormValues(addressValues);

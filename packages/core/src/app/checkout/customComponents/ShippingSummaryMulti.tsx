@@ -1,10 +1,9 @@
 import React from "react";
 import SelectedShipDate from "../../shipping/customComponents/shipDate/SelectedShipDate";
-import ArrivalDate from "../../shipping/customComponents/shipDate/ArrivalDate";
 import GiftMessageSummary from "../../shipping/customComponents/giftOptions/GiftMessageSummary";
 
-const ShippingSummary = (props: any) => {
-    const { shipDate, arrivalDate, giftMessage, cart, consignment } = props
+const ShippingSummaryMulti = (props: any) => {
+    const { cart, consignment, shipDate } = props
 
     var isActiveCart: boolean
     var savedCartID: { fieldValue: any; }
@@ -23,36 +22,21 @@ const ShippingSummary = (props: any) => {
         }
     }
 
-    const renderArrivalDate = () => {
-        var savedArrivalDate
-        savedArrivalDate = consignment.shippingAddress.customFields.find((customField: { fieldId: string; }) => customField.fieldId === 'field_47')
-        savedArrivalDate = savedArrivalDate?.fieldValue
-        if (arrivalDate.getYear() !== 69) {
-            return <ArrivalDate arrivalDate={ arrivalDate } />
-        } 
-        if (isActiveCart && savedArrivalDate) {
-            return <ArrivalDate arrivalDate={ new Date(`${savedArrivalDate}`) } />
-        }
-    }
-
     const renderGiftMessage = () => {
-        var savedGiftMessage
-        savedGiftMessage = consignment.shippingAddress.customFields.find((customField: { fieldId: string; }) => customField.fieldId === 'field_45')
-        savedGiftMessage = savedGiftMessage?.fieldValue
-        return giftMessage.length > 0
+        var giftMessage
+        giftMessage = consignment.shippingAddress.customFields.find((customField: { fieldId: string; }) => customField.fieldId === 'field_45')
+        giftMessage = giftMessage?.fieldValue
+        return isActiveCart
         ? giftMessage
-        : ( isActiveCart && savedGiftMessage.length > 0 
-        ? savedGiftMessage
-        : '' )
+        : ''
     }
 
     return(
         <div className="shipping-summary-container">
             {renderShipDate()}
-            {renderArrivalDate()}
             <GiftMessageSummary giftMessage={ renderGiftMessage() } />
         </div >
     )
 }
 
-export default ShippingSummary
+export default ShippingSummaryMulti

@@ -13,6 +13,7 @@ const ShipDate = (props: any) => {
     
     const {
         cart,
+        isMultiShippingMode,
         consignments, 
         shipDate, 
         setShipDate, 
@@ -29,6 +30,7 @@ const ShipDate = (props: any) => {
     const advanceShippingMessage = "Ordering to enjoy at a later date? Schedule your shipping date up to 25 days in advance. Available on select items."
     const shipDateMessage = 'Cook and ship date is when your order is cooked, it leaves our kitchen on the same day.'
     const arrivalDateMessage = 'Estimated arrival date depends on the ship date and UPS shipping method chosen.'
+    const arrivalDateMessageMulti = 'Arrival date depends on the ship date, destination, and UPS shipping method chosen.'
     const customFields = consignments[0]?.shippingAddress.customFields.length > 0
     
     const [address, setAddress] = useState(Object)
@@ -78,7 +80,7 @@ const ShipDate = (props: any) => {
     }, [props])
 
     useEffect(() => {
-        if (Object.keys(address).length > 0 && selectedShippingOption) {
+        if (Object.keys(address).length > 0 && selectedShippingOption && !isMultiShippingMode) {
             fetchUPSEstimate()
         }
     }, [shipDate, address, selectedShippingOption])
@@ -156,7 +158,7 @@ const ShipDate = (props: any) => {
         var isAfter = false
             const shipByDate = item.mustShipDate
             const [day, month, year] = shipByDate.split('-')
-            const formattedDate = new Date([month, day, year].join('-'))
+            const formattedDate = new Date([month, day, year].join('/'))
             if (date.getTime() > formattedDate.getTime()) {
                 isAfter = true
             }
@@ -209,23 +211,21 @@ const ShipDate = (props: any) => {
 
     }
 
-    const fetchBlackoutDates = async () => {
+    const fetchBlackoutDates = () => {
 
         const year = today.getFullYear()
         const month = String(today.getMonth() + 1).padStart(2, '0')
         const date = String(today.getDate()).padStart(2, '0')
         const formattedDate = [date, month, year].join('-')
 
-        const reqObj = {
+        fetch(`https://api.gbdev.cloud/v1/ship-dates/blackout-dates?afterDate=${formattedDate}`, {
             method: 'GET',
             headers: {
               "Content-Type": "application/json",
               "Accept": "application/json",
               "x-access-key": "XM9xCpdv7TC1ZrzZ3ZeNYKUoCK1GHbZw"
             }
-          }
-
-        fetch(`https://api.gbdev.cloud/v1/ship-dates/blackout-dates?afterDate=${formattedDate}`, reqObj)
+        })
         .then(resp => resp.json())
         .then(({results}) => {
             const dates = results.map((result: any) => result.blackoutDate.split('-'))
@@ -237,18 +237,16 @@ const ShipDate = (props: any) => {
         })
     }
 
-    const fetchShipByDates = async () => {
+    const fetchShipByDates = () => {
 
-        const reqObj = {
+        fetch(`https://api.gbdev.cloud/v1/ship-dates/must-ship-dates/`, {
             method: 'GET',
             headers: {
               "Content-Type": "application/json",
               "Accept": "application/json",
               "x-access-key": "XM9xCpdv7TC1ZrzZ3ZeNYKUoCK1GHbZw"
             }
-          }
-
-        fetch(`https://api.gbdev.cloud/v1/ship-dates/must-ship-dates/`, reqObj)
+        })
         .then(resp => resp.json())
         .then(({results}) => {
             var productIds = new Array
@@ -270,7 +268,7 @@ const ShipDate = (props: any) => {
         })
     }
 
-    const fetchInventoryData = async () => {
+    const fetchInventoryData = () => {
         var skus = new Array
         cart.lineItems.physicalItems.map((item: {sku: String, quantity: String, name: String, options: Object}) => {
             skus.push({
@@ -318,7 +316,7 @@ const ShipDate = (props: any) => {
         itemsUnavailableToShip.map((item: { productName: string, mustShipDate: any }) => {
             const shipByDate = item.mustShipDate
             const [day, month, year] = shipByDate.split('-')
-            const formattedShipDate = new Date([month, day, year].join('-')).toLocaleDateString('en-us', { weekday:"short", month:"short", day:"numeric"})
+            const formattedShipDate = new Date([month, day, year].join('/')).toLocaleDateString('en-us', { weekday:"short", month:"short", day:"numeric"})
             var productDetails = { message: `${item.productName} must ship by ${formattedShipDate}` }
             products.push(productDetails)
         })
@@ -326,6 +324,15 @@ const ShipDate = (props: any) => {
         return type === 'main'
         ? message
         : products
+    }
+
+    const highlightDates = () => {
+        if (!isMultiShippingMode) {
+            return [arrivalDate]
+        }
+        else {
+            return []
+        }
     }
 
     return(
@@ -343,7 +350,7 @@ const ShipDate = (props: any) => {
                             minDate={today}
                             maxDate={maxDate()}
                             filterDate={filterDates}
-                            highlightDates={[arrivalDate]}
+                            highlightDates={highlightDates()}
                             inline 
                         />
                 </ShippingCalendar>
@@ -357,11 +364,11 @@ const ShipDate = (props: any) => {
                 <ShippingInfo>
                     <DatesSummary>
                         <SelectedShipDate shipDate={shipDate} />
-                        <ArrivalDate arrivalDate={arrivalDate} />
+                        { !isMultiShippingMode && <ArrivalDate arrivalDate={arrivalDate} /> }
                     </DatesSummary>
                         <ShippingInfoBanner
                             mainMessage={shipDateMessage}
-                            secondMessage={arrivalDateMessage}
+                            secondMessage={ isMultiShippingMode ? arrivalDateMessageMulti : arrivalDateMessage}
                         />
                 </ShippingInfo>
             }

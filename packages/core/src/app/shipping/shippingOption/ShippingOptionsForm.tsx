@@ -77,6 +77,7 @@ class ShippingOptionsForm extends PureComponent<ShippingOptionsFormProps & Formi
                             <LoadingOverlay hideContentWhenLoading isLoading={ isLoading(consignment.id) }>
                                 { this.renderNoShippingOptions(invalidShippingMessage) }
                             </LoadingOverlay> }
+
                     </div>
                 )) }
         </>;

@@ -19,14 +19,11 @@ const GiftMessage = (props: any) => {
     useEffect(() => {
         var savedGiftMessage
         if (customFields && isActiveCart) {
-            savedGiftMessage = consignments[0].shippingAddress.customFields.find((customField: { fieldId: string; }) => customField.fieldId === 'field_45')
+            savedGiftMessage = consignments[0].shippingAddress.customFields.find((customField: { fieldId: string, fieldValue: string }) => customField.fieldId === 'field_45')
             savedGiftMessage = savedGiftMessage.fieldValue
             setGiftMessage(savedGiftMessage)
+            setGiftMessageToggle(savedGiftMessage.length > 0)
         }
-    }, [])
-    
-    useEffect(() => {
-        setGiftMessageToggle(giftMessage.length > 0)
     }, [])
 
     const handleToggle = () => {
@@ -41,7 +38,7 @@ const GiftMessage = (props: any) => {
     return(
         <Fieldset id='gift-message'>
             <Legend testId="gift-message-form-heading"><span>Gift Options</span></Legend>
-            <GiftOptions>
+            <GiftOptions className='gift-options-container'>
                 <GiftMessageToggle 
                     toggleGiftMessage={ handleToggle } 
                     giftMessageToggle={ giftMessageToggle }
