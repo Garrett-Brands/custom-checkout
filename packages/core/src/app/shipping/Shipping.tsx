@@ -156,7 +156,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
 
         return (
             <div className="checkout-form">
-                { isMultiShippingMode && 
+                { isMultiShippingMode && !isGuest &&
                     <ShippingBanner
                         className='multi-ship-alert-banner'
                         mainMessage={'You may experience increased screen loading times for orders with multiple destinations.'}

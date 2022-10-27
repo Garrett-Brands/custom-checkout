@@ -434,7 +434,7 @@
             "multishipping_address_heading_guest": "Please sign in first",
             "multishipping_guest_intro": "To ship your items to multiple addresses you need to",
             "multishipping_guest_sign_in": "sign in to your account",
-            "multishipping_guest_create": "or <a href=\"{url}\" target=\"_blank\">create an account</a> prior to proceeding.",
+            "multishipping_guest_create": "or <a href=\"{url}\" target=\"_blank\">create an account</a> to proceed.",
             "ship_to_multi": "Ship to multiple addresses",
             "ship_to_single": "Ship to a single address",
             "shipping_heading": "Shipping",

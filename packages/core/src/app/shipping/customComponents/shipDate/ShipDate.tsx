@@ -30,6 +30,7 @@ const ShipDate = (props: any) => {
     const advanceShippingMessage = "Ordering to enjoy at a later date? Schedule your shipping date up to 25 days in advance. Available on select items."
     const shipDateMessage = 'Cook and ship date is when your order is cooked, it leaves our kitchen on the same day.'
     const arrivalDateMessage = 'Estimated arrival date depends on the ship date and UPS shipping method chosen.'
+    const arrivalDateMessageMulti = 'Arrival date depends on the ship date, destination, and UPS shipping method chosen.'
     const customFields = consignments[0]?.shippingAddress.customFields.length > 0
     
     const [address, setAddress] = useState(Object)
@@ -250,7 +251,6 @@ const ShipDate = (props: any) => {
         })
         .then(resp => resp.json())
         .then(({results}) => {
-            console.log('SHIP DATES RESULTS =>', results)
             var productIds = new Array
             var productSKUs = new Array
             var promotionalItems = new Array
@@ -370,7 +370,7 @@ const ShipDate = (props: any) => {
                     </DatesSummary>
                         <ShippingInfoBanner
                             mainMessage={shipDateMessage}
-                            secondMessage={arrivalDateMessage}
+                            secondMessage={ isMultiShippingMode ? arrivalDateMessageMulti : arrivalDateMessage}
                         />
                 </ShippingInfo>
             }
