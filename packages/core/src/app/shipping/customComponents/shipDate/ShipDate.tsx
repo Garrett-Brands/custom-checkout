@@ -27,7 +27,7 @@ const ShipDate = (props: any) => {
 
     const today = new Date()
     const todayReset = today.setHours(0,0,0,0)
-    const advanceShippingMessage = "Ordering to enjoy at a later date? Schedule your shipping date up to 25 days in advance. Available on select items."
+    const advanceShippingMessage = "Ordering to enjoy at a later date? Schedule your shipping date up to 10 days in advance. Available on select items."
     const shipDateMessage = 'Cook and ship date is when your order is cooked, it leaves our kitchen on the same day.'
     const arrivalDateMessage = 'Estimated arrival date depends on the ship date and UPS shipping method chosen.'
     const arrivalDateMessageMulti = 'Arrival date depends on the ship date, destination, and UPS shipping method chosen.'
@@ -167,7 +167,7 @@ const ShipDate = (props: any) => {
 
     const maxDate = () => {
         const maxDate = new Date(todayReset)
-        maxDate.setDate(maxDate.getDate() + 25)
+        maxDate.setDate(maxDate.getDate() + 10)
         return maxDate
     }
 
