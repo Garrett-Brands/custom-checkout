@@ -6,8 +6,9 @@ import { CheckoutPagePreset } from './CheckoutPagePreset';
 export class CustomerStepAsGuest implements CheckoutPagePreset {
     async apply(page: Page): Promise<void> {
         const api = new ApiRequestsSender(page);
+
         await api.addPhysicalItemToCart();
         await api.setShippingQuote();
-        await api.dispose();
+        await api.dispose('You should be able to see checkout at the customer step now');
     }
 }

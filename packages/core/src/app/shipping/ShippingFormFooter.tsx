@@ -102,30 +102,40 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps, Shipping
             : products
         }
 
-        return <>
-            <Fieldset
-                id="checkout-shipping-options"
-                legend={
-                    <>
-                        <Legend>
-                            <TranslatedString id="shipping.shipping_method_label" />
-                        </Legend>
+        const shippingSurchargeMessage = 'UPS increased their shipping prices, resulting in a holiday surcharge per box.'
+        
+        return (
+            <>
+                <Fieldset
+                    id="checkout-shipping-options"
+                    legend={
+                        <>
+                            <Legend>
+                                <TranslatedString id="shipping.shipping_method_label" />
+                            </Legend>
 
-                        { cartHasChanged &&
-                            <Alert type={ AlertType.Error }>
-                                <strong>
-                                    <TranslatedString id="shipping.cart_change_error" />
-                                </strong>
-                            </Alert> }
-                    </>
-                }
-            >
-                <ShippingOptions
-                    isMultiShippingMode={ isMultiShippingMode }
-                    isUpdatingAddress={ isLoading }
-                    shouldShowShippingOptions={ shouldShowShippingOptions }
-                />
-            </Fieldset>
+                            {cartHasChanged && (
+                                <Alert type={AlertType.Error}>
+                                    <strong>
+                                        <TranslatedString id="shipping.cart_change_error" />
+                                    </strong>
+                                </Alert>
+                            )}
+                        </>
+                    }
+                >
+                    <ShippingBanner
+                        className='shipping-surcharge-banner'
+                        mainMessage='?'
+                        secondMessage={shippingSurchargeMessage}
+                        // mainMessageIcon={'https://res.cloudinary.com/garrett-brands/image/upload/v1663968753/Garrett-Website/2022/9-September/Checkout%20Icons/arrival-estimate.svg'}
+                    />
+                    <ShippingOptions
+                        isMultiShippingMode={isMultiShippingMode}
+                        isUpdatingAddress={isLoading}
+                        shouldShowShippingOptions={shouldShowShippingOptions}
+                    />
+                </Fieldset>
 
             { shouldShowShippingOptions && unavailableItems.length === 0
             ?   <ShipDate
@@ -167,22 +177,22 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps, Shipping
                     {consignments.map((consignment, index) => this.renderGiftMessageMulti(consignment, index))}
               </>
             : <GiftMessageDisabled /> ) }
+            
+                {shouldShowOrderComments && <OrderComments />}
 
-            { shouldShowOrderComments &&
-                <OrderComments /> }
-
-            <div className="form-actions">
-                <Button
-                    disabled={ shouldDisableSubmit || unavailableItems.length > 0 || itemsUnavailableToShip.length > 0 }
-                    id="checkout-shipping-continue"
-                    isLoading={ isLoading }
-                    type="submit"
-                    variant={ ButtonVariant.Primary }
-                >
-                    <TranslatedString id="common.continue_action" />
-                </Button>
-            </div>
-        </>;
+                <div className="form-actions">
+                    <Button
+                        disabled={ shouldDisableSubmit || unavailableItems.length > 0 || itemsUnavailableToShip.length > 0 }
+                        id="checkout-shipping-continue"
+                        isLoading={isLoading}
+                        type="submit"
+                        variant={ButtonVariant.Primary}
+                    >
+                        <TranslatedString id="common.continue_action" />
+                    </Button>
+                </div>
+            </>
+        );
     }
 
     private renderGiftMessageMulti(consignment: Consignment, index: number): ReactNode {

@@ -1,0 +1,6 @@
+{
+  "extends": ["../../.eslintrc.json"],
+  "rules": {
+    "jsx-a11y/anchor-is-valid": "off"
+  }
+}

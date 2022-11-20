@@ -27,7 +27,7 @@ exports[`LoginForm matches snapshot 1`] = `
             for="email"
             id="email-label"
           >
-            Email Address
+            Email
           </label>
           <input
             autocomplete="email"
@@ -76,15 +76,21 @@ exports[`LoginForm matches snapshot 1`] = `
               </div>
             </a>
           </div>
-          <a
-            data-test="forgot-password-link"
-            href="/forgot-password"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Forgot password?
-          </a>
         </div>
+        <p
+          class="form-legend-container"
+        >
+          <span>
+            <a
+              data-test="forgot-password-link"
+              href="/forgot-password"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Forgot password?
+            </a>
+          </span>
+        </p>
         <div
           class="form-actions"
         >

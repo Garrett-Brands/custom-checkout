@@ -1,7 +1,17 @@
-import { toResolvableComponent, PaymentMethodProps, PaymentMethodResolveId } from '@bigcommerce/checkout/payment-integration-api';
 import React, { FunctionComponent, useEffect } from 'react';
 
-const ApplePaymentMethod: FunctionComponent<PaymentMethodProps> = ({ method, checkoutService, language, onUnhandledError }) => {
+import {
+    PaymentMethodProps,
+    PaymentMethodResolveId,
+    toResolvableComponent,
+} from '@bigcommerce/checkout/payment-integration-api';
+
+const ApplePaymentMethod: FunctionComponent<PaymentMethodProps> = ({
+    method,
+    checkoutService,
+    language,
+    onUnhandledError,
+}) => {
     useEffect(() => {
         const initializePayment = async () => {
             try {
@@ -14,10 +24,13 @@ const ApplePaymentMethod: FunctionComponent<PaymentMethodProps> = ({ method, che
                     },
                 });
             } catch (error) {
-                onUnhandledError(error);
+                if (error instanceof Error) {
+                    onUnhandledError(error);
+                }
             }
         };
-        initializePayment();
+
+        void initializePayment();
 
         return () => {
             const deinitializePayment = async () => {
@@ -27,17 +40,21 @@ const ApplePaymentMethod: FunctionComponent<PaymentMethodProps> = ({ method, che
                         methodId: method.id,
                     });
                 } catch (error) {
-                    onUnhandledError(error);
+                    if (error instanceof Error) {
+                        onUnhandledError(error);
+                    }
                 }
             };
-            deinitializePayment();
-        }
+
+            void deinitializePayment();
+        };
     }, [checkoutService, language, method, onUnhandledError]);
 
+    // eslint-disable-next-line react/jsx-no-useless-fragment
     return <></>;
 };
 
 export default toResolvableComponent<PaymentMethodProps, PaymentMethodResolveId>(
     ApplePaymentMethod,
-    [{ id: 'applepay' }]
+    [{ id: 'applepay' }],
 );

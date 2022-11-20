@@ -28,12 +28,92 @@
         }
     }
 
+    #checkoutShippingAddress.form-fieldset:has(.floating-form-field) {
+        margin-bottom: $fontSize-root - $floating-form-field-spacing;
+    }
+
+    .floating-fieldset {
+        .form-fieldset {
+            margin-bottom: 0;
+        }
+    }
+
     .form-field {
         position: relative;
 
         &:last-child {
             margin-bottom: 0;
         }
+
+        .floating-input,
+        .floating-select {
+            background-color: $floating-label-bg-color;
+            font-size: $floating-label-font-size--default;
+            height: $floating-label-input-height;
+            padding-bottom: 0;
+            padding-left: $input-horizontalPadding;
+            padding-right: $input-horizontalPadding;
+            padding-top: $input-verticalPadding * 1.5;
+        }
+
+        .floating-input:not(:focus),
+        .floating-select:not(:focus),
+        .floating-textarea {
+            border-color: $floating-label-border-color;
+        }
+
+        .floating-textarea {
+            background-color: $floating-label-bg-color;
+            padding-top: $input-verticalPadding * 2.5;
+        }
+
+        .dropdown-chevron,
+        .floating-select-chevron {
+            position: absolute;
+            right: $input-horizontalPadding;
+            top: $floating-chevron-top + $fontSize-root * lineHeight("large");
+        }
+
+        .floating-select-chevron {
+            top: $floating-chevron-top;
+        }
+
+        .floating-label {
+            font-size: $floating-label-font-size--default;
+            left: $input-horizontalPadding * 1.05;
+            line-height: $floating-label-line-height--default;
+            position: absolute;
+            top: $floating-label-top--default;
+            transition: $floating-label-transition;
+
+            small {
+                font-size: $floating-label-font-size--default;
+                vertical-align: baseline;
+            }
+        }
+
+        .react-datepicker__tab-loop + .floating-label,
+        .react-datepicker-wrapper + .floating-label,
+        select + .floating-label,
+        textarea:focus + .floating-label,
+        textarea:not(:empty) + .floating-label,
+        input:focus + .floating-label,
+        input:not(:placeholder-shown) + .floating-label {
+            color: $floating-label-color;
+            display: block;
+            font-size: fontSize("tiny");
+            line-height: $floating-label-line-height--focus;
+            top: $floating-label-top--focus;
+
+            small {
+                font-size: fontSize("tiny");
+            }
+        }
+    }
+
+    .floating-label + .form-field-errors,
+    .dynamic-form-field--addressLineAutocomplete.floating-form-field .form-field-errors {
+        padding-top: $floating-label-error-padding-top;
     }
 
     .form-input {
@@ -78,8 +158,12 @@
             transition: background-color 0.8s ease-out;
         }
 
-        .form-label {
+        .form-label:not(.floating-label) {
             color: color("error");
+        }
+
+        .floating-label.form-label.optimizedCheckout-form-label {
+            color: $floating-label-color;
         }
     }
 
@@ -123,10 +207,92 @@
 
     // scss-lint:disable ImportantRule
     .form-select {
-        -webkit-appearance: menulist !important; // 2
+        -webkit-appearance: none; // 2
         background-image: none;
         border-radius: $input-border-radius;
         padding: $input-verticalPadding $select-paddingRight $input-verticalPadding $input-horizontalPadding;
     }
     // scss-lint:enable ImportantRule
+
+    .loading-skeleton {
+        animation: grows 150ms ease-out;
+        overflow: hidden;
+        will-change: max-height;
+    }
+
+    @keyframes grows {
+        0% { max-height: $floating-label-input-height * 4; }
+        100% { max-height: 2000px; }
+    }
+
+    .address-form-heading-skeleton {
+        background-color: $loading-skeleton-button-bg-color;
+        border-radius: $global-radius;
+        height: $h3-font-size;
+        margin: 0.75rem 0;
+        width: 12rem;
+    }
+
+    .address-form-skeleton,
+    .customer-skeleton {
+        .customerEmail-body {
+            div:first-child {
+                margin-bottom: $form-verticalSpacing;
+            }
+
+            div.subscription-skeleton {
+                height: spacing("single");
+                margin-bottom: 0;
+                width: 66%;
+            }
+        }
+
+        .customerEmail-action {
+            margin: #{spacing("single") + spacing("half")} 0;
+        }
+
+        .skeleton-container {
+            background-color: $formBody-backgroundColor;
+            border: $input-border-style $input-border-width $floating-label-border-color;
+            border-radius: $global-radius;
+            height: $floating-label-input-height;
+            margin-bottom: $floating-form-field-spacing;
+            margin-left: 0;
+            padding: $loading-skeleton-input-padding;
+
+            .input-skeleton,
+            .input-skeleton::before {
+                height: 100%;
+                position: relative;
+                width: 100%;
+            }
+
+            .input-skeleton::before {
+                animation: $loading-skeleton-animation;
+                animation-timing-function: $loading-skeleton-timing;
+                background: $loading-skeleton-button-bg-color;
+                border-radius: $global-radius;
+                content: ' ';
+                display: block;
+                left: 0;
+                position: absolute;
+                top: 0;
+                will-change: $loading-skeleton-will-change;
+            }
+        }
+
+        .skeleton-container.button-skeleton {
+            background: $loading-skeleton-button-bg-color;
+            border: none;
+        }
+
+        .name-fields-skeleton {
+            display: flex;
+            gap: $floating-form-field-spacing;
+
+            .skeleton-container {
+                flex-basis: 50%;
+            }
+        }
+    }
 }

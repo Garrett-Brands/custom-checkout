@@ -1,15 +1,24 @@
-import { createCheckoutService, CheckoutSelectors, CheckoutService, PaymentMethod } from '@bigcommerce/checkout-sdk';
+import {
+    CheckoutSelectors,
+    CheckoutService,
+    createCheckoutService,
+    PaymentMethod,
+} from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
-import { Formik } from 'formik';
+import { Formik, FormikValues } from 'formik';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
+import { act } from 'react-dom/test-utils';
 
 import { CheckoutProvider } from '../../checkout';
 import { getStoreConfig } from '../../config/config.mock';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '../../locale';
 import { getPaymentMethod } from '../payment-methods.mock';
 
-import HostedWidgetPaymentMethod, { HostedWidgetPaymentMethodProps } from './HostedWidgetPaymentMethod';
+import BoltEmbeddedPaymentMethod from './BoltEmbeddedPaymentMethod';
+import HostedWidgetPaymentMethod, {
+    HostedWidgetPaymentMethodProps,
+} from './HostedWidgetPaymentMethod';
 import { default as PaymentMethodComponent, PaymentMethodProps } from './PaymentMethod';
 
 describe('BoltEmbeddedPaymentMethod', () => {
@@ -19,6 +28,43 @@ describe('BoltEmbeddedPaymentMethod', () => {
     let defaultProps: PaymentMethodProps;
     let localeContext: LocaleContextType;
     let PaymentMethodTest: FunctionComponent<PaymentMethodProps>;
+    let onPaymentSelect: (hasBoltAccount: boolean) => void;
+    let formikCopy: Formik<FormikValues>;
+
+    const initWithFormikComponent = async () => {
+        const initializePaymentMock = jest.fn().mockImplementation((options) => {
+            onPaymentSelect = options.bolt.onPaymentSelect;
+
+            return checkoutState;
+        });
+
+        const component = await mount(
+            <Formik
+                initialValues={ {} }
+                onSubmit={ noop }
+                render={ formik => {
+                    formikCopy = formik;
+
+                    return (
+                        <BoltEmbeddedPaymentMethod
+                            deinitializePayment={ async () => checkoutState }
+                            initializePayment={ initializePaymentMock }
+                            isInitializing={ false }
+                            method={ method }
+                        />        
+                    )
+                } }
+            />
+        );
+        
+
+        const hostedWidgetComponent: ReactWrapper<HostedWidgetPaymentMethodProps> = component.find(HostedWidgetPaymentMethod);
+
+        hostedWidgetComponent.prop('initializePayment')({
+            methodId: method.id,
+            gatewayId: method.gateway,
+        });
+    };
 
     beforeEach(() => {
         defaultProps = {
@@ -39,23 +85,17 @@ describe('BoltEmbeddedPaymentMethod', () => {
         checkoutState = checkoutService.getState();
         localeContext = createLocaleContext(getStoreConfig());
 
-        jest.spyOn(checkoutState.data, 'getConfig')
-            .mockReturnValue(getStoreConfig());
+        jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(getStoreConfig());
 
-        jest.spyOn(checkoutService, 'deinitializePayment')
-            .mockResolvedValue(checkoutState);
+        jest.spyOn(checkoutService, 'deinitializePayment').mockResolvedValue(checkoutState);
 
-        jest.spyOn(checkoutService, 'initializePayment')
-            .mockResolvedValue(checkoutState);
+        jest.spyOn(checkoutService, 'initializePayment').mockResolvedValue(checkoutState);
 
-        PaymentMethodTest = props => (
-            <CheckoutProvider checkoutService={ checkoutService }>
-                <LocaleContext.Provider value={ localeContext }>
-                    <Formik
-                        initialValues={ {} }
-                        onSubmit={ noop }
-                    >
-                        <PaymentMethodComponent { ...props } />
+        PaymentMethodTest = (props) => (
+            <CheckoutProvider checkoutService={checkoutService}>
+                <LocaleContext.Provider value={localeContext}>
+                    <Formik initialValues={{}} onSubmit={noop}>
+                        <PaymentMethodComponent {...props} />
                     </Formik>
                 </LocaleContext.Provider>
             </CheckoutProvider>
@@ -63,29 +103,32 @@ describe('BoltEmbeddedPaymentMethod', () => {
     });
 
     it('renders as hosted widget method', () => {
-        const container = mount(<PaymentMethodTest { ...defaultProps } method={ method } />);
-        const component: ReactWrapper<HostedWidgetPaymentMethodProps> = container.find(HostedWidgetPaymentMethod);
+        const container = mount(<PaymentMethodTest {...defaultProps} method={method} />);
+        const component: ReactWrapper<HostedWidgetPaymentMethodProps> =
+            container.find(HostedWidgetPaymentMethod);
 
-        expect(component.props())
-            .toEqual(expect.objectContaining({
+        expect(component.props()).toEqual(
+            expect.objectContaining({
                 containerId: 'boltEmbeddedOneClick',
                 deinitializePayment: expect.any(Function),
                 initializePayment: expect.any(Function),
                 method,
-            }));
+            }),
+        );
     });
 
     it('initializes method with required config', () => {
-        const container = mount(<PaymentMethodTest { ...defaultProps } method={ method } />);
-        const component: ReactWrapper<HostedWidgetPaymentMethodProps> = container.find(HostedWidgetPaymentMethod);
+        const container = mount(<PaymentMethodTest {...defaultProps} method={method} />);
+        const component: ReactWrapper<HostedWidgetPaymentMethodProps> =
+            container.find(HostedWidgetPaymentMethod);
 
         component.prop('initializePayment')({
             methodId: method.id,
             gatewayId: method.gateway,
         });
 
-        expect(checkoutService.initializePayment)
-            .toHaveBeenCalledWith(expect.objectContaining({
+        expect(checkoutService.initializePayment).toHaveBeenCalledWith(
+            expect.objectContaining({
                 methodId: method.id,
                 gatewayId: method.gateway,
                 bolt: {
@@ -93,6 +136,31 @@ describe('BoltEmbeddedPaymentMethod', () => {
                     useBigCommerceCheckout: true,
                     onPaymentSelect: expect.any(Function),
                 },
-            }));
+            }),
+        );
+    });
+
+    it('updates shouldCreateAccount value on onPaymentSelect callback call', async () => {
+        await initWithFormikComponent();
+
+        expect(formikCopy.values.shouldCreateAccount).toBeUndefined();
+
+        await act(async () => {
+            await onPaymentSelect(true);
+        });
+
+        expect(formikCopy.values.shouldCreateAccount).toBe(false);
+    });
+
+    it('should not update shouldCreateAccount value on onPaymentSelect callback call', async () => {
+        await initWithFormikComponent();
+
+        expect(formikCopy.values.shouldCreateAccount).toBeUndefined();
+
+        await act(async () => {
+            await onPaymentSelect(false);
+        });
+
+        expect(formikCopy.values.shouldCreateAccount).toBeUndefined();
     });
 });
