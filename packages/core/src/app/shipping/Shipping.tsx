@@ -394,7 +394,8 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             navigateNextStep,
             onUnhandledError,
             shipDate,
-            cart
+            cart,
+            isMultiShippingMode
         } = this.props;
 
         const { giftMessages } = this.state;
@@ -439,7 +440,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             await promises.push(updateConsignment(payload || {}))
         }
 
-        if (consignments.length > 1) {
+        if (isMultiShippingMode || consignments.length > 1) {
             consignments.map((consignment) => {
                 updateConsignmentCustomFields(consignment)
             })

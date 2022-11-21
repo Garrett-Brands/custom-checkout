@@ -4,7 +4,7 @@ import ArrivalDate from "../../shipping/customComponents/shipDate/ArrivalDate";
 import GiftMessageSummary from "../../shipping/customComponents/giftOptions/GiftMessageSummary";
 
 const ShippingSummary = (props: any) => {
-    const { shipDate, arrivalDate, giftMessage, cart, consignment } = props
+    const { giftMessage, cart, consignment } = props
 
     var isActiveCart: boolean
     var savedCartID: { fieldValue: any; }
@@ -27,9 +27,9 @@ const ShippingSummary = (props: any) => {
         var savedShipDate
         savedShipDate = consignment.shippingAddress.customFields.find((customField: { fieldId: string; }) => customField.fieldId === 'field_30')
         savedShipDate = savedShipDate?.fieldValue
-        if (shipDate.getYear() !== 69) {
-            return <SelectedShipDate shipDate={ shipDate } />
-        } 
+        // if (shipDate.getYear() !== 69) {
+        //     return <SelectedShipDate shipDate={ shipDate } />
+        // } 
         if (isActiveCart && savedShipDate) {
             return <SelectedShipDate shipDate={ new Date(`${savedShipDate}`) } />
         }
@@ -39,9 +39,9 @@ const ShippingSummary = (props: any) => {
         var savedArrivalDate
         savedArrivalDate = consignment.shippingAddress.customFields.find((customField: { fieldId: string; }) => customField.fieldId === 'field_38')
         savedArrivalDate = savedArrivalDate?.fieldValue
-        if (arrivalDate.getYear() !== 69) {
-            return <ArrivalDate arrivalDate={ arrivalDate } />
-        } 
+        // if (arrivalDate.getYear() !== 69) {
+        //     return <ArrivalDate arrivalDate={ arrivalDate } />
+        // } 
         if (isActiveCart && savedArrivalDate) {
             return <ArrivalDate arrivalDate={ new Date(`${savedArrivalDate}`) } />
         }

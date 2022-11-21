@@ -6,7 +6,7 @@ import {
 import classNames from 'classnames';
 import React, { FunctionComponent, memo, ReactNode, useCallback } from 'react';
 
-// import { ShopperCurrency } from '../currency';
+import { ShopperCurrency } from '../currency';
 import { TranslatedString } from '../locale';
 import { IconGiftCertificate } from '../ui/icon';
 import { ModalTrigger } from '../ui/modal';
@@ -112,6 +112,9 @@ const OrderSummaryDrawer: FunctionComponent<
                                 data={{ count: getItemsCount(lineItems) }}
                                 id="cart.item_count_text"
                             />
+                        </h3>
+                        <h3 className="cartDrawer-total optimizedCheckout-headingPrimary">
+                            <ShopperCurrency amount={total} />
                         </h3>
                         {/* <a>
                             <TranslatedString id="cart.show_details_action" />
