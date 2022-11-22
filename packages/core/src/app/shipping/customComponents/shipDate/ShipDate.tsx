@@ -66,7 +66,7 @@ const ShipDate = (props: any) => {
         }
         savedShipDate && isAfterNextAvailable(savedShipDate) && filterDates(savedShipDate) 
         ? setShipDate(savedShipDate)
-        : ( currentShipDate.getYear() !== 69 && filterDates(currentShipDate)
+        : ( filterDates(currentShipDate)
         ? setShipDate(currentShipDate)
         : setShipDate(nextAvailableDate) )
     }, [nextAvailableDate])

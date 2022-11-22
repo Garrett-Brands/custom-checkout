@@ -1,4 +1,19 @@
-import { Address, AddressRequestBody, Cart, CheckoutParams, CheckoutSelectors, Consignment, ConsignmentAssignmentRequestBody, Country, CustomerAddress, CustomerRequestOptions, FormField, RequestOptions, ShippingInitializeOptions, ShippingRequestOptions } from '@bigcommerce/checkout-sdk';
+import {
+    Address,
+    AddressRequestBody,
+    Cart,
+    CheckoutParams,
+    CheckoutSelectors,
+    Consignment,
+    ConsignmentAssignmentRequestBody,
+    Country,
+    CustomerAddress,
+    CustomerRequestOptions,
+    FormField,
+    RequestOptions,
+    ShippingInitializeOptions,
+    ShippingRequestOptions,
+} from '@bigcommerce/checkout-sdk';
 import React, { Component, ReactNode } from 'react';
 
 import { withLanguage, WithLanguageProps } from '../locale';
@@ -25,6 +40,7 @@ export interface ShippingFormProps {
     shouldShowSaveAddress?: boolean;
     shouldShowOrderComments: boolean;
     shouldShowAddAddressInCheckout: boolean;
+    useFloatingLabel?: boolean;
     assignItem(consignment: ConsignmentAssignmentRequestBody): Promise<CheckoutSelectors>;
     deinitialize(options: ShippingRequestOptions): Promise<CheckoutSelectors>;
     deleteConsignments(): Promise<Address | undefined>;
@@ -38,7 +54,10 @@ export interface ShippingFormProps {
     onUnhandledError(error: Error): void;
     onUseNewAddress(address: Address, itemId: string): void;
     signOut(options?: CustomerRequestOptions): void;
-    updateAddress(address: Partial<Address>, options: RequestOptions<CheckoutParams>): Promise<CheckoutSelectors>;
+    updateAddress(
+        address: Partial<Address>,
+        options: RequestOptions<CheckoutParams>,
+    ): Promise<CheckoutSelectors>;
     shipDate: Date;
     setShipDate: Function;
     arrivalDate: Date;
@@ -97,10 +116,11 @@ class ShippingForm extends Component<ShippingFormProps & WithLanguageProps> {
             setGiftMessages,
             loadGiftMessages,
             isGiftOrder,
-            setIsGiftOrder
+            setIsGiftOrder,
+            useFloatingLabel,
         } = this.props;
 
-        return isMultiShippingMode ?
+        return isMultiShippingMode ? (
             <MultiShippingForm
                 addresses={ addresses }
                 assignItem={ assignItem }
@@ -123,6 +143,7 @@ class ShippingForm extends Component<ShippingFormProps & WithLanguageProps> {
                 onUseNewAddress={ onUseNewAddress }
                 shouldShowAddAddressInCheckout={ shouldShowAddAddressInCheckout }
                 shouldShowOrderComments={ shouldShowOrderComments }
+                useFloatingLabel={useFloatingLabel}
                 shipDate={ shipDate }
                 setShipDate={ setShipDate }
                 arrivalDate={ arrivalDate }
@@ -130,7 +151,8 @@ class ShippingForm extends Component<ShippingFormProps & WithLanguageProps> {
                 giftMessages={ giftMessages }
                 setGiftMessages={ setGiftMessages }
                 loadGiftMessages={ loadGiftMessages }
-            /> :
+            />
+        ) : (
             <SingleShippingForm
                 addresses={ addresses }
                 cart={ cart }
@@ -156,6 +178,7 @@ class ShippingForm extends Component<ShippingFormProps & WithLanguageProps> {
                 shouldShowSaveAddress={ shouldShowSaveAddress }
                 signOut={ signOut }
                 updateAddress={ updateAddress }
+                useFloatingLabel={useFloatingLabel}
                 shipDate={ shipDate }
                 setShipDate={ setShipDate }
                 arrivalDate={ arrivalDate }
@@ -166,7 +189,8 @@ class ShippingForm extends Component<ShippingFormProps & WithLanguageProps> {
                 setIsGiftOrder={ setIsGiftOrder }
                 giftMessages={ giftMessages }
                 setGiftMessages={ setGiftMessages }
-            />;
+            />
+        );
     }
 }
 

@@ -1,15 +1,34 @@
-import { CheckoutSelectors, EmbeddedCheckoutMessenger, EmbeddedCheckoutMessengerOptions, Order, ShopperConfig, StepTracker, StoreConfig } from '@bigcommerce/checkout-sdk';
+import {
+    CheckoutSelectors,
+    EmbeddedCheckoutMessenger,
+    EmbeddedCheckoutMessengerOptions,
+    Order,
+    ShopperConfig,
+    StoreConfig,
+} from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import DOMPurify from 'dompurify';
-import React, { lazy, Component, Fragment, ReactNode } from 'react';
+import React, { Component, lazy, ReactNode } from 'react';
 
-import { withCheckout, CheckoutContextProps } from '../checkout';
+import { AnalyticsContextProps } from '@bigcommerce/checkout/analytics';
+
+import { withAnalytics } from '../analytics';
+import { CheckoutContextProps, withCheckout } from '../checkout';
 import { ErrorLogger, ErrorModal } from '../common/error';
 import { retry } from '../common/utility';
 import { getPasswordRequirementsFromConfig } from '../customer';
-import { isEmbedded, EmbeddedCheckoutStylesheet } from '../embeddedCheckout';
-import { CreatedCustomer, GuestSignUpForm, PasswordSavedSuccessAlert, SignedUpSuccessAlert, SignUpFormValues } from '../guestSignup';
-import { AccountCreationFailedError, AccountCreationRequirementsError } from '../guestSignup/errors';
+import { EmbeddedCheckoutStylesheet, isEmbedded } from '../embeddedCheckout';
+import {
+    CreatedCustomer,
+    GuestSignUpForm,
+    PasswordSavedSuccessAlert,
+    SignedUpSuccessAlert,
+    SignUpFormValues,
+} from '../guestSignup';
+import {
+    AccountCreationFailedError,
+    AccountCreationRequirementsError,
+} from '../guestSignup/errors';
 import { TranslatedString } from '../locale';
 import { Button, ButtonVariant } from '../ui/button';
 import { LazyContainer, LoadingSpinner } from '../ui/loading';
@@ -22,15 +41,25 @@ import OrderStatus from './OrderStatus';
 import PrintLink from './PrintLink';
 import ThankYouHeader from './ThankYouHeader';
 
-const OrderSummary = lazy(() => retry(() => import(
-    /* webpackChunkName: "order-summary" */
-    './OrderSummary'
-)));
+const OrderSummary = lazy(() =>
+    retry(
+        () =>
+            import(
+                /* webpackChunkName: "order-summary" */
+                './OrderSummary'
+            ),
+    ),
+);
 
-const OrderSummaryDrawer = lazy(() => retry(() => import(
-    /* webpackChunkName: "order-summary-drawer" */
-    './OrderSummaryDrawer'
-)));
+const OrderSummaryDrawer = lazy(() =>
+    retry(
+        () =>
+            import(
+                /* webpackChunkName: "order-summary-drawer" */
+                './OrderSummaryDrawer'
+            ),
+    ),
+);
 
 export interface OrderConfirmationState {
     error?: Error;
@@ -45,7 +74,6 @@ export interface OrderConfirmationProps {
     orderId: number;
     createAccount(values: SignUpFormValues): Promise<CreatedCustomer>;
     createEmbeddedMessenger(options: EmbeddedCheckoutMessengerOptions): EmbeddedCheckoutMessenger;
-    createStepTracker(): StepTracker;
 }
 
 interface WithCheckoutOrderConfirmationProps {
@@ -56,7 +84,7 @@ interface WithCheckoutOrderConfirmationProps {
 }
 
 class OrderConfirmation extends Component<
-    OrderConfirmationProps & WithCheckoutOrderConfirmationProps,
+    OrderConfirmationProps & WithCheckoutOrderConfirmationProps & AnalyticsContextProps,
     OrderConfirmationState
 > {
     state: OrderConfirmationState = {};
@@ -67,10 +95,10 @@ class OrderConfirmation extends Component<
         const {
             containerId,
             createEmbeddedMessenger,
-            createStepTracker,
             embeddedStylesheet,
             loadOrder,
             orderId,
+            analyticsTracker
         } = this.props;
 
         loadOrder(orderId)
@@ -80,71 +108,64 @@ class OrderConfirmation extends Component<
 
                 this.embeddedMessenger = messenger;
 
-                messenger.receiveStyles(styles => embeddedStylesheet.append(styles));
+                messenger.receiveStyles((styles) => embeddedStylesheet.append(styles));
                 messenger.postFrameLoaded({ contentId: containerId });
 
-                createStepTracker().trackOrderComplete();
+                analyticsTracker.orderPurchased();
             })
             .catch(this.handleUnhandledError);
     }
 
     render(): ReactNode {
-        const {
-            order,
-            config,
-            isLoadingOrder,
-        } = this.props;
+        const { order, config, isLoadingOrder } = this.props;
 
         if (!order || !config || isLoadingOrder()) {
-            return <LoadingSpinner isLoading={ true } />;
+            return <LoadingSpinner isLoading={true} />;
         }
 
         const paymentInstructions = getPaymentInstructions(order);
         const {
-            storeProfile: {
-                orderEmail,
-                storePhoneNumber,
-            },
+            storeProfile: { orderEmail, storePhoneNumber },
             shopperConfig,
-            links: {
-                siteLink,
-            },
+            links: { siteLink },
         } = config;
 
         return (
-            <div className={ classNames(
-                'layout optimizedCheckout-contentPrimary',
-                { 'is-embedded': isEmbedded() }
-            ) }
+            <div
+                className={classNames('layout optimizedCheckout-contentPrimary', {
+                    'is-embedded': isEmbedded(),
+                })}
             >
                 <div className="layout-main">
                     <div className="orderConfirmation">
-                        <ThankYouHeader name={ order.billingAddress.firstName } />
+                        <ThankYouHeader name={order.billingAddress.firstName} />
 
                         <OrderStatus
-                            order={ order }
-                            supportEmail={ orderEmail }
-                            supportPhoneNumber={ storePhoneNumber }
+                            order={order}
+                            supportEmail={orderEmail}
+                            supportPhoneNumber={storePhoneNumber}
                         />
 
-                        { paymentInstructions && <OrderConfirmationSection>
-                            <div
-                                dangerouslySetInnerHTML={ {
-                                    __html: DOMPurify.sanitize(paymentInstructions),
-                                } }
-                                data-test="payment-instructions"
-                            />
-                        </OrderConfirmationSection> }
+                        {paymentInstructions && (
+                            <OrderConfirmationSection>
+                                <div
+                                    dangerouslySetInnerHTML={{
+                                        __html: DOMPurify.sanitize(paymentInstructions),
+                                    }}
+                                    data-test="payment-instructions"
+                                />
+                            </OrderConfirmationSection>
+                        )}
 
-                        { this.renderGuestSignUp({
+                        {this.renderGuestSignUp({
                             shouldShowPasswordForm: order.customerCanBeCreated,
                             customerCanBeCreated: !order.customerId,
                             shopperConfig,
-                        }) }
+                        })}
 
                         <div className="continueButtonContainer">
-                            <form action={ siteLink } method="get" target="_top">
-                                <Button type="submit" variant={ ButtonVariant.Secondary }>
+                            <form action={siteLink} method="get" target="_top">
+                                <Button type="submit" variant={ButtonVariant.Secondary}>
                                     <TranslatedString id="order_confirmation.continue_shopping" />
                                 </Button>
                             </form>
@@ -152,82 +173,88 @@ class OrderConfirmation extends Component<
                     </div>
                 </div>
 
-                { this.renderOrderSummary() }
-                { this.renderErrorModal() }
+                {this.renderOrderSummary()}
+                {this.renderErrorModal()}
             </div>
         );
     }
 
-    private renderGuestSignUp({ customerCanBeCreated, shouldShowPasswordForm, shopperConfig }: {
+    private renderGuestSignUp({
+        customerCanBeCreated,
+        shouldShowPasswordForm,
+        shopperConfig,
+    }: {
         customerCanBeCreated: boolean;
         shouldShowPasswordForm: boolean;
         shopperConfig: ShopperConfig;
     }): ReactNode {
-        const {
-            isSigningUp,
-            hasSignedUp,
-        } = this.state;
+        const { isSigningUp, hasSignedUp } = this.state;
 
         const { order } = this.props;
 
-        return <Fragment>
-            { shouldShowPasswordForm && !hasSignedUp && <GuestSignUpForm
-                customerCanBeCreated={ customerCanBeCreated }
-                isSigningUp={ isSigningUp }
-                onSignUp={ this.handleSignUp }
-                passwordRequirements={ getPasswordRequirementsFromConfig(shopperConfig) }
-            /> }
+        return (
+            <>
+                {shouldShowPasswordForm && !hasSignedUp && (
+                    <GuestSignUpForm
+                        customerCanBeCreated={customerCanBeCreated}
+                        isSigningUp={isSigningUp}
+                        onSignUp={this.handleSignUp}
+                        passwordRequirements={getPasswordRequirementsFromConfig(shopperConfig)}
+                    />
+                )}
 
-            { hasSignedUp && (order?.customerId ? <PasswordSavedSuccessAlert /> : <SignedUpSuccessAlert />) }
-        </Fragment>;
+                {hasSignedUp &&
+                    (order?.customerId ? <PasswordSavedSuccessAlert /> : <SignedUpSuccessAlert />)}
+            </>
+        );
     }
 
     private renderOrderSummary(): ReactNode {
-        const {
-            order,
-            config,
-        } = this.props;
+        const { order, config } = this.props;
 
         if (!order || !config) {
             return null;
         }
 
-        const {
-            currency,
-            shopperCurrency,
-        } = config;
+        const { currency, shopperCurrency } = config;
 
-        return <>
+        return (
             <MobileView>
-                { matched => {
+                {(matched) => {
                     if (matched) {
-                        return <LazyContainer>
-                            <OrderSummaryDrawer
-                                { ...mapToOrderSummarySubtotalsProps(order) }
-                                headerLink={ <PrintLink className="modal-header-link cart-modal-link" /> }
-                                lineItems={ order.lineItems }
-                                shopperCurrency={ shopperCurrency }
-                                storeCurrency={ currency }
-                                total={ order.orderAmount }
-                            />
-                        </LazyContainer>;
+                        return (
+                            <LazyContainer>
+                                <OrderSummaryDrawer
+                                    {...mapToOrderSummarySubtotalsProps(order)}
+                                    headerLink={
+                                        <PrintLink className="modal-header-link cart-modal-link" />
+                                    }
+                                    lineItems={order.lineItems}
+                                    shopperCurrency={shopperCurrency}
+                                    storeCurrency={currency}
+                                    total={order.orderAmount}
+                                />
+                            </LazyContainer>
+                        );
                     }
 
-                    return <aside className="layout-cart">
-                        <LazyContainer>
-                            <OrderSummary
-                                headerLink={ <PrintLink /> }
-                                { ...mapToOrderSummarySubtotalsProps(order) }
-                                lineItems={ order.lineItems }
-                                shopperCurrency={ shopperCurrency }
-                                storeCurrency={ currency }
-                                total={ order.orderAmount }
-                            />
-                        </LazyContainer>
-                    </aside>;
-                } }
+                    return (
+                        <aside className="layout-cart">
+                            <LazyContainer>
+                                <OrderSummary
+                                    headerLink={<PrintLink />}
+                                    {...mapToOrderSummarySubtotalsProps(order)}
+                                    lineItems={order.lineItems}
+                                    shopperCurrency={shopperCurrency}
+                                    storeCurrency={currency}
+                                    total={order.orderAmount}
+                                />
+                            </LazyContainer>
+                        </aside>
+                    );
+                }}
             </MobileView>
-        </>;
+        );
     }
 
     private renderErrorModal(): ReactNode {
@@ -235,9 +262,9 @@ class OrderConfirmation extends Component<
 
         return (
             <ErrorModal
-                error={ error }
-                onClose={ this.handleErrorModalClose }
-                shouldShowErrorCode={ false }
+                error={error}
+                onClose={this.handleErrorModalClose}
+                shouldShowErrorCode={false}
             />
         );
     }
@@ -250,9 +277,11 @@ class OrderConfirmation extends Component<
         const { createAccount, config } = this.props;
 
         const shopperConfig = config && config.shopperConfig;
-        const passwordRequirements = (shopperConfig &&
-            shopperConfig.passwordRequirements &&
-            shopperConfig.passwordRequirements.error) || '';
+        const passwordRequirements =
+            (shopperConfig &&
+                shopperConfig.passwordRequirements &&
+                shopperConfig.passwordRequirements.error) ||
+            '';
 
         this.setState({
             isSigningUp: true,
@@ -268,18 +297,19 @@ class OrderConfirmation extends Component<
                     isSigningUp: false,
                 });
             })
-            .catch(error => {
+            .catch((error) => {
                 this.setState({
-                    error: (error.status < 500) ?
-                        new AccountCreationRequirementsError(error, passwordRequirements) :
-                        new AccountCreationFailedError(error),
+                    error:
+                        error.status < 500
+                            ? new AccountCreationRequirementsError(error, passwordRequirements)
+                            : new AccountCreationFailedError(error),
                     hasSignedUp: false,
                     isSigningUp: false,
                 });
             });
     };
 
-    private handleUnhandledError: (error: Error) => void = error => {
+    private handleUnhandledError: (error: Error) => void = (error) => {
         const { errorLogger } = this.props;
 
         this.setState({ error });
@@ -292,17 +322,12 @@ class OrderConfirmation extends Component<
 }
 
 export function mapToOrderConfirmationProps(
-    context: CheckoutContextProps
+    context: CheckoutContextProps,
 ): WithCheckoutOrderConfirmationProps | null {
     const {
         checkoutState: {
-            data: {
-                getOrder,
-                getConfig,
-            },
-            statuses: {
-                isLoadingOrder,
-            },
+            data: { getOrder, getConfig },
+            statuses: { isLoadingOrder },
         },
         checkoutService,
     } = context;
@@ -318,4 +343,4 @@ export function mapToOrderConfirmationProps(
     };
 }
 
-export default withCheckout(mapToOrderConfirmationProps)(OrderConfirmation);
+export default withAnalytics(withCheckout(mapToOrderConfirmationProps)(OrderConfirmation));

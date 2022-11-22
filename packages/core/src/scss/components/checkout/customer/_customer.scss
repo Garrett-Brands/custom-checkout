@@ -9,6 +9,17 @@
     @include grid-row;
 
     margin-bottom: spacing("single");
+
+    .customerEmail-floating--enabled {
+        @include breakpoint("small") {
+            margin-top: 0;
+            padding-left: $floating-form-field-spacing;
+
+            button {
+                height: $floating-label-input-height;
+            }
+        }
+    }
 }
 
 .customerEmail-action {
@@ -33,6 +44,12 @@
 }
 
 .customerEmail-button {
+    padding: $customerEmail-button-padding;
+    width: 100%;
+}
+
+.stripeCustomerEmail-button {
+    bottom: 3px;
     padding: $customerEmail-button-padding;
     width: 100%;
 }

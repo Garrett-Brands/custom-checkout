@@ -2,7 +2,8 @@ import { CheckoutSelectors, CustomerRequestOptions, CustomError } from '@bigcomm
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
-import { withCheckout, CheckoutContextProps } from '../checkout';
+import { CheckoutContextProps, withCheckout } from '../checkout';
+import { isErrorWithType } from '../common/error';
 import { TranslatedString } from '../locale';
 import { Button, ButtonSize, ButtonVariant } from '../ui/button';
 
@@ -45,7 +46,7 @@ const CustomerInfo: FunctionComponent<CustomerInfoProps & WithCheckoutCustomerIn
                 onSignOut({ isCartEmpty: false });
             }
         } catch (error) {
-            if (error.type === 'checkout_not_available') {
+            if (isErrorWithType(error) && error.type === 'checkout_not_available') {
                 onSignOut({ isCartEmpty: true });
             } else {
                 onSignOutError(error);
@@ -54,35 +55,35 @@ const CustomerInfo: FunctionComponent<CustomerInfoProps & WithCheckoutCustomerIn
     };
 
     return (
-        <div
-            className="customerView"
-            data-test="checkout-customer-info"
-        >
+        <div className="customerView" data-test="checkout-customer-info">
             <div
                 className="customerView-body optimizedCheckout-contentPrimary"
                 data-test="customer-info"
             >
-                { email }
+                {email}
             </div>
 
             <div className="customerView-actions">
-                { isSignedIn && <Button
-                    isLoading={ isSigningOut }
-                    onClick={ handleSignOut }
-                    size={ ButtonSize.Tiny }
-                    testId="sign-out-link"
-                    variant={ ButtonVariant.Secondary }
-                >
-                    <TranslatedString id="customer.sign_out_action" />
-                </Button> }
+                {isSignedIn && (
+                    <Button
+                        isLoading={isSigningOut}
+                        onClick={handleSignOut}
+                        size={ButtonSize.Tiny}
+                        testId="sign-out-link"
+                        variant={ButtonVariant.Secondary}
+                    >
+                        <TranslatedString id="customer.sign_out_action" />
+                    </Button>
+                )}
             </div>
         </div>
     );
 };
 
-function mapToWithCheckoutCustomerInfoProps(
-    { checkoutService, checkoutState }: CheckoutContextProps
-): WithCheckoutCustomerInfoProps | null {
+function mapToWithCheckoutCustomerInfoProps({
+    checkoutService,
+    checkoutState,
+}: CheckoutContextProps): WithCheckoutCustomerInfoProps | null {
     const {
         data: { getBillingAddress, getCheckout, getCustomer },
         statuses: { isSigningOut },
@@ -96,7 +97,8 @@ function mapToWithCheckoutCustomerInfoProps(
         return null;
     }
 
-    const methodId = checkout.payments && checkout.payments.length === 1 ? checkout.payments[0].providerId : '';
+    const methodId =
+        checkout.payments && checkout.payments.length === 1 ? checkout.payments[0].providerId : '';
 
     return {
         email: billingAddress.email || customer.email,

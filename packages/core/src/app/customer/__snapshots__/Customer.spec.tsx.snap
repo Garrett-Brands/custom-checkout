@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Customer when view type is "guest" matches snapshot 1`] = `
-<div>
+<div
+  class="loading-skeleton"
+>
   <div>
     <form
       class="checkout-form"
@@ -20,15 +22,6 @@ exports[`Customer when view type is "guest" matches snapshot 1`] = `
         <div
           class="form-body"
         >
-          <p>
-            <span>
-              Checking out as a 
-              <strong>
-                Guest
-              </strong>
-              ? You'll be able to save your details to create an account with us later.
-            </span>
-          </p>
           <div
             class="customerEmail-container"
           >
@@ -43,7 +36,7 @@ exports[`Customer when view type is "guest" matches snapshot 1`] = `
                   for="email"
                   id="email-label"
                 >
-                  Email Address
+                  Email
                 </label>
                 <input
                   autocomplete="email"
@@ -81,7 +74,7 @@ exports[`Customer when view type is "guest" matches snapshot 1`] = `
                 id="checkout-customer-continue"
                 type="submit"
               >
-                Continue as guest
+                Continue
               </button>
             </div>
           </div>
@@ -102,7 +95,9 @@ exports[`Customer when view type is "guest" matches snapshot 1`] = `
 `;
 
 exports[`Customer when view type is "login" matches snapshot 1`] = `
-<div>
+<div
+  class="loading-skeleton"
+>
   <div>
     <form
       class="checkout-form"
@@ -121,15 +116,6 @@ exports[`Customer when view type is "login" matches snapshot 1`] = `
         <div
           class="form-body"
         >
-          <p>
-            Don't have an account? 
-            <a
-              href="#"
-            >
-              Create an account
-            </a>
-             to continue.
-          </p>
           <div
             class="form-field"
           >
@@ -138,7 +124,7 @@ exports[`Customer when view type is "login" matches snapshot 1`] = `
               for="email"
               id="email-label"
             >
-              Email Address
+              Email
             </label>
             <input
               autocomplete="email"
@@ -187,15 +173,28 @@ exports[`Customer when view type is "login" matches snapshot 1`] = `
                 </div>
               </a>
             </div>
-            <a
-              data-test="forgot-password-link"
-              href="https://store-k1drp8k8.bcapp.dev/login.php?action=reset_password"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              Forgot password?
-            </a>
           </div>
+          <p
+            class="form-legend-container"
+          >
+            <span>
+              <a
+                data-test="forgot-password-link"
+                href="https://store-k1drp8k8.bcapp.dev/login.php?action=reset_password"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Forgot password?
+              </a>
+            </span>
+            <span>
+              <a
+                href="#"
+              >
+                Create an account
+              </a>
+            </span>
+          </p>
           <div
             class="form-actions"
           >

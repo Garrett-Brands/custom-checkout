@@ -1,40 +1,42 @@
 import { PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
-import React, { useCallback, FunctionComponent } from 'react';
+import React, { FunctionComponent, useCallback } from 'react';
 import { Omit } from 'utility-types';
 
-import WalletButtonPaymentMethod, { WalletButtonPaymentMethodProps } from './WalletButtonPaymentMethod';
+import WalletButtonPaymentMethod, {
+    WalletButtonPaymentMethodProps,
+} from './WalletButtonPaymentMethod';
 
 export type GooglePayPaymentMethodProps = Omit<
-  WalletButtonPaymentMethodProps,
-  'buttonId' | 'shouldShowEditButton'
+    WalletButtonPaymentMethodProps,
+    'buttonId' | 'shouldShowEditButton'
 >;
 
-const GooglePayPaymentMethod: FunctionComponent<GooglePayPaymentMethodProps> =
-  ({
+const GooglePayPaymentMethod: FunctionComponent<GooglePayPaymentMethodProps> = ({
     deinitializePayment,
     initializePayment,
     method,
     onUnhandledError = noop,
     ...rest
-  }) => {
-    const initializeGooglePayPayment = useCallback((defaultOptions: PaymentInitializeOptions) => {
-        const reinitializePayment = async (options: PaymentInitializeOptions) => {
-          try {
-            await deinitializePayment({
-              gatewayId: method.gateway,
-              methodId: method.id,
-            });
+}) => {
+    const initializeGooglePayPayment = useCallback(
+        (defaultOptions: PaymentInitializeOptions) => {
+            const reinitializePayment = async (options: PaymentInitializeOptions) => {
+                try {
+                    await deinitializePayment({
+                        gatewayId: method.gateway,
+                        methodId: method.id,
+                    });
 
-            await initializePayment({
-              ...options,
-              gatewayId: method.gateway,
-              methodId: method.id,
-            });
-          } catch (error) {
-            onUnhandledError(error);
-          }
-        };
+                    await initializePayment({
+                        ...options,
+                        gatewayId: method.gateway,
+                        methodId: method.id,
+                    });
+                } catch (error) {
+                    onUnhandledError(error);
+                }
+            };
 
         const mergedOptions = {
           ...defaultOptions,
@@ -49,6 +51,11 @@ const GooglePayPaymentMethod: FunctionComponent<GooglePayPaymentMethodProps> =
             onPaymentSelect: () => reinitializePayment(mergedOptions),
           },
           googlepayauthorizenet: {
+            walletButton: 'walletButton',
+            onError: onUnhandledError,
+            onPaymentSelect: () => reinitializePayment(mergedOptions),
+          },
+          googlepaybnz: {
             walletButton: 'walletButton',
             onError: onUnhandledError,
             onPaymentSelect: () => reinitializePayment(mergedOptions),
@@ -85,25 +92,21 @@ const GooglePayPaymentMethod: FunctionComponent<GooglePayPaymentMethodProps> =
           },
         };
 
-        return initializePayment(mergedOptions);
-      },
-      [
-        deinitializePayment,
-        initializePayment,
-        method,
-        onUnhandledError,
-    ]);
+            return initializePayment(mergedOptions);
+        },
+        [deinitializePayment, initializePayment, method, onUnhandledError],
+    );
 
     return (
         <WalletButtonPaymentMethod
-            { ...rest }
+            {...rest}
             buttonId="walletButton"
-            deinitializePayment={ deinitializePayment }
-            initializePayment={ initializeGooglePayPayment }
-            method={ method }
+            deinitializePayment={deinitializePayment}
+            initializePayment={initializeGooglePayPayment}
+            method={method}
             shouldShowEditButton
         />
     );
-  };
+};
 
 export default GooglePayPaymentMethod;

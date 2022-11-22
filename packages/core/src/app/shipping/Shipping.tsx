@@ -1,12 +1,30 @@
-import { Address, AddressRequestBody, Cart, CheckoutRequestBody, CheckoutSelectors, Consignment, ConsignmentAssignmentRequestBody, ConsignmentUpdateRequestBody, Country, Customer, CustomerRequestOptions, FormField, ShippingInitializeOptions, ShippingRequestOptions } from '@bigcommerce/checkout-sdk';
+import { 
+    Address, 
+    AddressRequestBody, 
+    Cart, 
+    CheckoutRequestBody, 
+    CheckoutSelectors, 
+    Consignment, 
+    ConsignmentAssignmentRequestBody, 
+    ConsignmentUpdateRequestBody, 
+    Country, 
+    Customer, 
+    CustomerRequestOptions, 
+    FormField, 
+    ShippingInitializeOptions, 
+    ShippingRequestOptions 
+} from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
 import React, { Component, ReactNode } from 'react';
 import { createSelector } from 'reselect';
 
+import { AddressFormSkeleton } from '@bigcommerce/checkout/ui';
+
 import { isEqualAddress, mapAddressFromFormValues } from '../address';
-import { withCheckout, CheckoutContextProps } from '../checkout';
-import { EMPTY_ARRAY } from '../common/utility';
-import { LoadingOverlay } from '../ui/loading';
+import { CheckoutContextProps, withCheckout } from '../checkout';
+import CheckoutStepStatus from '../checkout/CheckoutStepStatus';
+import { EMPTY_ARRAY, isFloatingLabelEnabled } from '../common/utility';
+import { PaymentMethodId } from '../payment/paymentMethod';
 
 import { UnassignItemError } from './errors';
 import findLineItems from './findLineItems';
@@ -17,11 +35,13 @@ import ShippingForm from './ShippingForm';
 import ShippingHeader from './ShippingHeader';
 import { SingleShippingFormValues } from './SingleShippingForm';
 import ShippingBanner from './customComponents/shipDate/ShippingBanner';
+import StripeShipping from './stripeUPE/StripeShipping';
 
 export interface ShippingProps {
     isBillingSameAsShipping: boolean;
     cartHasChanged: boolean;
     isMultiShippingMode: boolean;
+    step: CheckoutStepStatus;
     onCreateAccount(): void;
     onToggleMultiShipping(): void;
     onReady?(): void;
@@ -54,6 +74,8 @@ export interface WithCheckoutShippingProps {
     shouldShowAddAddressInCheckout: boolean;
     shouldShowMultiShipping: boolean;
     shouldShowOrderComments: boolean;
+    isStripeLinkEnabled?: boolean;
+    useFloatingLabel?: boolean;
     assignItem(consignment: ConsignmentAssignmentRequestBody): Promise<CheckoutSelectors>;
     deinitializeShippingMethod(options: ShippingRequestOptions): Promise<CheckoutSelectors>;
     deleteConsignments(): Promise<Address | undefined>;
@@ -68,6 +90,7 @@ export interface WithCheckoutShippingProps {
     updateCheckout(payload: CheckoutRequestBody): Promise<CheckoutSelectors>;
     updateShippingAddress(address: Partial<Address>): Promise<CheckoutSelectors>;
     updateConsignment(consignment: ConsignmentUpdateRequestBody): Promise<CheckoutSelectors>;
+    loadPaymentMethods(): Promise<CheckoutSelectors>;
 }
 
 interface ShippingState {
@@ -91,6 +114,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
         const {
             loadShippingAddressFields,
             loadShippingOptions,
+            loadPaymentMethods,
             onReady = noop,
             onUnhandledError = noop,
         } = this.props;
@@ -99,12 +123,10 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
         this.loadGiftMessages(toggleMulti)
 
         try {
-            await Promise.all([
-                loadShippingAddressFields(),
-                loadShippingOptions(),
-            ]);
+            await Promise.all([loadShippingAddressFields(), loadShippingOptions()]);
 
             onReady();
+            await loadPaymentMethods();
         } catch (error) {
             onUnhandledError(error);
         } finally {
@@ -131,6 +153,9 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             setArrivalDate,
             giftMessage,
             setGiftMessage,
+            isStripeLinkEnabled,
+            step,
+            useFloatingLabel,
             ...shippingFormProps
         } = this.props;
 
@@ -139,6 +164,25 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             isGiftOrder,
             giftMessages
         } = this.state;
+
+        if (isStripeLinkEnabled && !customer.email && this.props.countries.length > 0) {
+            return <StripeShipping
+                { ...shippingFormProps }
+                customer={ customer }
+                deinitialize={deinitializeShippingMethod}
+                initialize={initializeShippingMethod}
+                isBillingSameAsShipping={isBillingSameAsShipping}
+                isGuest={ isGuest }
+                isLoading={ isInitializing }
+                isShippingMethodLoading={ this.props.isLoading }
+                isMultiShippingMode={isMultiShippingMode}
+                onMultiShippingChange={ this.handleMultiShippingModeSwitch }
+                onSubmit={this.handleSingleShippingSubmit}
+                shouldShowMultiShipping={ shouldShowMultiShipping }
+                step={step}
+                updateAddress={updateShippingAddress}
+            />;
+        }
 
         const setIsGiftOrder = (isGiftOrder: boolean) => {
             this.setState({isGiftOrder: isGiftOrder})
@@ -155,37 +199,34 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
         }
 
         return (
-            <div className="checkout-form">
-                { isMultiShippingMode && !isGuest &&
-                    <ShippingBanner
-                        className='multi-ship-alert-banner'
-                        mainMessage={'You may experience increased screen loading times for orders with multiple destinations.'}
+            <AddressFormSkeleton isLoading={isInitializing}>
+                <div className="checkout-form">
+                    { isMultiShippingMode && !isGuest &&
+                        <ShippingBanner
+                            className='multi-ship-alert-banner'
+                            mainMessage={'You may experience increased screen loading times for orders with multiple destinations.'}
+                        />
+                    }
+                    <ShippingHeader
+                        isGuest={isGuest}
+                        isMultiShippingMode={isMultiShippingMode}
+                        onMultiShippingChange={this.handleMultiShippingModeSwitch}
+                        shouldShowMultiShipping={shouldShowMultiShipping}
                     />
-                }
-                <ShippingHeader
-                    isGuest={ isGuest }
-                    isMultiShippingMode={ isMultiShippingMode }
-                    onMultiShippingChange={ this.handleMultiShippingModeSwitch }
-                    shouldShowMultiShipping={ shouldShowMultiShipping }
-                />
-
-                <LoadingOverlay
-                    isLoading={ isInitializing }
-                    unmountContentWhenLoading
-                >
                     <ShippingForm
-                        { ...shippingFormProps }
-                        addresses={ customer.addresses }
-                        deinitialize={ deinitializeShippingMethod }
-                        initialize={ initializeShippingMethod }
-                        isBillingSameAsShipping = { isBillingSameAsShipping }
-                        isGuest={ isGuest }
-                        isMultiShippingMode={ isMultiShippingMode }
-                        onMultiShippingSubmit={ this.handleMultiShippingSubmit }
-                        onSingleShippingSubmit={ this.handleSingleShippingSubmit }
-                        onUseNewAddress={ this.handleUseNewAddress }
-                        shouldShowSaveAddress={ !isGuest }
-                        updateAddress={ updateShippingAddress }
+                        {...shippingFormProps}
+                        addresses={customer.addresses}
+                        deinitialize={deinitializeShippingMethod}
+                        initialize={initializeShippingMethod}
+                        isBillingSameAsShipping={isBillingSameAsShipping}
+                        isGuest={isGuest}
+                        isMultiShippingMode={isMultiShippingMode}
+                        onMultiShippingSubmit={this.handleMultiShippingSubmit}
+                        onSingleShippingSubmit={this.handleSingleShippingSubmit}
+                        onUseNewAddress={this.handleUseNewAddress}
+                        shouldShowSaveAddress={!isGuest}
+                        updateAddress={updateShippingAddress}
+                        useFloatingLabel={useFloatingLabel}
                         shipDate={ shipDate }
                         setShipDate={ setShipDate }
                         arrivalDate={ arrivalDate }
@@ -198,9 +239,8 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
                         setGiftMessages={ setGiftMessages }
                         loadGiftMessages={ this.loadGiftMessages }
                     />
-                    
-                </LoadingOverlay>
-            </div>
+                </div>
+            </AddressFormSkeleton>
         );
     }
 
@@ -299,11 +339,12 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
         const promises: Array<Promise<CheckoutSelectors>> = [];
         const hasRemoteBilling = this.hasRemoteBilling(methodId);
 
-        if (!isEqualAddress(updatedShippingAddress, shippingAddress)) {
+        if (!isEqualAddress(updatedShippingAddress, shippingAddress) || shippingAddress?.shouldSaveAddress !== updatedShippingAddress?.shouldSaveAddress) {
             promises.push(updateShippingAddress(updatedShippingAddress || {}));
         }
 
-        if (billingSameAsShipping &&
+        if (
+            billingSameAsShipping &&
             updatedShippingAddress &&
             !isEqualAddress(updatedShippingAddress, billingAddress) &&
             !hasRemoteBilling
@@ -320,46 +361,58 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
 
             navigateNextStep(billingSameAsShipping);
         } catch (error) {
-            onUnhandledError(error);
+            if (error instanceof Error) {
+                onUnhandledError(error);
+            }
         }
     };
 
-    private hasRemoteBilling: (methodId?: string) => boolean = methodId => {
+    private hasRemoteBilling: (methodId?: string) => boolean = (methodId) => {
         const PAYMENT_METHOD_VALID = ['amazonpay'];
 
-        return PAYMENT_METHOD_VALID.some(method => method === methodId);
+        return PAYMENT_METHOD_VALID.some((method) => method === methodId);
     };
 
-    private handleUseNewAddress: (address: Address, itemId: string) => void = async (address, itemId) => {
+    private handleUseNewAddress: (address: Address, itemId: string) => void = async (
+        address,
+        itemId,
+    ) => {
         const { unassignItem, onUnhandledError, isMultiShippingMode } = this.props;
 
         try {
             await unassignItem({
                 address,
-                lineItems: [{
-                    quantity: 1,
-                    itemId,
-                }],
+                lineItems: [
+                    {
+                        quantity: 1,
+                        itemId,
+                    },
+                ],
             });
 
             location.href = '/account.php?action=add_shipping_address&from=checkout';
-        } catch (e) {
-            onUnhandledError(new UnassignItemError(e));
+        } catch (error) {
+            if (error instanceof UnassignItemError) {
+                onUnhandledError(new UnassignItemError(error));
+            }
         }
 
         this.loadGiftMessages(isMultiShippingMode)
     };
 
-    private handleMultiShippingSubmit: (values: MultiShippingFormValues) => void = async ({ orderComment }) => {
+    private handleMultiShippingSubmit: (values: MultiShippingFormValues) => void = async ({
+        orderComment,
+    }) => {
         const {
-            consignments,
             customerMessage,
             updateCheckout,
             updateConsignment,
             navigateNextStep,
             onUnhandledError,
+            consignments,
             shipDate,
-            cart
+            cart,
+            isMultiShippingMode
         } = this.props;
 
         const { giftMessages } = this.state;
@@ -404,7 +457,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             await promises.push(updateConsignment(payload || {}))
         }
 
-        if (consignments.length > 1) {
+        if (isMultiShippingMode || consignments.length > 1) {
             consignments.map((consignment) => {
                 updateConsignmentCustomFields(consignment)
             })
@@ -419,7 +472,9 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
 
             navigateNextStep(false);
         } catch (error) {
-            onUnhandledError(error);
+            if (error instanceof Error) {
+                onUnhandledError(error);
+            }
         }
     };
 }
@@ -432,14 +487,13 @@ const deleteConsignmentsSelector = createSelector(
             return;
         }
 
-        const [{ data }] = await Promise.all(consignments.map(({ id }) =>
-            deleteConsignment(id)
-        ));
+        const [{ data }] = await Promise.all(consignments.map(({ id }) => deleteConsignment(id)));
 
         return data.getShippingAddress();
-    }
+    },
 );
 
+// tslint:disable-next-line:cyclomatic-complexity
 export function mapToShippingProps({
     checkoutService,
     checkoutState,
@@ -455,6 +509,7 @@ export function mapToShippingProps({
             getBillingAddress,
             getShippingAddressFields,
             getShippingCountries,
+            getPaymentMethod,
         },
         statuses: {
             isShippingStepPending,
@@ -490,28 +545,28 @@ export function mapToShippingProps({
 
     const methodId = getShippingMethodId(checkout);
     const shippableItemsCount = getShippableItemsCount(cart);
-    const isLoading = (
+    const isLoading =
         isLoadingShippingOptions() ||
         isSelectingShippingOption() ||
         isUpdatingConsignment() ||
         isCreatingConsignments() ||
         isUpdatingBillingAddress() ||
         isUpdatingCheckout() ||
-        isCreatingCustomerAddress()
-    );
-    const shouldShowMultiShipping = (
-        hasMultiShippingEnabled &&
-        !methodId &&
-        shippableItemsCount > 1 &&
-        shippableItemsCount < 50
-    );
+        isCreatingCustomerAddress();
+    const shouldShowMultiShipping =
+        hasMultiShippingEnabled && !methodId && shippableItemsCount > 1 && shippableItemsCount < 50;
     const countriesWithAutocomplete = ['US', 'CA', 'AU', 'NZ'];
+    const stripeUpe = getPaymentMethod('card', PaymentMethodId.StripeUPE);
+    const linkEnabled = stripeUpe?.initializationData.enableLink || false;
+    const stripeUpeSupportedCurrency = cart?.currency.code === 'USD' || false;
+    const stripeUpeLinkEnabled = linkEnabled && stripeUpeSupportedCurrency;
 
     if (features['CHECKOUT-4183.checkout_google_address_autocomplete_uk']) {
         countriesWithAutocomplete.push('GB');
     }
 
-    const shippingAddress = !shouldShowMultiShipping && consignments.length > 1 ? undefined : getShippingAddress();
+    const shippingAddress =
+        !shouldShowMultiShipping && consignments.length > 1 ? undefined : getShippingAddress();
 
     return {
         assignItem: checkoutService.assignItemsToAddress,
@@ -537,7 +592,8 @@ export function mapToShippingProps({
         methodId,
         shippingAddress,
         shouldShowMultiShipping,
-        shouldShowAddAddressInCheckout: features['CHECKOUT-4726.add_address_in_multishipping_checkout'],
+        shouldShowAddAddressInCheckout:
+            features['CHECKOUT-4726.add_address_in_multishipping_checkout'],
         shouldShowOrderComments: enableOrderComments,
         signOut: checkoutService.signOutCustomer,
         unassignItem: checkoutService.unassignItemsToAddress,
@@ -545,6 +601,9 @@ export function mapToShippingProps({
         updateCheckout: checkoutService.updateCheckout,
         updateShippingAddress: checkoutService.updateShippingAddress,
         updateConsignment: checkoutService.updateConsignment,
+        isStripeLinkEnabled: stripeUpeLinkEnabled,
+        loadPaymentMethods: checkoutService.loadPaymentMethods,
+        useFloatingLabel: isFloatingLabelEnabled(config.checkoutSettings),
     };
 }
 

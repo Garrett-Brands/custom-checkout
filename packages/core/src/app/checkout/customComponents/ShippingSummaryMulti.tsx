@@ -3,7 +3,7 @@ import SelectedShipDate from "../../shipping/customComponents/shipDate/SelectedS
 import GiftMessageSummary from "../../shipping/customComponents/giftOptions/GiftMessageSummary";
 
 const ShippingSummaryMulti = (props: any) => {
-    const { cart, consignment, shipDate } = props
+    const { cart, consignment } = props
 
     var isActiveCart: boolean
     var savedCartID: { fieldValue: any; }
@@ -14,9 +14,9 @@ const ShippingSummaryMulti = (props: any) => {
         var savedShipDate
         savedShipDate = consignment.shippingAddress.customFields.find((customField: { fieldId: string; }) => customField.fieldId === 'field_43')
         savedShipDate = savedShipDate?.fieldValue
-        if (shipDate.getYear() !== 69) {
-            return <SelectedShipDate shipDate={ shipDate } />
-        } 
+        // if (shipDate.getYear() !== 69) {
+        //     return <SelectedShipDate shipDate={ shipDate } />
+        // } 
         if (isActiveCart && savedShipDate) {
             return <SelectedShipDate shipDate={ new Date(`${savedShipDate}`) } />
         }

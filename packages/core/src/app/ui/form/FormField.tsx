@@ -1,6 +1,6 @@
 import { FieldProps } from 'formik';
 import { kebabCase } from 'lodash';
-import React, { memo, useCallback, Fragment, FunctionComponent, ReactNode } from 'react';
+import React, { FunctionComponent, memo, ReactNode, useCallback } from 'react';
 
 import BasicFormField from './BasicFormField';
 import FormFieldError from './FormFieldError';
@@ -13,6 +13,7 @@ export interface FormFieldProps {
     labelContent?: ReactNode;
     footer?: ReactNode;
     id?: string;
+    useFloatingLabel?: boolean;
     input(field: FieldProps<string>): ReactNode;
     onChange?(value: string): void;
 }
@@ -26,39 +27,46 @@ const FormField: FunctionComponent<FormFieldProps> = ({
     input,
     name,
     id,
+    useFloatingLabel,
 }) => {
-    const renderField = useCallback(props => (
-        <Fragment>
-            { label && (typeof label === 'function' ? label(name) : label) }
-            { labelContent && !label && <Label htmlFor={ name } id={ `${id ?? name}-label` }>
-                { labelContent }
-            </Label> }
+    const renderField = useCallback(
+        (props) => (
+            <>
+                {useFloatingLabel && input(props)}
 
-            { input(props) }
+                {label && (typeof label === 'function' ? label(name) : label)}
+                {labelContent && !label && (
+                    <Label
+                        htmlFor={name}
+                        id={`${id ?? name}-label`}
+                        useFloatingLabel={useFloatingLabel}
+                    >
+                        {labelContent}
+                    </Label>
+                )}
 
-            <FormFieldError
-                errorId={ `${id ?? name}-field-error-message` }
-                name={ name }
-                testId={ `${kebabCase(name)}-field-error-message` }
-            />
+                {!useFloatingLabel && input(props)}
 
-            { footer }
-        </Fragment>
-    ), [
-        label,
-        labelContent,
-        id,
-        input,
-        name,
-        footer,
-    ]);
+                <FormFieldError
+                    errorId={`${id ?? name}-field-error-message`}
+                    name={name}
+                    testId={`${kebabCase(name)}-field-error-message`}
+                />
 
-    return <BasicFormField
-        additionalClassName={ additionalClassName }
-        name={ name }
-        onChange={ onChange }
-        render={ renderField }
-    />;
+                {footer}
+            </>
+        ),
+        [label, labelContent, id, input, name, footer, useFloatingLabel],
+    );
+
+    return (
+        <BasicFormField
+            additionalClassName={additionalClassName}
+            name={name}
+            onChange={onChange}
+            render={renderField}
+        />
+    );
 };
 
 export default memo(FormField);

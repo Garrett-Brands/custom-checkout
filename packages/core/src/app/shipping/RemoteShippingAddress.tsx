@@ -1,4 +1,9 @@
-import { CheckoutSelectors, FormField, ShippingInitializeOptions, ShippingRequestOptions } from '@bigcommerce/checkout-sdk';
+import {
+    CheckoutSelectors,
+    FormField,
+    ShippingInitializeOptions,
+    ShippingRequestOptions,
+} from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
 import React, { PureComponent, ReactNode } from 'react';
 
@@ -8,6 +13,7 @@ export interface RemoteShippingAddressProps {
     containerId: string;
     methodId: string;
     formFields: FormField[];
+    useFloatingLabel?: boolean;
     deinitialize(options?: ShippingRequestOptions): Promise<CheckoutSelectors>;
     initialize(options?: ShippingInitializeOptions): Promise<CheckoutSelectors>;
     onUnhandledError?(error: Error): void;
@@ -16,11 +22,7 @@ export interface RemoteShippingAddressProps {
 
 class RemoteShippingAddress extends PureComponent<RemoteShippingAddressProps> {
     async componentDidMount(): Promise<void> {
-        const {
-            initialize,
-            methodId,
-            onUnhandledError = noop,
-        } = this.props;
+        const { initialize, methodId, onUnhandledError = noop } = this.props;
 
         try {
             await initialize({ methodId });
@@ -30,11 +32,7 @@ class RemoteShippingAddress extends PureComponent<RemoteShippingAddressProps> {
     }
 
     async componentWillUnmount(): Promise<void> {
-        const {
-            deinitialize,
-            methodId,
-            onUnhandledError = noop,
-        } = this.props;
+        const { deinitialize, methodId, onUnhandledError = noop } = this.props;
 
         try {
             await deinitialize({ methodId });
@@ -44,39 +42,38 @@ class RemoteShippingAddress extends PureComponent<RemoteShippingAddressProps> {
     }
 
     render(): ReactNode {
-        const {
-            containerId,
-            formFields,
-            methodId,
-        } = this.props;
+        const { containerId, formFields, methodId, useFloatingLabel } = this.props;
 
         return (
             <>
                 <div
-                    className={ `widget address-widget widget--${methodId}` }
-                    id={ containerId }
-                    tabIndex={ -1 }
+                    className={`widget address-widget widget--${methodId}`}
+                    id={containerId}
+                    tabIndex={-1}
                 />
                 <Fieldset>
-                {
-                    formFields.filter(({ custom }) => custom).map(field => (
-                        <DynamicFormField
-                            field={ field }
-                            key={ `${field.id}-${field.name}` }
-                            onChange={ this.handleFieldValueChange(field.name) }
-                            parentFieldName="shippingAddress.customFields"
-                        />
-                    ))
-                }
+                    {formFields
+                        .filter(({ custom }) => custom)
+                        .map((field) => (
+                            <DynamicFormField
+                                field={field}
+                                key={`${field.id}-${field.name}`}
+                                onChange={this.handleFieldValueChange(field.name)}
+                                parentFieldName="shippingAddress.customFields"
+                                useFloatingLabel={useFloatingLabel}
+                            />
+                        ))}
                 </Fieldset>
             </>
         );
     }
 
-    private handleFieldValueChange: (name: string) => (value: string) => void = name => value => {
-        const { onFieldChange } = this.props;
-        onFieldChange(name, value);
-    };
+    private handleFieldValueChange: (name: string) => (value: string) => void =
+        (name) => (value) => {
+            const { onFieldChange } = this.props;
+
+            onFieldChange(name, value);
+        };
 }
 
 export default RemoteShippingAddress;
