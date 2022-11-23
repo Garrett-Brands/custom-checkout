@@ -102,7 +102,7 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps, Shipping
             : products
         }
 
-        const shippingSurchargeMessage = 'UPS increased their shipping prices, resulting in a holiday surcharge per box.'
+        const shippingSurchargeMessage = 'UPS increased their shipping prices, resulting in a holiday surcharge per item.'
 
         return (
             <>

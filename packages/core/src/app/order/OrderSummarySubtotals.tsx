@@ -5,6 +5,7 @@ import { TranslatedString } from '../locale';
 
 import OrderSummaryDiscount from './OrderSummaryDiscount';
 import OrderSummaryPrice from './OrderSummaryPrice';
+import ShippingPriceDetail from './customComponents/ShippingPriceDetail';
 
 export interface OrderSummarySubtotalsProps {
     coupons: Coupon[];
@@ -87,6 +88,8 @@ const OrderSummarySubtotals: FunctionComponent<OrderSummarySubtotalsProps> = ({
                 testId="cart-shipping"
                 zeroLabel={<TranslatedString id="cart.free_text" />}
             />
+
+            <ShippingPriceDetail />
 
             {!!handlingAmount && (
                 <OrderSummaryPrice
