@@ -414,10 +414,12 @@ class Checkout extends Component<
         } = this.state;
 
         const setShipDate = (shipDate: any) => {
+            shipDate.setHours(0,0,0,0)
             this.setState({shipDate: shipDate})
         }
 
         const setArrivalDate = (arrivalDate: Date) => {
+            arrivalDate.setHours(0,0,0,0)
             this.setState({arrivalDate: arrivalDate})
         }
 

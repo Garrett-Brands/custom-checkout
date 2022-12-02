@@ -27,7 +27,7 @@ const ShipDate = (props: any) => {
 
     const today = new Date()
     const todayReset = today.setHours(0,0,0,0)
-    const advanceShippingMessage = "Ordering to enjoy at a later date? Schedule your shipping date up to 10 days in advance. Available on select items."
+    const advanceShippingMessage = "Ordering to enjoy at a later date? Schedule your shipping date up to 25 days in advance. Available on select items."
     const shipDateMessage = 'Cook and ship date is when your order is cooked, it leaves our kitchen on the same day.'
     const arrivalDateMessage = 'Estimated arrival date depends on the ship date and UPS shipping method chosen.'
     const arrivalDateMessageMulti = 'Arrival date depends on the ship date, destination, and UPS shipping method chosen.'
@@ -72,18 +72,18 @@ const ShipDate = (props: any) => {
     }, [nextAvailableDate])
 
     useEffect(() => {
+        if (Object.keys(address).length > 0 && selectedShippingOption && !isMultiShippingMode) {
+            fetchUPSEstimate()
+        }
+    }, [shipDate])
+
+    useEffect(() => {
         if (props.consignments[0]) {
             const { address, selectedShippingOption } = props.consignments[0]
             setAddress(address)
             setSelectedShippingOption(selectedShippingOption)
         }
     }, [props])
-
-    useEffect(() => {
-        if (Object.keys(address).length > 0 && selectedShippingOption && !isMultiShippingMode) {
-            fetchUPSEstimate()
-        }
-    }, [shipDate, address, selectedShippingOption])
 
     useEffect(() => {
         var itemsUnavailableToShip = new Array
@@ -130,7 +130,16 @@ const ShipDate = (props: any) => {
     }
 
     const filterDates = (date: Date) => {
-        return !isToday(date) && isWeekday(date) && !isBlackoutDate(date)
+        return !isToday(date) && isWeekday(date) || isAvailableWeekendDate(date) && !isBlackoutDate(date)
+    }
+
+    const isAvailableWeekendDate = (date: Date) => {
+        const availableWeekendDates = ["2022-12-10", "2022-12-11", "2022-12-17", "2022-12-18"]
+        const year = date.getFullYear()
+        const month = String(date.getMonth() + 1).padStart(2, '0')
+        const day = String(date.getDate()).padStart(2, '0')
+        const formattedDate = [year, month, day].join('-')
+        return availableWeekendDates.includes(formattedDate)
     }
 
     const isAfterNextAvailable = (date: Date) => {
@@ -167,7 +176,7 @@ const ShipDate = (props: any) => {
 
     const maxDate = () => {
         const maxDate = new Date(todayReset)
-        maxDate.setDate(maxDate.getDate() + 10)
+        maxDate.setDate(maxDate.getDate() + 25)
         return maxDate
     }
 

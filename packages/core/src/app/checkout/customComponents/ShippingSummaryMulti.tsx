@@ -14,9 +14,6 @@ const ShippingSummaryMulti = (props: any) => {
         var savedShipDate
         savedShipDate = consignment.shippingAddress.customFields.find((customField: { fieldId: string; }) => customField.fieldId === 'field_43')
         savedShipDate = savedShipDate?.fieldValue
-        // if (shipDate.getYear() !== 69) {
-        //     return <SelectedShipDate shipDate={ shipDate } />
-        // } 
         if (isActiveCart && savedShipDate) {
             return <SelectedShipDate shipDate={ new Date(`${savedShipDate}`) } />
         }

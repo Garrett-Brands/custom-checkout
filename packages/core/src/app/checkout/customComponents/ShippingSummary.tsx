@@ -15,9 +15,6 @@ const ShippingSummary = (props: any) => {
         var savedShipDate
         savedShipDate = consignment.shippingAddress.customFields.find((customField: { fieldId: string; }) => customField.fieldId === 'field_43')
         savedShipDate = savedShipDate?.fieldValue
-        // if (shipDate.getYear() !== 69) {
-        //     return <SelectedShipDate shipDate={ shipDate } />
-        // } 
         if (isActiveCart && savedShipDate) {
             return <SelectedShipDate shipDate={ new Date(`${savedShipDate}`) } />
         }
@@ -27,9 +24,6 @@ const ShippingSummary = (props: any) => {
         var savedArrivalDate
         savedArrivalDate = consignment.shippingAddress.customFields.find((customField: { fieldId: string; }) => customField.fieldId === 'field_47')
         savedArrivalDate = savedArrivalDate?.fieldValue
-        // if (arrivalDate.getYear() !== 69) {
-        //     return <ArrivalDate arrivalDate={ arrivalDate } />
-        // } 
         if (isActiveCart && savedArrivalDate) {
             return <ArrivalDate arrivalDate={ new Date(`${savedArrivalDate}`) } />
         }
