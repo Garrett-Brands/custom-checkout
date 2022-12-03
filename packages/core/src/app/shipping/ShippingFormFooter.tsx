@@ -181,7 +181,7 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps, Shipping
 
                 <div className="form-actions">
                     <Button
-                        disabled={shouldDisableSubmit}
+                        disabled={ shouldDisableSubmit || unavailableItems.length > 0 || itemsUnavailableToShip.length > 0 }
                         id="checkout-shipping-continue"
                         isLoading={isLoading}
                         type="submit"
