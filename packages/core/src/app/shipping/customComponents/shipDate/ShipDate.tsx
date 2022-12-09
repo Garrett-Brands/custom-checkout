@@ -48,6 +48,12 @@ const ShipDate = (props: any) => {
     }, [])
 
     useEffect(() => {
+        if (Object.keys(address).length > 0 && selectedShippingOption && !isMultiShippingMode) {
+            fetchUPSEstimate()
+        }
+    }, [shipDate, address, selectedShippingOption, isMultiShippingMode])
+
+    useEffect(() => {
         setAvailableDates(getAvailableDates(today, maxDate()))
     }, [blackoutDates])
 
@@ -70,12 +76,6 @@ const ShipDate = (props: any) => {
         ? setShipDate(currentShipDate)
         : setShipDate(nextAvailableDate) )
     }, [nextAvailableDate])
-
-    useEffect(() => {
-        if (Object.keys(address).length > 0 && selectedShippingOption && !isMultiShippingMode) {
-            fetchUPSEstimate()
-        }
-    }, [shipDate])
 
     useEffect(() => {
         if (props.consignments[0]) {
