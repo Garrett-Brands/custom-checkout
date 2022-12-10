@@ -130,7 +130,8 @@ const ShipDate = (props: any) => {
     }
 
     const filterDates = (date: Date) => {
-        return !isToday(date) && isWeekday(date) && !isBlackoutDate(date) || isAvailableWeekendDate(date) && !isBlackoutDate(date)
+        return !isToday(date) && isWeekday(date) && !isBlackoutDate(date) ||
+        !isToday(date) && isAvailableWeekendDate(date) && !isBlackoutDate(date)
     }
 
     const isAvailableWeekendDate = (date: Date) => {
