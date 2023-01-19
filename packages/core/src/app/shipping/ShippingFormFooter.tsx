@@ -103,6 +103,7 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps, Shipping
         }
 
         const shippingSurchargeMessage = 'UPS increased their shipping prices, resulting in a holiday surcharge per item.'
+        const surchargeIsActive = false
 
         return (
             <>
@@ -124,11 +125,13 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps, Shipping
                         </>
                     }
                 >
-                    <ShippingBanner
-                        className='shipping-surcharge-banner'
-                        mainMessage='?'
-                        secondMessage={shippingSurchargeMessage}
-                    />
+                    { surchargeIsActive &&
+                        <ShippingBanner
+                            className='shipping-surcharge-banner'
+                            mainMessage='?'
+                            secondMessage={shippingSurchargeMessage}
+                        />
+                    }
                     <ShippingOptions
                         isMultiShippingMode={isMultiShippingMode}
                         isUpdatingAddress={isLoading}
