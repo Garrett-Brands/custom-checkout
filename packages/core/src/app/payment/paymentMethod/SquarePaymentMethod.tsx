@@ -3,11 +3,13 @@ import { noop } from 'lodash';
 import React, { FunctionComponent, useCallback, useContext } from 'react';
 import { Omit } from 'utility-types';
 
+
 import PaymentContext from '../PaymentContext';
 
 import HostedFieldPaymentMethod, {
     HostedFieldPaymentMethodProps,
 } from './HostedFieldPaymentMethod';
+
 
 export type SquarePaymentMethodProps = Omit<
     HostedFieldPaymentMethodProps,
@@ -53,19 +55,19 @@ const SquarePaymentMethod: FunctionComponent<SquarePaymentMethodProps> = ({
     );
 
     return (
-        <HostedFieldPaymentMethod
-            {...rest}
-            cardCodeId="sq-cvv"
-            cardExpiryId="sq-expiration-date"
-            cardNumberId="sq-card-number"
-            initializePayment={initializeSquarePayment}
-            method={method}
-            onUnhandledError={(e) => {
-                onUnhandledError(e);
-                paymentContext?.disableSubmit(method, true);
-            }}
-            postalCodeId="sq-postal-code"
-        />
+            <HostedFieldPaymentMethod
+                {...rest}
+                cardCodeId="sq-cvv"
+                cardExpiryId="sq-expiration-date"
+                cardNumberId="sq-card-number"
+                initializePayment={initializeSquarePayment}
+                method={method}
+                onUnhandledError={(e) => {
+                    onUnhandledError(e);
+                    paymentContext?.disableSubmit(method, true);
+                }}
+                postalCodeId="sq-postal-code"
+            />
     );
 };
 

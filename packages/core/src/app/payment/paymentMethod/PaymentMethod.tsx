@@ -13,7 +13,6 @@ import { CheckoutContextProps, withCheckout } from '../../checkout';
 import AdyenV2PaymentMethod from './AdyenV2PaymentMethod';
 import AdyenV3PaymentMethod from './AdyenV3PaymentMethod';
 import AffirmPaymentMethod from './AffirmPaymentMethod';
-import AmazonPaymentMethod from './AmazonPaymentMethod';
 import AmazonPayV2PaymentMethod from './AmazonPayV2PaymentMethod';
 import BarclaycardPaymentMethod from './BarclaycardPaymentMethod';
 import BlueSnapV2PaymentMethod from './BlueSnapV2PaymentMethod';
@@ -32,7 +31,6 @@ import KlarnaV2PaymentMethod from './KlarnaV2PaymentMethod';
 import MasterpassPaymentMethod from './MasterpassPaymentMethod';
 import MolliePaymentMethod from './MolliePaymentMethod';
 import MonerisPaymentMethod from './MonerisPaymentMethod';
-import OfflinePaymentMethod from './OfflinePaymentMethod';
 import OpyPaymentMethod from './OpyPaymentMethod';
 import PaymentMethodId from './PaymentMethodId';
 import PaymentMethodProviderType from './PaymentMethodProviderType';
@@ -101,10 +99,6 @@ const PaymentMethodComponent: FunctionComponent<
 
     if (method.gateway === PaymentMethodId.StripeUPE) {
         return <StripeUPEPaymentMethod {...props} />;
-    }
-
-    if (method.id === PaymentMethodId.Amazon) {
-        return <AmazonPaymentMethod {...props} />;
     }
 
     if (method.id === PaymentMethodId.AmazonPay) {
@@ -245,10 +239,6 @@ const PaymentMethodComponent: FunctionComponent<
         method.type === PaymentMethodProviderType.Hosted
     ) {
         return <HostedPaymentMethod {...props} />;
-    }
-
-    if (method.type === PaymentMethodProviderType.Offline) {
-        return <OfflinePaymentMethod {...props} />;
     }
 
     if (method.id === PaymentMethodId.Opy) {

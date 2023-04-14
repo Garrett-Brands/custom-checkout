@@ -39,6 +39,7 @@ export interface CustomerProps {
     step: CheckoutStepStatus;
     isEmbedded?: boolean;
     isSubscribed: boolean;
+    isWalletButtonsOnTop: boolean;
     checkEmbeddedSupport?(methodIds: string[]): void;
     onChangeViewType?(viewType: CustomerViewType): void;
     onAccountCreated?(): void;
@@ -76,8 +77,7 @@ export interface WithCheckoutCustomerProps {
     isAccountCreationEnabled: boolean;
     createAccountError?: Error;
     signInError?: Error;
-    isStripeLinkEnabled?: boolean;
-    useFloatingLabel?: boolean;
+    isFloatingLabelEnabled?: boolean;
     clearError(error: Error): Promise<CheckoutSelectors>;
     continueAsGuest(credentials: GuestCredentials): Promise<CheckoutSelectors>;
     deinitializeCustomer(options: CustomerRequestOptions): Promise<CheckoutSelectors>;
@@ -88,7 +88,6 @@ export interface WithCheckoutCustomerProps {
     sendLoginEmail(params: { email: string }): Promise<CheckoutSelectors>;
     signIn(credentials: CustomerCredentials): Promise<CheckoutSelectors>;
     createAccount(values: CustomerAccountRequestBody): Promise<CheckoutSelectors>;
-    loadPaymentMethods(): Promise<CheckoutSelectors>;
 }
 
 export interface CustomerState {
@@ -109,7 +108,6 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
     async componentDidMount(): Promise<void> {
         const {
             initializeCustomer,
-            loadPaymentMethods,
             email,
             onReady = noop,
             onUnhandledError = noop,
@@ -119,8 +117,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
         this.draftEmail = email;
 
         try {
-            await loadPaymentMethods();
-            if (providerWithCustomCheckout !== PaymentMethodId.StripeUPE) {
+            if (providerWithCustomCheckout && providerWithCustomCheckout !== PaymentMethodId.StripeUPE) {
                 await initializeCustomer({methodId: providerWithCustomCheckout});
             }
         } catch (error) {
@@ -175,66 +172,61 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
             isExecutingPaymentMethodCheckout = false,
             isInitializing = false,
             isSubscribed,
+            isWalletButtonsOnTop,
             privacyPolicyUrl,
             requiresMarketingConsent,
-            isStripeLinkEnabled,
+            providerWithCustomCheckout,
             onUnhandledError = noop,
             step,
-            useFloatingLabel,
+            isFloatingLabelEnabled,
         } = this.props;
+        const checkoutButtons = isWalletButtonsOnTop
+          ? null
+          : <CheckoutButtonList
+            checkEmbeddedSupport={checkEmbeddedSupport}
+            deinitialize={deinitializeCustomer}
+            initialize={initializeCustomer}
+            isInitializing={isInitializing}
+            methodIds={checkoutButtonIds}
+            onError={onUnhandledError}
+          />;
+
+        const isLoadingGuestForm = isWalletButtonsOnTop ?
+            isContinuingAsGuest :
+            isContinuingAsGuest || isInitializing || isExecutingPaymentMethodCheckout;
 
         return (
-            isStripeLinkEnabled ?
+            providerWithCustomCheckout === PaymentMethodId.StripeUPE ?
                 <StripeGuestForm
-                    canSubscribe={ canSubscribe }
-                    checkoutButtons={
-                        <CheckoutButtonList
-                            checkEmbeddedSupport={checkEmbeddedSupport}
-                            deinitialize={deinitializeCustomer}
-                            initialize={initializeCustomer}
-                            isInitializing={isInitializing}
-                            methodIds={checkoutButtonIds}
-                            onError={onUnhandledError}
-                        />
-                    }
+                    canSubscribe={canSubscribe}
+                    checkoutButtons={checkoutButtons}
                     continueAsGuestButtonLabelId="customer.continue"
-                    defaultShouldSubscribe={ isSubscribed }
-                    deinitialize={ deinitializeCustomer }
-                    email={ this.draftEmail || email }
-                    initialize={ initializeCustomer }
-                    isLoading={ isContinuingAsGuest || isInitializing || isExecutingPaymentMethodCheckout }
-                    onChangeEmail={ this.handleChangeEmail }
-                    onContinueAsGuest={ this.handleContinueAsGuest }
-                    onShowLogin={ this.handleShowLogin }
-                    privacyPolicyUrl={ privacyPolicyUrl }
-                    requiresMarketingConsent={ requiresMarketingConsent }
-                    step={ step }
+                    defaultShouldSubscribe={isSubscribed}
+                    deinitialize={deinitializeCustomer}
+                    email={this.draftEmail || email}
+                    initialize={initializeCustomer}
+                    isLoading={isContinuingAsGuest || isInitializing || isExecutingPaymentMethodCheckout}
+                    onChangeEmail={this.handleChangeEmail}
+                    onContinueAsGuest={this.handleContinueAsGuest}
+                    onShowLogin={this.handleShowLogin}
+                    privacyPolicyUrl={privacyPolicyUrl}
+                    requiresMarketingConsent={requiresMarketingConsent}
+                    step={step}
                 />
                 :
             <GuestForm
                 canSubscribe={canSubscribe}
-                checkoutButtons={
-                    <CheckoutButtonList
-                        checkEmbeddedSupport={checkEmbeddedSupport}
-                        deinitialize={deinitializeCustomer}
-                        initialize={initializeCustomer}
-                        isInitializing={isInitializing}
-                        methodIds={checkoutButtonIds}
-                        onError={onUnhandledError}
-                    />
-                }
+                checkoutButtons={checkoutButtons}
                 continueAsGuestButtonLabelId="customer.continue"
                 defaultShouldSubscribe={isSubscribed}
                 email={this.draftEmail || email}
-                isLoading={
-                    isContinuingAsGuest || isInitializing || isExecutingPaymentMethodCheckout
-                }
+                isLoading={isLoadingGuestForm}
                 onChangeEmail={this.handleChangeEmail}
                 onContinueAsGuest={this.handleContinueAsGuest}
                 onShowLogin={this.handleShowLogin}
                 privacyPolicyUrl={privacyPolicyUrl}
                 requiresMarketingConsent={requiresMarketingConsent}
-                useFloatingLabel={useFloatingLabel}
+                isFloatingLabelEnabled={isFloatingLabelEnabled}
             />
         );
     }
@@ -242,7 +234,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
     private renderEmailLoginLinkForm(): ReactNode {
         const { isEmailLoginFormOpen, hasRequestedLoginEmail } = this.state;
 
-        const { isSendingSignInEmail, signInEmailError, signInEmail, useFloatingLabel } =
+        const { isSendingSignInEmail, signInEmailError, signInEmail, isFloatingLabelEnabled } =
             this.props;
 
         return (
@@ -255,7 +247,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
                 onSendLoginEmail={this.handleSendLoginEmail}
                 sentEmail={signInEmail}
                 sentEmailError={signInEmailError}
-                useFloatingLabel={useFloatingLabel}
+                isFloatingLabelEnabled={isFloatingLabelEnabled}
             />
         );
     }
@@ -273,7 +265,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
             isCreatingAccount,
             createAccountError,
             requiresMarketingConsent,
-            useFloatingLabel,
+            isFloatingLabelEnabled,
         } = this.props;
 
         return (
@@ -284,7 +276,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
                 onCancel={this.handleCancelCreateAccount}
                 onSubmit={this.handleCreateAccount}
                 requiresMarketingConsent={requiresMarketingConsent}
-                useFloatingLabel={useFloatingLabel}
+                isFloatingLabelEnabled={isFloatingLabelEnabled}
             />
         );
     }
@@ -301,7 +293,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
             isAccountCreationEnabled,
             providerWithCustomCheckout,
             signInError,
-            useFloatingLabel,
+            isFloatingLabelEnabled,
             viewType,
         } = this.props;
 
@@ -326,7 +318,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
                 onSignIn={this.handleSignIn}
                 shouldShowCreateAccountLink={isAccountCreationEnabled}
                 signInError={signInError}
-                useFloatingLabel={useFloatingLabel}
+                isFloatingLabelEnabled={isFloatingLabelEnabled}
                 viewType={viewType}
             />
         );
@@ -475,6 +467,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
 
     private handleChangeEmail: (email: string) => void = (email) => {
         const { analyticsTracker } = this.props;
+
         this.draftEmail = email;
         analyticsTracker.customerEmailEntry(email);
     };
@@ -505,6 +498,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
 
     private checkoutPaymentMethodExecuted(payload?: CheckoutPaymentMethodExecutedOptions) {
         const { analyticsTracker } = this.props;
+
         analyticsTracker.customerPaymentMethodExecuted(payload);
     }
 }
@@ -521,8 +515,6 @@ export function mapToWithCheckoutCustomerProps({
             getCustomer,
             getSignInEmail,
             getConfig,
-            getPaymentMethod,
-            getCart,
         },
         errors: { getSignInError, getSignInEmailError, getCreateCustomerAccountError },
         statuses: {
@@ -535,22 +527,11 @@ export function mapToWithCheckoutCustomerProps({
         },
     } = checkoutState;
 
-    const cart = getCart();
     const billingAddress = getBillingAddress();
     const checkout = getCheckout();
     const customer = getCustomer();
     const signInEmail = getSignInEmail();
     const config = getConfig();
-    let stripeUpeLinkEnabled = false;
-
-    // TODO: This should be driven by backend, same as other wallet buttons.
-    if (cart) {
-        const stripeUpe = getPaymentMethod('card', PaymentMethodId.StripeUPE);
-        const linkEnabled = stripeUpe?.initializationData.enableLink || false;
-        const stripeUpeSupportedCurrency = cart.currency.code === 'USD' || false;
-
-        stripeUpeLinkEnabled = linkEnabled && stripeUpeSupportedCurrency;
-    }
 
     if (!checkout || !config) {
         return null;
@@ -598,9 +579,7 @@ export function mapToWithCheckoutCustomerProps({
         requiresMarketingConsent,
         signIn: checkoutService.signInCustomer,
         signInError: getSignInError(),
-        isStripeLinkEnabled: stripeUpeLinkEnabled,
-        loadPaymentMethods: checkoutService.loadPaymentMethods,
-        useFloatingLabel: isFloatingLabelEnabled(config.checkoutSettings),
+        isFloatingLabelEnabled: isFloatingLabelEnabled(config.checkoutSettings),
     };
 }
 

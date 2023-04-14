@@ -4,7 +4,6 @@ import {
     CheckoutService,
     createCheckoutService,
     Customer as CustomerData,
-    RequestError,
     StoreConfig,
 } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
@@ -18,6 +17,7 @@ import { getCheckout } from '../checkout/checkouts.mock';
 import CheckoutStepType from '../checkout/CheckoutStepType';
 import { getStoreConfig } from '../config/config.mock';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale';
+import { PaymentMethodId } from '../payment/paymentMethod';
 
 import CreateAccountForm from './CreateAccountForm';
 import Customer, { CustomerProps, WithCheckoutCustomerProps } from './Customer';
@@ -105,7 +105,7 @@ describe('Customer', () => {
                 type: CheckoutStepType.Customer };
 
             const component = mount(
-                <CustomerTest isStripeLinkEnabled={ true } step={ steps } viewType={ CustomerViewType.Guest } />
+                <CustomerTest providerWithCustomCheckout={ PaymentMethodId.StripeUPE } step={ steps } viewType={ CustomerViewType.Guest } />
             );
 
             await new Promise(resolve => process.nextTick(resolve));
@@ -119,7 +119,7 @@ describe('Customer', () => {
 
             const unhandledError = jest.fn();
 
-            mount(<CustomerTest onUnhandledError={ unhandledError } viewType={ CustomerViewType.Guest } />);
+            mount(<CustomerTest onUnhandledError={ unhandledError } providerWithCustomCheckout='bolt' viewType={ CustomerViewType.Guest } />);
             await new Promise(resolve => process.nextTick(resolve));
 
             expect(unhandledError).toHaveBeenCalledWith(expect.any(Error));

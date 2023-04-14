@@ -1,5 +1,6 @@
 import {
     BankInstrument,
+    CardInstrument,
     CheckoutSelectors,
     CheckoutService,
     createCheckoutService,
@@ -15,23 +16,16 @@ import { CheckoutProvider } from '../../checkout';
 import { getCheckout, getCheckoutPayment } from '../../checkout/checkouts.mock';
 import { getStoreConfig } from '../../config/config.mock';
 import { getCustomer } from '../../customer/customers.mock';
-import {
-    createLocaleContext,
-    LocaleContext,
-    LocaleContextType,
-    TranslatedString,
-} from '../../locale';
+import { createLocaleContext, LocaleContext, LocaleContextType, TranslatedString } from '../../locale';
 import { getConsignment } from '../../shipping/consignment.mock';
 import { LoadingOverlay } from '../../ui/loading';
 import { getCreditCardValidationSchema } from '../creditCard';
 import { getPaymentMethod } from '../payment-methods.mock';
 import PaymentContext, { PaymentContextProps } from '../PaymentContext';
-import { AccountInstrumentFieldset, CardInstrumentFieldset } from '../storedInstrument';
+import { AccountInstrumentFieldset, CardInstrumentFieldset, UntrustedShippingCardVerificationType } from '../storedInstrument';
 import { getInstruments } from '../storedInstrument/instruments.mock';
 
-import HostedWidgetPaymentMethod, {
-    HostedWidgetPaymentMethodProps,
-} from './HostedWidgetPaymentMethod';
+import HostedWidgetPaymentMethod, { HostedWidgetPaymentMethodProps } from './HostedWidgetPaymentMethod';
 import SignOutLink, { SignOutLinkProps } from './SignOutLink';
 
 describe('HostedWidgetPaymentMethod', () => {
@@ -112,6 +106,20 @@ describe('HostedWidgetPaymentMethod', () => {
         expect(defaultProps.initializePayment).not.toHaveBeenCalled();
     });
 
+    it('reinitialize payment method after requiring payment data is changing', async () => {
+        jest.spyOn(checkoutState.data, 'isPaymentDataRequired').mockReturnValue(false);
+
+        const container = mount(<HostedWidgetPaymentMethodTest {...defaultProps} />);
+
+        expect(defaultProps.initializePayment).not.toHaveBeenCalled();
+
+        container.setProps({isPaymentDataRequired: true});
+
+        await new Promise((resolve) => process.nextTick(resolve));
+
+        expect(defaultProps.initializePayment).toHaveBeenCalled();
+    });
+
     it('renders loading overlay while waiting for method to initialize', () => {
         let component: ReactWrapper;
 
@@ -169,7 +177,7 @@ describe('HostedWidgetPaymentMethod', () => {
     it('does not render the component', () => {
         const component = mount(<HostedWidgetPaymentMethodTest {...defaultProps} />);
 
-        expect(component.isEmptyRender()).toBe(false);
+        expect(component.find(HostedWidgetPaymentMethodTest)).toHaveLength(1);
 
         component.setProps({ shouldShow: false });
 
@@ -382,6 +390,42 @@ describe('HostedWidgetPaymentMethod', () => {
             expect(container.text()).not.toMatch(/account/i);
 
             expect(container.find('input[name="shouldSaveInstrument"]').exists()).toBe(true);
+        });
+
+        it('shows fields on the Widget when you click Use another payment form on the vaulted card instruments dropdown', () => {
+            const mockCardInstrument: CardInstrument[] = [
+                {
+                    bigpayToken: '123',
+                    provider: 'braintree',
+                    iin: '11111111',
+                    last4: '4321',
+                    expiryMonth: '02',
+                    expiryYear: '2025',
+                    brand: 'visa',
+                    trustedShippingAddress: true,
+                    defaultInstrument: true,
+                    method: 'card',
+                    type: 'card',
+                    untrustedShippingCardVerificationMode: UntrustedShippingCardVerificationType.PAN,
+                }
+            ];
+
+            jest.spyOn(checkoutState.data, 'getInstruments').mockReturnValue(mockCardInstrument);
+
+            const component = mount(<HostedWidgetPaymentMethodTest {...defaultProps} />);
+
+            component.find(CardInstrumentFieldset).prop('onUseNewInstrument')();
+            component.update();
+
+            const hostedWidgetComponent = component.find('#widget-container');
+
+            expect(hostedWidgetComponent).toHaveLength(1);
+
+            expect(component.text()).toMatch(/save/i);
+            expect(component.text()).toMatch(/card/i);
+            expect(component.text()).not.toMatch(/account/i);
+
+            expect(component.find('input[name="shouldSaveInstrument"]').exists()).toBe(true);
         });
 
         it('shows save account checkbox when has isAccountInstrument prop', () => {

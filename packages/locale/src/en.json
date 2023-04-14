@@ -46,7 +46,6 @@
             "billing_address_heading": "Billing Address",
             "billing_heading": "Billing",
             "save_billing_address_error": "An error occurred while saving the billing address to your price quote. Please try again.",
-            "billing_address_amazon": "Same as the Billing address set by you in your Amazon account.",
             "billing_address_amazonpay": "Managed by Amazon Pay",
             "use_shipping_address_label": "My billing address is the same as my shipping address."
         },
@@ -75,7 +74,8 @@
             "subtotal_text": "Subtotal",
             "taxes_text": "Taxes",
             "total_text": "Total",
-            "empty_cart_message": "Your cart is empty, you are being redirected. Please <a href=\"{url}\" target=\"_top\">click here</a> if your browser does not redirect you."
+            "empty_cart_message": "Your cart is empty, you are being redirected. Please <a href=\"{url}\" target=\"_top\">click here</a> if your browser does not redirect you.",
+            "consistency_error": "Your checkout could not be processed because some details have changed. Please review your order and try again."
         },
         "common": {
             "cancel_action": "Cancel",
@@ -299,7 +299,7 @@
             "instrument_trusted_shipping_address_text": "This additional security step is applied to your card when shipping to an address for the first time or if the shipping address was edited recently.",
             "instrument_trusted_shipping_address_title_text": "Please re-enter your card number to authorize this transaction.",
             "quadpay_continue_action": "Continue with Zip",
-            "quadpay_display_name_text": "Pay in 4 installments (Quadpay)",
+            "quadpay_display_name_text": "Pay in 4 installments",
             "ppsdk_continue_action": "Continue with {methodName}",
             "select_your_bank": "Select your bank",
             "sepa_account_number": "Account Number (IBAN)",
@@ -461,6 +461,9 @@
             "agreement_text": "Yes, I agree with the above terms and conditions.",
             "agreement_with_link_text": "Yes, I agree with the <a href=\"{url}\" target=\"_blank\">terms and conditions</a>.",
             "terms_and_conditions_heading": "Terms and Conditions"
+        },
+        "tax": {
+            "inclusive_label": "Tax included in Total"
         },
         "order_confirmation": {
             "mandate": {

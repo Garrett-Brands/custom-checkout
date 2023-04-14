@@ -46,7 +46,6 @@
             "billing_address_heading": "Billing Address",
             "billing_heading": "Billing",
             "save_billing_address_error": "An error occurred while saving the billing address to your price quote. Please try again.",
-            "billing_address_amazon": "Same as the Billing address set by you in your Amazon account.",
             "billing_address_amazonpay": "Managed by Amazon Pay",
             "use_shipping_address_label": "My billing address is the same as my shipping address."
         },
@@ -75,7 +74,8 @@
             "subtotal_text": "Subtotal",
             "taxes_text": "Taxes",
             "total_text": "Total",
-            "empty_cart_message": "Your cart is empty, you are being redirected. Please <a href=\"{url}\" target=\"_top\">click here</a> if your browser does not redirect you."
+            "empty_cart_message": "Your cart is empty, you are being redirected. Please <a href=\"{url}\" target=\"_top\">click here</a> if your browser does not redirect you.",
+            "consistency_error": "Your checkout could not be processed because some details have changed. Please review your order and try again."
         },
         "common": {
             "cancel_action": "Cancel",
@@ -190,6 +190,7 @@
             "bolt_checkbox_agreement": "Save my information, create a Bolt account, and agree to Bolt’s <a href=\"{termsUrl}\" target=\"_blank\">Terms of Use</a> and <a href=\"{privacyPolicyUrl}\" target=\"_blank\">Privacy Policy</a>.",
             "bolt_name_text": "Bolt",
             "braintreevisacheckout_continue_action": "Continue with Visa Checkout",
+            "complete_with_brand": "Complete order",
             "continue_with_brand": "Continue with {brandName}",
             "ccavenuemars_description_text": "Checkout with CCAvenue",
             "chasepay_continue_action": "Continue with Chase Pay",
@@ -259,7 +260,9 @@
             "payment_method_invalid_error": "There's a problem processing your payment. Please contact us for assistance or choose another payment method.",
             "payment_method_unavailable_error": "This payment provider is temporarily unavailable. Please try again later.",
             "payment_not_required_text": "Payment is not required for this order.",
+            "paypal_complete_action": "Complete order",
             "paypal_continue_action": "Continue with PayPal",
+            "paypal_pay_later_complete_action": "Complete order",
             "paypal_pay_later_continue_action": "Continue with Pay Later",
             "paypal_venmo_continue_action": "Continue with Venmo",
             "paypal_credit_continue_action": "Continue with PayPal Credit",
@@ -299,7 +302,7 @@
             "instrument_trusted_shipping_address_text": "This additional security step is applied to your card when shipping to an address for the first time or if the shipping address was edited recently.",
             "instrument_trusted_shipping_address_title_text": "Please re-enter your card number to authorize this transaction.",
             "quadpay_continue_action": "Continue with Zip",
-            "quadpay_display_name_text": "Pay in 4 installments (Quadpay)",
+            "quadpay_display_name_text": "Pay in 4 installments",
             "ppsdk_continue_action": "Continue with {methodName}",
             "select_your_bank": "Select your bank",
             "sepa_account_number": "Account Number (IBAN)",
@@ -408,6 +411,7 @@
             "browser_unsupported": "The selected payment method requires a different web browser. Please choose another payment method.",
             "connection_error": "Connection to remote checkout refused, please try later.",
             "continue_with_text": "Or continue with",
+            "or_text": "OR",
             "payment_method_error": "There was an error retrieving your remote payment method. Please try again.",
             "select_different_card_action": "Select a different card",
             "session_error": "Your remote session has expired. Please log in again.",
@@ -416,7 +420,8 @@
             "sign_out_action": "Sign out of {providerName}",
             "sign_out_after_action": "to view other payment methods",
             "sign_in_required_error": "Remote sign in required before payment",
-            "sign_out_before_action": ""
+            "sign_out_before_action": "",
+            "start_with_text": "Check out faster with:"
         },
         "shipping": {
             "cart_change_error": "An update to your shopping cart has been detected and your available shipping costs have been updated. Please re-select a shipping method to continue.",
@@ -455,6 +460,9 @@
             "required_error": "Please agree to the Privacy Policy.",
             "label": "Yes, I agree with the <a href=\"{url}\" target=\"_blank\">privacy policy</a>.",
             "heading": "Privacy Policy"
+        },
+        "tax": {
+            "inclusive_label": "Tax Included in Total:"
         },
         "terms_and_conditions": {
             "agreement_required_error": "Please agree to the terms and conditions",
