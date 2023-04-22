@@ -15,7 +15,14 @@ export default function mapToCheckoutProps({
     const { promotions = EMPTY_ARRAY } = data.getCheckout() || {};
     const submitOrderError = errors.getSubmitOrderError() as CustomError;
     const {
-        checkoutSettings: { guestCheckoutEnabled: isGuestEnabled = false, features = {} } = {},
+        checkoutSettings: {
+            guestCheckoutEnabled: isGuestEnabled = false,
+            features = {},
+            checkoutUserExperienceSettings = {
+                walletButtonsOnTop: false,
+                floatingLabelEnabled: false,
+            } ,
+        } = {},
         links: {
             loginLink: loginUrl = '',
             createAccountLink: createAccountUrl = '',
@@ -31,6 +38,8 @@ export default function mapToCheckoutProps({
         },
     );
 
+    const walletButtonsOnTopFlag = Boolean(checkoutUserExperienceSettings.walletButtonsOnTop);
+
     return {
         billingAddress: data.getBillingAddress(),
         cart: data.getCart(),
@@ -41,6 +50,7 @@ export default function mapToCheckoutProps({
         isLoadingCheckout: statuses.isLoadingCheckout(),
         isPending: statuses.isPending(),
         isPriceHiddenFromGuests,
+        isShowingWalletButtonsOnTop: walletButtonsOnTopFlag,
         loadCheckout: checkoutService.loadCheckout,
         loginUrl,
         cartUrl,

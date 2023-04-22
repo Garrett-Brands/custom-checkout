@@ -32,9 +32,15 @@ const getCustomerStepStatus = createSelector(
                 : false;
         const isGuest = !!(customer && customer.isGuest);
         const isComplete = hasEmail || isUsingWallet;
-        const isEditable = isComplete && !isUsingWallet && isGuest
+        const isEditable = isComplete && !isUsingWallet && isGuest;
 
-        if (config?.checkoutSettings.providerWithCustomCheckout === PaymentMethodId.StripeUPE && hasEmail && isGuest) {
+        // StripeLink is a UX that is only available with StripeUpe and will only be displayed for BC guest users,
+        // it uses its own components in the customer and shipping steps, unfortunately in order to preserve the UX
+        // when reloading the checkout page it's necessary to refill the stripe components with the information saved.
+        // In this step, we require that the customer strategy be reloaded the first time.
+        const isUsingStripeLinkAndCheckoutPageIsReloaded = !isUsingWallet &&
+            config?.checkoutSettings.providerWithCustomCheckout === PaymentMethodId.StripeUPE && hasEmail && isGuest;
+        if (isUsingStripeLinkAndCheckoutPageIsReloaded) {
             return {
                 type: CheckoutStepType.Customer,
                 isActive: false,
@@ -113,7 +119,6 @@ const getShippingStepStatus = createSelector(
     ({ data }: CheckoutSelectors) => data.getShippingAddress(),
     ({ data }: CheckoutSelectors) => data.getConsignments(),
     ({ data }: CheckoutSelectors) => data.getCart(),
-    ({ data }: CheckoutSelectors) => data.getSelectedPaymentMethod(),
     ({ data }: CheckoutSelectors) => {
         const shippingAddress = data.getShippingAddress();
 
@@ -122,16 +127,14 @@ const getShippingStepStatus = createSelector(
             : EMPTY_ARRAY;
     },
     ({ data }: CheckoutSelectors) => data.getConfig(),
-    (shippingAddress, consignments, cart, payment, shippingAddressFields, config) => {
+    (shippingAddress, consignments, cart, shippingAddressFields, config) => {
         const hasAddress = shippingAddress
             ? isValidAddress(shippingAddress, shippingAddressFields)
             : false;
-        // @todo: interim solution, ideally we should render custom form fields below amazon shipping widget
-        const hasRemoteAddress = !!shippingAddress && !!payment && payment.id === 'amazon';
         const hasOptions = consignments ? hasSelectedShippingOptions(consignments) : false;
         const hasUnassignedItems =
             cart && consignments ? hasUnassignedLineItems(consignments, cart.lineItems) : true;
-        const isComplete = (hasAddress || hasRemoteAddress) && hasOptions && !hasUnassignedItems;
+        const isComplete = hasAddress && hasOptions && !hasUnassignedItems;
         const isRequired = itemsRequireShipping(cart, config);
 
         return {

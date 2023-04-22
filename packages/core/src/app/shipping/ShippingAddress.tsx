@@ -9,12 +9,10 @@ import {
     ShippingRequestOptions,
 } from '@bigcommerce/checkout-sdk';
 import { memoizeOne } from '@bigcommerce/memoize';
-import { noop } from 'lodash';
 import React, { FunctionComponent, memo, useCallback, useContext } from 'react';
 
 import { FormContext } from '../ui/form';
 
-import RemoteShippingAddress from './RemoteShippingAddress';
 import ShippingAddressForm from './ShippingAddressForm';
 import StaticAddressEditable from './StaticAddressEditable';
 
@@ -31,7 +29,7 @@ export interface ShippingAddressProps {
     shippingAddress?: Address;
     shouldShowSaveAddress?: boolean;
     hasRequestedShippingOptions: boolean;
-    useFloatingLabel?: boolean;
+    isFloatingLabelEnabled?: boolean;
     deinitialize(options: ShippingRequestOptions): Promise<CheckoutSelectors>;
     initialize(options: ShippingInitializeOptions): Promise<CheckoutSelectors>;
     onAddressSelect(address: Address): void;
@@ -58,9 +56,8 @@ const ShippingAddress: FunctionComponent<ShippingAddressProps> = (props) => {
         hasRequestedShippingOptions,
         addresses,
         shouldShowSaveAddress,
-        onUnhandledError = noop,
         isShippingStepPending,
-        useFloatingLabel,
+        isFloatingLabelEnabled,
     } = props;
 
     const { setSubmitted } = useContext(FormContext);
@@ -84,29 +81,7 @@ const ShippingAddress: FunctionComponent<ShippingAddressProps> = (props) => {
     };
 
     if (methodId) {
-        const containerId = 'addressWidget';
         let options: ShippingInitializeOptions = {};
-
-        if (methodId === 'amazon') {
-            options = {
-                amazon: {
-                    container: containerId,
-                    onError: onUnhandledError,
-                },
-            };
-
-            return (
-                <RemoteShippingAddress
-                    containerId={containerId}
-                    deinitialize={deinitialize}
-                    formFields={formFields}
-                    initialize={initializeShipping(options)}
-                    methodId={methodId}
-                    onFieldChange={onFieldChange}
-                    useFloatingLabel={useFloatingLabel}
-                />
-            );
-        }
 
         if (methodId === 'amazonpay' && shippingAddress) {
             const editAddressButtonId = 'edit-ship-button';
@@ -146,7 +121,7 @@ const ShippingAddress: FunctionComponent<ShippingAddressProps> = (props) => {
             onFieldChange={handleFieldChange}
             onUseNewAddress={onUseNewAddress}
             shouldShowSaveAddress={shouldShowSaveAddress}
-            useFloatingLabel={useFloatingLabel}
+            isFloatingLabelEnabled={isFloatingLabelEnabled}
         />
     );
 };

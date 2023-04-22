@@ -21,270 +21,325 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Features
 
-* **checkout:** CHECKOUT-0000 improve login form spacing ([#1014](https://github.com/bigcommerce/checkout-js/issues/1014)) ([b96e725](https://github.com/bigcommerce/checkout-js/commit/b96e7250f916a7710cf53f65da08aaf63441c6c4))
-* **checkout:** CHECKOUT-0000 Merge prettier auto fixes ([#1074](https://github.com/bigcommerce/checkout-js/issues/1074)) ([af588c1](https://github.com/bigcommerce/checkout-js/commit/af588c1017a66e5e3191e29f22853e79f548b71f))
-* **checkout:** CHECKOUT-0000 New test framework features ([#999](https://github.com/bigcommerce/checkout-js/issues/999)) ([7ee3495](https://github.com/bigcommerce/checkout-js/commit/7ee34958459d818480cb9a95d2e6858cf93b20fb))
-* **checkout:** CHECKOUT-4944 Add floating labels ([#1049](https://github.com/bigcommerce/checkout-js/issues/1049)) ([ccc8349](https://github.com/bigcommerce/checkout-js/commit/ccc8349e16a87f11f658f88cf2a0ee19da112737))
-* **checkout:** CHECKOUT-6835 Address autocomplete for UK ([#1071](https://github.com/bigcommerce/checkout-js/issues/1071)) ([5f33989](https://github.com/bigcommerce/checkout-js/commit/5f33989794256d2cc68e20baf4951cfeb6790532))
-* **checkout:** CHECKOUT-6848 Clean up copy writing ([#1000](https://github.com/bigcommerce/checkout-js/issues/1000)) ([beb2db8](https://github.com/bigcommerce/checkout-js/commit/beb2db8d189a0572c87e476c647ba8a7294e8b11))
-* **checkout:** CHECKOUT-6852 Add loading animations ([#1065](https://github.com/bigcommerce/checkout-js/issues/1065)) ([a36f20a](https://github.com/bigcommerce/checkout-js/commit/a36f20adc9c792cb5bfca8da4de851d80607ef88))
-* **checkout:** CHECKOUT-6875 Improve accessibility part II ([#997](https://github.com/bigcommerce/checkout-js/issues/997)) ([324ed75](https://github.com/bigcommerce/checkout-js/commit/324ed759e8eec30791b31c9c83d408d93cfa83d6))
-* **checkout:** CHECKOUT-6875 Improve accessibility part III ([#998](https://github.com/bigcommerce/checkout-js/issues/998)) ([fd377a3](https://github.com/bigcommerce/checkout-js/commit/fd377a3d6be06311e99279b6bc73063095e2422b))
-* **checkout:** CHECKOUT-7036 Filter out convertcart-related issues ([#1103](https://github.com/bigcommerce/checkout-js/issues/1103)) ([571ac8b](https://github.com/bigcommerce/checkout-js/commit/571ac8bc86ed246623842973f422bbcdb1b12b51))
-* **checkout:** CHECKOUT-7036 Filter out convertcart-related issues on Sentry. ([#1092](https://github.com/bigcommerce/checkout-js/issues/1092)) ([bc710b9](https://github.com/bigcommerce/checkout-js/commit/bc710b9857a44c03133906f3b848c4f763c46e8d))
-* **checkout:** STRF-9858 Integrate Bodl Service with Checkout Begin and Order Purchased ([#1010](https://github.com/bigcommerce/checkout-js/issues/1010)) ([2dbb07a](https://github.com/bigcommerce/checkout-js/commit/2dbb07a05c69f129f130af26004a5463e5c7197e))
-* **payment:** BOLT-332 fixed issue with initialize Bolt client on mobile ([c8ced25](https://github.com/bigcommerce/checkout-js/commit/c8ced2542c17c77bdf8a3225361da5db27eabcea))
-* **payment:** BOLT-386 Add BODL analytics tracking events ([2175a53](https://github.com/bigcommerce/checkout-js/commit/2175a53882fa82062cb6dacfea9cbbf91f110bd8))
-* **payment:** INT-5953 Force to use Payment Method V1 when Mollie and Apple pay ([#1086](https://github.com/bigcommerce/checkout-js/issues/1086)) ([261b99f](https://github.com/bigcommerce/checkout-js/commit/261b99fa9b8bff1e2e6b478eb5ad4b76d27052ed))
-* **payment:** INT-6297 BNZ GooglePay ([#1019](https://github.com/bigcommerce/checkout-js/issues/1019)) ([532e669](https://github.com/bigcommerce/checkout-js/commit/532e66906bce7ddc986d91eabb73d917d9026eee))
-* **payment:** INT-6482 | Worldpay - Increase coverage in WorldpayCreditCardPaymentMethod ([#1013](https://github.com/bigcommerce/checkout-js/issues/1013)) ([b9ffc8c](https://github.com/bigcommerce/checkout-js/commit/b9ffc8c415aac62d5d68d8a141bf60a336512f3a))
-* **payment:** INT-6637 Sezzle change displayed text ([#1070](https://github.com/bigcommerce/checkout-js/issues/1070)) ([00c8135](https://github.com/bigcommerce/checkout-js/commit/00c813584b56306ef57cc5678e2c82946784fe34))
-* **payment:** PAYPAL-1607 bump checkout-sdk-js version ([eb98921](https://github.com/bigcommerce/checkout-js/commit/eb989211dc7596cebce743ebe51954fbc2f729ba))
-* **payment:** PAYPAL-1722 bump checkout-sdk-js version ([4a19d49](https://github.com/bigcommerce/checkout-js/commit/4a19d49377eaeb52b4748645041203ed75236d0e))
-* **payment:** PAYPAL-1722 bump checkout-sdk-js version ([78b6956](https://github.com/bigcommerce/checkout-js/commit/78b6956686471d85abeb95b720a0484de9307c5e))
-* **payment:** STRIPE-183 persisting stripe components when reloads the page ([#1072](https://github.com/bigcommerce/checkout-js/issues/1072)) ([683e1cd](https://github.com/bigcommerce/checkout-js/commit/683e1cd30d421278505d882fea7a62ce7fdbddaa))
-* **payment:** STRIPE-215 add more validation to avoid Shipping Steps Loads Indefinitely for stripe link ([#1096](https://github.com/bigcommerce/checkout-js/issues/1096)) ([682d61b](https://github.com/bigcommerce/checkout-js/commit/682d61b24d109955f03315f66c0bc845215137ec))
-* **payment:** STRIPE-25 create a custom guest form for Stripe link ([#1017](https://github.com/bigcommerce/checkout-js/issues/1017)) ([e2639ca](https://github.com/bigcommerce/checkout-js/commit/e2639ca7712137462e9232fee4c24622ef1ee1f9))
-* **payment:** STRIPE-52 Auto-Select Address and mount shipping component for Stripe Link ([#1018](https://github.com/bigcommerce/checkout-js/issues/1018)) ([339f8b5](https://github.com/bigcommerce/checkout-js/commit/339f8b52bbe947c85ab906077c8e9c50c8b8e2d6))
+* **other:** CHECKOUT-000 Change commit vlidation rule ([#1211](https://github.com/bigcommerce/checkout-js/issues/1211)) ([372062b](https://github.com/bigcommerce/checkout-js/commit/372062b55cad36964ca5b85ff64c9f99f2663a42))
+* **payment:** STRIPE-200 add phone number for stripe link ([#1100](https://github.com/bigcommerce/checkout-js/issues/1100)) ([29f17be](https://github.com/bigcommerce/checkout-js/commit/29f17be0570e6d98d2ab9f515fc79114f0053380))
 
-
-### Bug Fixes
-
-* **checkout:** CHECKOUT-0000 Fix shipping component memory leakage ([#1073](https://github.com/bigcommerce/checkout-js/issues/1073)) ([8a1cc0e](https://github.com/bigcommerce/checkout-js/commit/8a1cc0e69e163aa9b179e4b664d83d9ebbfd28ab))
-* **checkout:** CHECKOUT-0000 Remove floating period ([#1033](https://github.com/bigcommerce/checkout-js/issues/1033)) ([9f97e03](https://github.com/bigcommerce/checkout-js/commit/9f97e03040f9cf3eb9e42b5448ff206fbe5617c8))
-* **checkout:** CHECKOUT-5742 shouldSaveAddress is not saved ([#1084](https://github.com/bigcommerce/checkout-js/issues/1084)) ([1f5afd6](https://github.com/bigcommerce/checkout-js/commit/1f5afd66a3e0797c214f705d9a5b11df767b11a3))
-* **checkout:** CHECKOUT-6365 Add scrollIntoView to embedded checkout ([#1009](https://github.com/bigcommerce/checkout-js/issues/1009)) ([143a66b](https://github.com/bigcommerce/checkout-js/commit/143a66b0353463ecfd9e88972bf72645fb15c314))
-* **checkout:** CHECKOUT-6365 Scroll to modal in WordPress ([#1036](https://github.com/bigcommerce/checkout-js/issues/1036)) ([20daf7b](https://github.com/bigcommerce/checkout-js/commit/20daf7bb7f31cec75b25f19b533cef0b454ca1b3))
-* **checkout:** CHECKOUT-6672 Maintain subscription checkbox state ([#1090](https://github.com/bigcommerce/checkout-js/issues/1090)) ([b291bee](https://github.com/bigcommerce/checkout-js/commit/b291beee956d7e856e1b8635a27259771a10a291))
-* **checkout:** CHECKOUT-6840 Fix payment step counter in safari ([#1082](https://github.com/bigcommerce/checkout-js/issues/1082)) ([5df5c64](https://github.com/bigcommerce/checkout-js/commit/5df5c64917a3bfff80f818c661c695dd06277cc0))
-* **checkout:** CHECKOUT-6860 Use numeric keypad on telephone text field ([#1015](https://github.com/bigcommerce/checkout-js/issues/1015)) ([5efd24c](https://github.com/bigcommerce/checkout-js/commit/5efd24c8b7bfd63ec655e8a80be8eb5b4297ec44))
-* **checkout:** CHECKOUT-6969 Display cart summary at bottom ([#1041](https://github.com/bigcommerce/checkout-js/issues/1041)) ([9aff688](https://github.com/bigcommerce/checkout-js/commit/9aff688457c0598a2bdd4984be1c2948a9a61642))
-* **common:** CHECKOUT-000 upgrade @types/react from 16.14.29 to 16.14.30 ([#995](https://github.com/bigcommerce/checkout-js/issues/995)) ([e47a0ab](https://github.com/bigcommerce/checkout-js/commit/e47a0ab11718a2231b3d09decc1439b399f030d9))
-* **common:** CHECKOUT-000 upgrade @types/react from 16.14.30 to 16.14.31 ([#1029](https://github.com/bigcommerce/checkout-js/issues/1029)) ([de92ef0](https://github.com/bigcommerce/checkout-js/commit/de92ef0672427235e6f3f607a8981177fdd8a348))
-* **common:** CHECKOUT-000 upgrade dompurify from 2.3.10 to 2.4.0 ([#1020](https://github.com/bigcommerce/checkout-js/issues/1020)) ([b95c0c5](https://github.com/bigcommerce/checkout-js/commit/b95c0c5f67b4b7a43a3467718c54769f4de69c96))
-* **payment:** ADYEN-540 fixed adyen 3ds2 challenge on googlepay ([ade6451](https://github.com/bigcommerce/checkout-js/commit/ade645184ac3d4a47558e690488baef42c1f209c))
-* **payment:** ADYEN-545 fixed adyen 3ds2 challenge window size ([14c9881](https://github.com/bigcommerce/checkout-js/commit/14c9881eb566ed2a2d2dd80ee13fb9aef425139b))
-* **payment:** BOLT-105 Send 'create_bolt_account: false' for shoppers with registered Bolt account ([d3cb3f2](https://github.com/bigcommerce/checkout-js/commit/d3cb3f294ca2e7bd9775b75dab76f35b8d42a827))
-* **payment:** INT-6478 SquareV2 - Fail Gracefully when payment provider unavailable ([#1047](https://github.com/bigcommerce/checkout-js/issues/1047)) ([c7ad66e](https://github.com/bigcommerce/checkout-js/commit/c7ad66e51f14e8b74567873230b856f726097de7))
-* **payment:** INT-6720 prevent calls on undefined error body ([#1057](https://github.com/bigcommerce/checkout-js/issues/1057)) ([518b1a9](https://github.com/bigcommerce/checkout-js/commit/518b1a96727bc880ba62a08f0efb386b9fdd5968))
-* **payment:** INT-6789 Worldpay Support payment without hosted form ([#1068](https://github.com/bigcommerce/checkout-js/issues/1068)) ([76a1bc6](https://github.com/bigcommerce/checkout-js/commit/76a1bc631e952026f06c71aaf1b8c3239a47f1e7))
-* **shipping:** CHECKOUT-5034 Update autocomplete fix for NZ address ([#1052](https://github.com/bigcommerce/checkout-js/issues/1052)) ([de7ed1d](https://github.com/bigcommerce/checkout-js/commit/de7ed1dfd91a02942820801cba88801cb202e79b))
-
-## [1.112.0](https://github.com/bigcommerce/checkout-js/compare/v1.111.5...v1.112.0) (2022-11-22)
+## [1.293.0](https://github.com/bigcommerce/checkout-js/compare/v1.292.1...v1.293.0) (2023-02-22)
 
 
 ### Features
 
-* **checkout:** CHECKOUT-0000 improve login form spacing ([#1014](https://github.com/bigcommerce/checkout-js/issues/1014)) ([b96e725](https://github.com/bigcommerce/checkout-js/commit/b96e7250f916a7710cf53f65da08aaf63441c6c4))
-* **checkout:** CHECKOUT-0000 Merge prettier auto fixes ([#1074](https://github.com/bigcommerce/checkout-js/issues/1074)) ([af588c1](https://github.com/bigcommerce/checkout-js/commit/af588c1017a66e5e3191e29f22853e79f548b71f))
-* **checkout:** CHECKOUT-0000 New test framework features ([#999](https://github.com/bigcommerce/checkout-js/issues/999)) ([7ee3495](https://github.com/bigcommerce/checkout-js/commit/7ee34958459d818480cb9a95d2e6858cf93b20fb))
-* **checkout:** CHECKOUT-4944 Add floating labels ([#1049](https://github.com/bigcommerce/checkout-js/issues/1049)) ([ccc8349](https://github.com/bigcommerce/checkout-js/commit/ccc8349e16a87f11f658f88cf2a0ee19da112737))
-* **checkout:** CHECKOUT-6835 Address autocomplete for UK ([#1071](https://github.com/bigcommerce/checkout-js/issues/1071)) ([5f33989](https://github.com/bigcommerce/checkout-js/commit/5f33989794256d2cc68e20baf4951cfeb6790532))
-* **checkout:** CHECKOUT-6848 Clean up copy writing ([#1000](https://github.com/bigcommerce/checkout-js/issues/1000)) ([beb2db8](https://github.com/bigcommerce/checkout-js/commit/beb2db8d189a0572c87e476c647ba8a7294e8b11))
-* **checkout:** CHECKOUT-6852 Add loading animations ([#1065](https://github.com/bigcommerce/checkout-js/issues/1065)) ([a36f20a](https://github.com/bigcommerce/checkout-js/commit/a36f20adc9c792cb5bfca8da4de851d80607ef88))
-* **checkout:** CHECKOUT-6875 Improve accessibility part II ([#997](https://github.com/bigcommerce/checkout-js/issues/997)) ([324ed75](https://github.com/bigcommerce/checkout-js/commit/324ed759e8eec30791b31c9c83d408d93cfa83d6))
-* **checkout:** CHECKOUT-6875 Improve accessibility part III ([#998](https://github.com/bigcommerce/checkout-js/issues/998)) ([fd377a3](https://github.com/bigcommerce/checkout-js/commit/fd377a3d6be06311e99279b6bc73063095e2422b))
-* **checkout:** CHECKOUT-7036 Filter out convertcart-related issues ([#1103](https://github.com/bigcommerce/checkout-js/issues/1103)) ([571ac8b](https://github.com/bigcommerce/checkout-js/commit/571ac8bc86ed246623842973f422bbcdb1b12b51))
-* **checkout:** CHECKOUT-7036 Filter out convertcart-related issues on Sentry. ([#1092](https://github.com/bigcommerce/checkout-js/issues/1092)) ([bc710b9](https://github.com/bigcommerce/checkout-js/commit/bc710b9857a44c03133906f3b848c4f763c46e8d))
-* **checkout:** STRF-9858 Integrate Bodl Service with Checkout Begin and Order Purchased ([#1010](https://github.com/bigcommerce/checkout-js/issues/1010)) ([2dbb07a](https://github.com/bigcommerce/checkout-js/commit/2dbb07a05c69f129f130af26004a5463e5c7197e))
-* **payment:** BOLT-332 fixed issue with initialize Bolt client on mobile ([c8ced25](https://github.com/bigcommerce/checkout-js/commit/c8ced2542c17c77bdf8a3225361da5db27eabcea))
-* **payment:** BOLT-386 Add BODL analytics tracking events ([2175a53](https://github.com/bigcommerce/checkout-js/commit/2175a53882fa82062cb6dacfea9cbbf91f110bd8))
-* **payment:** INT-5953 Force to use Payment Method V1 when Mollie and Apple pay ([#1086](https://github.com/bigcommerce/checkout-js/issues/1086)) ([261b99f](https://github.com/bigcommerce/checkout-js/commit/261b99fa9b8bff1e2e6b478eb5ad4b76d27052ed))
-* **payment:** INT-6297 BNZ GooglePay ([#1019](https://github.com/bigcommerce/checkout-js/issues/1019)) ([532e669](https://github.com/bigcommerce/checkout-js/commit/532e66906bce7ddc986d91eabb73d917d9026eee))
-* **payment:** INT-6482 | Worldpay - Increase coverage in WorldpayCreditCardPaymentMethod ([#1013](https://github.com/bigcommerce/checkout-js/issues/1013)) ([b9ffc8c](https://github.com/bigcommerce/checkout-js/commit/b9ffc8c415aac62d5d68d8a141bf60a336512f3a))
-* **payment:** INT-6637 Sezzle change displayed text ([#1070](https://github.com/bigcommerce/checkout-js/issues/1070)) ([00c8135](https://github.com/bigcommerce/checkout-js/commit/00c813584b56306ef57cc5678e2c82946784fe34))
-* **payment:** PAYPAL-1607 bump checkout-sdk-js version ([eb98921](https://github.com/bigcommerce/checkout-js/commit/eb989211dc7596cebce743ebe51954fbc2f729ba))
-* **payment:** PAYPAL-1722 bump checkout-sdk-js version ([4a19d49](https://github.com/bigcommerce/checkout-js/commit/4a19d49377eaeb52b4748645041203ed75236d0e))
-* **payment:** PAYPAL-1722 bump checkout-sdk-js version ([78b6956](https://github.com/bigcommerce/checkout-js/commit/78b6956686471d85abeb95b720a0484de9307c5e))
-* **payment:** STRIPE-183 persisting stripe components when reloads the page ([#1072](https://github.com/bigcommerce/checkout-js/issues/1072)) ([683e1cd](https://github.com/bigcommerce/checkout-js/commit/683e1cd30d421278505d882fea7a62ce7fdbddaa))
-* **payment:** STRIPE-215 add more validation to avoid Shipping Steps Loads Indefinitely for stripe link ([#1096](https://github.com/bigcommerce/checkout-js/issues/1096)) ([682d61b](https://github.com/bigcommerce/checkout-js/commit/682d61b24d109955f03315f66c0bc845215137ec))
-* **payment:** STRIPE-25 create a custom guest form for Stripe link ([#1017](https://github.com/bigcommerce/checkout-js/issues/1017)) ([e2639ca](https://github.com/bigcommerce/checkout-js/commit/e2639ca7712137462e9232fee4c24622ef1ee1f9))
-* **payment:** STRIPE-52 Auto-Select Address and mount shipping component for Stripe Link ([#1018](https://github.com/bigcommerce/checkout-js/issues/1018)) ([339f8b5](https://github.com/bigcommerce/checkout-js/commit/339f8b52bbe947c85ab906077c8e9c50c8b8e2d6))
+* **common:** CHECKOUT-7234 Remove loading for customer guest form ([#1204](https://github.com/bigcommerce/checkout-js/issues/1204)) ([5a8f1ec](https://github.com/bigcommerce/checkout-js/commit/5a8f1ece2d4e07b807a26a0028a11d1c3fd17cdb))
+
+### [1.292.1](https://github.com/bigcommerce/checkout-js/compare/v1.292.0...v1.292.1) (2023-02-21)
 
 
 ### Bug Fixes
 
-* **checkout:** CHECKOUT-0000 Fix shipping component memory leakage ([#1073](https://github.com/bigcommerce/checkout-js/issues/1073)) ([8a1cc0e](https://github.com/bigcommerce/checkout-js/commit/8a1cc0e69e163aa9b179e4b664d83d9ebbfd28ab))
-* **checkout:** CHECKOUT-0000 Remove floating period ([#1033](https://github.com/bigcommerce/checkout-js/issues/1033)) ([9f97e03](https://github.com/bigcommerce/checkout-js/commit/9f97e03040f9cf3eb9e42b5448ff206fbe5617c8))
-* **checkout:** CHECKOUT-5742 shouldSaveAddress is not saved ([#1084](https://github.com/bigcommerce/checkout-js/issues/1084)) ([1f5afd6](https://github.com/bigcommerce/checkout-js/commit/1f5afd66a3e0797c214f705d9a5b11df767b11a3))
-* **checkout:** CHECKOUT-6365 Add scrollIntoView to embedded checkout ([#1009](https://github.com/bigcommerce/checkout-js/issues/1009)) ([143a66b](https://github.com/bigcommerce/checkout-js/commit/143a66b0353463ecfd9e88972bf72645fb15c314))
-* **checkout:** CHECKOUT-6365 Scroll to modal in WordPress ([#1036](https://github.com/bigcommerce/checkout-js/issues/1036)) ([20daf7b](https://github.com/bigcommerce/checkout-js/commit/20daf7bb7f31cec75b25f19b533cef0b454ca1b3))
-* **checkout:** CHECKOUT-6672 Maintain subscription checkbox state ([#1090](https://github.com/bigcommerce/checkout-js/issues/1090)) ([b291bee](https://github.com/bigcommerce/checkout-js/commit/b291beee956d7e856e1b8635a27259771a10a291))
-* **checkout:** CHECKOUT-6840 Fix payment step counter in safari ([#1082](https://github.com/bigcommerce/checkout-js/issues/1082)) ([5df5c64](https://github.com/bigcommerce/checkout-js/commit/5df5c64917a3bfff80f818c661c695dd06277cc0))
-* **checkout:** CHECKOUT-6860 Use numeric keypad on telephone text field ([#1015](https://github.com/bigcommerce/checkout-js/issues/1015)) ([5efd24c](https://github.com/bigcommerce/checkout-js/commit/5efd24c8b7bfd63ec655e8a80be8eb5b4297ec44))
-* **checkout:** CHECKOUT-6969 Display cart summary at bottom ([#1041](https://github.com/bigcommerce/checkout-js/issues/1041)) ([9aff688](https://github.com/bigcommerce/checkout-js/commit/9aff688457c0598a2bdd4984be1c2948a9a61642))
-* **common:** CHECKOUT-000 upgrade @types/react from 16.14.29 to 16.14.30 ([#995](https://github.com/bigcommerce/checkout-js/issues/995)) ([e47a0ab](https://github.com/bigcommerce/checkout-js/commit/e47a0ab11718a2231b3d09decc1439b399f030d9))
-* **common:** CHECKOUT-000 upgrade @types/react from 16.14.30 to 16.14.31 ([#1029](https://github.com/bigcommerce/checkout-js/issues/1029)) ([de92ef0](https://github.com/bigcommerce/checkout-js/commit/de92ef0672427235e6f3f607a8981177fdd8a348))
-* **common:** CHECKOUT-000 upgrade dompurify from 2.3.10 to 2.4.0 ([#1020](https://github.com/bigcommerce/checkout-js/issues/1020)) ([b95c0c5](https://github.com/bigcommerce/checkout-js/commit/b95c0c5f67b4b7a43a3467718c54769f4de69c96))
-* **payment:** ADYEN-540 fixed adyen 3ds2 challenge on googlepay ([ade6451](https://github.com/bigcommerce/checkout-js/commit/ade645184ac3d4a47558e690488baef42c1f209c))
-* **payment:** ADYEN-545 fixed adyen 3ds2 challenge window size ([14c9881](https://github.com/bigcommerce/checkout-js/commit/14c9881eb566ed2a2d2dd80ee13fb9aef425139b))
-* **payment:** BOLT-105 Send 'create_bolt_account: false' for shoppers with registered Bolt account ([d3cb3f2](https://github.com/bigcommerce/checkout-js/commit/d3cb3f294ca2e7bd9775b75dab76f35b8d42a827))
-* **payment:** INT-6478 SquareV2 - Fail Gracefully when payment provider unavailable ([#1047](https://github.com/bigcommerce/checkout-js/issues/1047)) ([c7ad66e](https://github.com/bigcommerce/checkout-js/commit/c7ad66e51f14e8b74567873230b856f726097de7))
-* **payment:** INT-6720 prevent calls on undefined error body ([#1057](https://github.com/bigcommerce/checkout-js/issues/1057)) ([518b1a9](https://github.com/bigcommerce/checkout-js/commit/518b1a96727bc880ba62a08f0efb386b9fdd5968))
-* **payment:** INT-6789 Worldpay Support payment without hosted form ([#1068](https://github.com/bigcommerce/checkout-js/issues/1068)) ([76a1bc6](https://github.com/bigcommerce/checkout-js/commit/76a1bc631e952026f06c71aaf1b8c3239a47f1e7))
-* **shipping:** CHECKOUT-5034 Update autocomplete fix for NZ address ([#1052](https://github.com/bigcommerce/checkout-js/issues/1052)) ([de7ed1d](https://github.com/bigcommerce/checkout-js/commit/de7ed1dfd91a02942820801cba88801cb202e79b))
+* **payment:** INT-7522 SquareV2: Disable submit only if payment data is required ([4eeabd7](https://github.com/bigcommerce/checkout-js/commit/4eeabd7d0abf312ad0754a261616f6fde90aebfe))
 
-## [1.112.0](https://github.com/bigcommerce/checkout-js/compare/v1.111.5...v1.112.0) (2022-11-22)
+## [1.292.0](https://github.com/bigcommerce/checkout-js/compare/v1.291.4...v1.292.0) (2023-02-21)
 
 
 ### Features
 
-* **checkout:** CHECKOUT-0000 improve login form spacing ([#1014](https://github.com/bigcommerce/checkout-js/issues/1014)) ([b96e725](https://github.com/bigcommerce/checkout-js/commit/b96e7250f916a7710cf53f65da08aaf63441c6c4))
-* **checkout:** CHECKOUT-0000 Merge prettier auto fixes ([#1074](https://github.com/bigcommerce/checkout-js/issues/1074)) ([af588c1](https://github.com/bigcommerce/checkout-js/commit/af588c1017a66e5e3191e29f22853e79f548b71f))
-* **checkout:** CHECKOUT-0000 New test framework features ([#999](https://github.com/bigcommerce/checkout-js/issues/999)) ([7ee3495](https://github.com/bigcommerce/checkout-js/commit/7ee34958459d818480cb9a95d2e6858cf93b20fb))
-* **checkout:** CHECKOUT-4944 Add floating labels ([#1049](https://github.com/bigcommerce/checkout-js/issues/1049)) ([ccc8349](https://github.com/bigcommerce/checkout-js/commit/ccc8349e16a87f11f658f88cf2a0ee19da112737))
-* **checkout:** CHECKOUT-6835 Address autocomplete for UK ([#1071](https://github.com/bigcommerce/checkout-js/issues/1071)) ([5f33989](https://github.com/bigcommerce/checkout-js/commit/5f33989794256d2cc68e20baf4951cfeb6790532))
-* **checkout:** CHECKOUT-6848 Clean up copy writing ([#1000](https://github.com/bigcommerce/checkout-js/issues/1000)) ([beb2db8](https://github.com/bigcommerce/checkout-js/commit/beb2db8d189a0572c87e476c647ba8a7294e8b11))
-* **checkout:** CHECKOUT-6852 Add loading animations ([#1065](https://github.com/bigcommerce/checkout-js/issues/1065)) ([a36f20a](https://github.com/bigcommerce/checkout-js/commit/a36f20adc9c792cb5bfca8da4de851d80607ef88))
-* **checkout:** CHECKOUT-6875 Improve accessibility part II ([#997](https://github.com/bigcommerce/checkout-js/issues/997)) ([324ed75](https://github.com/bigcommerce/checkout-js/commit/324ed759e8eec30791b31c9c83d408d93cfa83d6))
-* **checkout:** CHECKOUT-6875 Improve accessibility part III ([#998](https://github.com/bigcommerce/checkout-js/issues/998)) ([fd377a3](https://github.com/bigcommerce/checkout-js/commit/fd377a3d6be06311e99279b6bc73063095e2422b))
-* **checkout:** CHECKOUT-7036 Filter out convertcart-related issues ([#1103](https://github.com/bigcommerce/checkout-js/issues/1103)) ([571ac8b](https://github.com/bigcommerce/checkout-js/commit/571ac8bc86ed246623842973f422bbcdb1b12b51))
-* **checkout:** CHECKOUT-7036 Filter out convertcart-related issues on Sentry. ([#1092](https://github.com/bigcommerce/checkout-js/issues/1092)) ([bc710b9](https://github.com/bigcommerce/checkout-js/commit/bc710b9857a44c03133906f3b848c4f763c46e8d))
-* **checkout:** STRF-9858 Integrate Bodl Service with Checkout Begin and Order Purchased ([#1010](https://github.com/bigcommerce/checkout-js/issues/1010)) ([2dbb07a](https://github.com/bigcommerce/checkout-js/commit/2dbb07a05c69f129f130af26004a5463e5c7197e))
-* **payment:** BOLT-332 fixed issue with initialize Bolt client on mobile ([c8ced25](https://github.com/bigcommerce/checkout-js/commit/c8ced2542c17c77bdf8a3225361da5db27eabcea))
-* **payment:** BOLT-386 Add BODL analytics tracking events ([2175a53](https://github.com/bigcommerce/checkout-js/commit/2175a53882fa82062cb6dacfea9cbbf91f110bd8))
-* **payment:** INT-5953 Force to use Payment Method V1 when Mollie and Apple pay ([#1086](https://github.com/bigcommerce/checkout-js/issues/1086)) ([261b99f](https://github.com/bigcommerce/checkout-js/commit/261b99fa9b8bff1e2e6b478eb5ad4b76d27052ed))
-* **payment:** INT-6297 BNZ GooglePay ([#1019](https://github.com/bigcommerce/checkout-js/issues/1019)) ([532e669](https://github.com/bigcommerce/checkout-js/commit/532e66906bce7ddc986d91eabb73d917d9026eee))
-* **payment:** INT-6482 | Worldpay - Increase coverage in WorldpayCreditCardPaymentMethod ([#1013](https://github.com/bigcommerce/checkout-js/issues/1013)) ([b9ffc8c](https://github.com/bigcommerce/checkout-js/commit/b9ffc8c415aac62d5d68d8a141bf60a336512f3a))
-* **payment:** INT-6637 Sezzle change displayed text ([#1070](https://github.com/bigcommerce/checkout-js/issues/1070)) ([00c8135](https://github.com/bigcommerce/checkout-js/commit/00c813584b56306ef57cc5678e2c82946784fe34))
-* **payment:** PAYPAL-1607 bump checkout-sdk-js version ([eb98921](https://github.com/bigcommerce/checkout-js/commit/eb989211dc7596cebce743ebe51954fbc2f729ba))
-* **payment:** PAYPAL-1722 bump checkout-sdk-js version ([4a19d49](https://github.com/bigcommerce/checkout-js/commit/4a19d49377eaeb52b4748645041203ed75236d0e))
-* **payment:** PAYPAL-1722 bump checkout-sdk-js version ([78b6956](https://github.com/bigcommerce/checkout-js/commit/78b6956686471d85abeb95b720a0484de9307c5e))
-* **payment:** STRIPE-183 persisting stripe components when reloads the page ([#1072](https://github.com/bigcommerce/checkout-js/issues/1072)) ([683e1cd](https://github.com/bigcommerce/checkout-js/commit/683e1cd30d421278505d882fea7a62ce7fdbddaa))
-* **payment:** STRIPE-215 add more validation to avoid Shipping Steps Loads Indefinitely for stripe link ([#1096](https://github.com/bigcommerce/checkout-js/issues/1096)) ([682d61b](https://github.com/bigcommerce/checkout-js/commit/682d61b24d109955f03315f66c0bc845215137ec))
-* **payment:** STRIPE-25 create a custom guest form for Stripe link ([#1017](https://github.com/bigcommerce/checkout-js/issues/1017)) ([e2639ca](https://github.com/bigcommerce/checkout-js/commit/e2639ca7712137462e9232fee4c24622ef1ee1f9))
-* **payment:** STRIPE-52 Auto-Select Address and mount shipping component for Stripe Link ([#1018](https://github.com/bigcommerce/checkout-js/issues/1018)) ([339f8b5](https://github.com/bigcommerce/checkout-js/commit/339f8b52bbe947c85ab906077c8e9c50c8b8e2d6))
+* **payment:** PAYMENTS-8493 check untrustedCardVerificationMode before generating card code and card number component ([a8992b2](https://github.com/bigcommerce/checkout-js/commit/a8992b21c04a7d464eb91cd1bb5187735859c20c))
+
+### [1.291.4](https://github.com/bigcommerce/checkout-js/compare/v1.291.3...v1.291.4) (2023-02-20)
+
+### [1.291.3](https://github.com/bigcommerce/checkout-js/compare/v1.291.2...v1.291.3) (2023-02-17)
+
+### [1.291.2](https://github.com/bigcommerce/checkout-js/compare/v1.291.1...v1.291.2) (2023-02-17)
+
+### [1.291.1](https://github.com/bigcommerce/checkout-js/compare/v1.291.0...v1.291.1) (2023-02-15)
+
+## [1.291.0](https://github.com/bigcommerce/checkout-js/compare/v1.290.0...v1.291.0) (2023-02-14)
+
+
+### Features
+
+* **payment:** STRIPE-280 change type of skeleton for stripeGuestForm ([653780d](https://github.com/bigcommerce/checkout-js/commit/653780d1fc2e267e0a7c5edaef45ff50163351e4))
+* **payment:** STRIPE-280 pengs feedback ([7ef5929](https://github.com/bigcommerce/checkout-js/commit/7ef59292643b71df839389cd7714806502712814))
+* **payment:** STRIPE-280 using addressFormSkeleton instead spinner for stripeLink components ([32a2636](https://github.com/bigcommerce/checkout-js/commit/32a2636d5603e068b11cfabbaa1ac219589bdd3e))
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-7291 Add ApplePay button style ([#1196](https://github.com/bigcommerce/checkout-js/issues/1196)) ([dd1216d](https://github.com/bigcommerce/checkout-js/commit/dd1216d348d2b044c8afdb348c8c8d3b9b3cfd98))
+
+## [1.290.0](https://github.com/bigcommerce/checkout-js/compare/v1.289.0...v1.290.0) (2023-02-13)
+
+
+### Features
+
+* **payment:** PAYPAL-1837 Create paypalcommercecredit customer button strategy ([6e37a5b](https://github.com/bigcommerce/checkout-js/commit/6e37a5b16a47379733ff54e5434ff4bb41a9604e))
+
+## [1.289.0](https://github.com/bigcommerce/checkout-js/compare/v1.288.0...v1.289.0) (2023-02-13)
+
+
+### Features
+
+* **payment:** PAYPAL-1838 Create paypalcommercevenmo customer button strategy ([f833d98](https://github.com/bigcommerce/checkout-js/commit/f833d9810253ff586c35f3a90db14e797fb76684))
+
+## [1.288.0](https://github.com/bigcommerce/checkout-js/compare/v1.287.0...v1.288.0) (2023-02-12)
+
+
+### Features
+
+* **checkout:** CHECKOUT-7231 Display wallet buttons at top of checkout ([#1192](https://github.com/bigcommerce/checkout-js/issues/1192)) ([5d709e4](https://github.com/bigcommerce/checkout-js/commit/5d709e4fce7c3ff5fb6088e409d0534f3779fe20))
+
+## [1.287.0](https://github.com/bigcommerce/checkout-js/compare/v1.286.11...v1.287.0) (2023-02-08)
+
+
+### Features
+
+* **checkout:** CHECKOUT-7255 Remove checkout step numbers ([#1186](https://github.com/bigcommerce/checkout-js/issues/1186)) ([1c3a999](https://github.com/bigcommerce/checkout-js/commit/1c3a9992f40d6e65214d5ad4ef1719aa816d1136))
+
+### [1.286.11](https://github.com/bigcommerce/checkout-js/compare/v1.286.10...v1.286.11) (2023-02-07)
+
+### [1.286.10](https://github.com/bigcommerce/checkout-js/compare/v1.286.9...v1.286.10) (2023-02-06)
+
+### [1.286.9](https://github.com/bigcommerce/checkout-js/compare/v1.286.8...v1.286.9) (2023-02-02)
 
 
 ### Bug Fixes
 
-* **checkout:** CHECKOUT-0000 Fix shipping component memory leakage ([#1073](https://github.com/bigcommerce/checkout-js/issues/1073)) ([8a1cc0e](https://github.com/bigcommerce/checkout-js/commit/8a1cc0e69e163aa9b179e4b664d83d9ebbfd28ab))
-* **checkout:** CHECKOUT-0000 Remove floating period ([#1033](https://github.com/bigcommerce/checkout-js/issues/1033)) ([9f97e03](https://github.com/bigcommerce/checkout-js/commit/9f97e03040f9cf3eb9e42b5448ff206fbe5617c8))
-* **checkout:** CHECKOUT-5742 shouldSaveAddress is not saved ([#1084](https://github.com/bigcommerce/checkout-js/issues/1084)) ([1f5afd6](https://github.com/bigcommerce/checkout-js/commit/1f5afd66a3e0797c214f705d9a5b11df767b11a3))
-* **checkout:** CHECKOUT-6365 Add scrollIntoView to embedded checkout ([#1009](https://github.com/bigcommerce/checkout-js/issues/1009)) ([143a66b](https://github.com/bigcommerce/checkout-js/commit/143a66b0353463ecfd9e88972bf72645fb15c314))
-* **checkout:** CHECKOUT-6365 Scroll to modal in WordPress ([#1036](https://github.com/bigcommerce/checkout-js/issues/1036)) ([20daf7b](https://github.com/bigcommerce/checkout-js/commit/20daf7bb7f31cec75b25f19b533cef0b454ca1b3))
-* **checkout:** CHECKOUT-6672 Maintain subscription checkbox state ([#1090](https://github.com/bigcommerce/checkout-js/issues/1090)) ([b291bee](https://github.com/bigcommerce/checkout-js/commit/b291beee956d7e856e1b8635a27259771a10a291))
-* **checkout:** CHECKOUT-6840 Fix payment step counter in safari ([#1082](https://github.com/bigcommerce/checkout-js/issues/1082)) ([5df5c64](https://github.com/bigcommerce/checkout-js/commit/5df5c64917a3bfff80f818c661c695dd06277cc0))
-* **checkout:** CHECKOUT-6860 Use numeric keypad on telephone text field ([#1015](https://github.com/bigcommerce/checkout-js/issues/1015)) ([5efd24c](https://github.com/bigcommerce/checkout-js/commit/5efd24c8b7bfd63ec655e8a80be8eb5b4297ec44))
-* **checkout:** CHECKOUT-6969 Display cart summary at bottom ([#1041](https://github.com/bigcommerce/checkout-js/issues/1041)) ([9aff688](https://github.com/bigcommerce/checkout-js/commit/9aff688457c0598a2bdd4984be1c2948a9a61642))
-* **common:** CHECKOUT-000 upgrade @types/react from 16.14.29 to 16.14.30 ([#995](https://github.com/bigcommerce/checkout-js/issues/995)) ([e47a0ab](https://github.com/bigcommerce/checkout-js/commit/e47a0ab11718a2231b3d09decc1439b399f030d9))
-* **common:** CHECKOUT-000 upgrade @types/react from 16.14.30 to 16.14.31 ([#1029](https://github.com/bigcommerce/checkout-js/issues/1029)) ([de92ef0](https://github.com/bigcommerce/checkout-js/commit/de92ef0672427235e6f3f607a8981177fdd8a348))
-* **common:** CHECKOUT-000 upgrade dompurify from 2.3.10 to 2.4.0 ([#1020](https://github.com/bigcommerce/checkout-js/issues/1020)) ([b95c0c5](https://github.com/bigcommerce/checkout-js/commit/b95c0c5f67b4b7a43a3467718c54769f4de69c96))
-* **payment:** ADYEN-540 fixed adyen 3ds2 challenge on googlepay ([ade6451](https://github.com/bigcommerce/checkout-js/commit/ade645184ac3d4a47558e690488baef42c1f209c))
-* **payment:** ADYEN-545 fixed adyen 3ds2 challenge window size ([14c9881](https://github.com/bigcommerce/checkout-js/commit/14c9881eb566ed2a2d2dd80ee13fb9aef425139b))
-* **payment:** BOLT-105 Send 'create_bolt_account: false' for shoppers with registered Bolt account ([d3cb3f2](https://github.com/bigcommerce/checkout-js/commit/d3cb3f294ca2e7bd9775b75dab76f35b8d42a827))
-* **payment:** INT-6478 SquareV2 - Fail Gracefully when payment provider unavailable ([#1047](https://github.com/bigcommerce/checkout-js/issues/1047)) ([c7ad66e](https://github.com/bigcommerce/checkout-js/commit/c7ad66e51f14e8b74567873230b856f726097de7))
-* **payment:** INT-6720 prevent calls on undefined error body ([#1057](https://github.com/bigcommerce/checkout-js/issues/1057)) ([518b1a9](https://github.com/bigcommerce/checkout-js/commit/518b1a96727bc880ba62a08f0efb386b9fdd5968))
-* **payment:** INT-6789 Worldpay Support payment without hosted form ([#1068](https://github.com/bigcommerce/checkout-js/issues/1068)) ([76a1bc6](https://github.com/bigcommerce/checkout-js/commit/76a1bc631e952026f06c71aaf1b8c3239a47f1e7))
-* **shipping:** CHECKOUT-5034 Update autocomplete fix for NZ address ([#1052](https://github.com/bigcommerce/checkout-js/issues/1052)) ([de7ed1d](https://github.com/bigcommerce/checkout-js/commit/de7ed1dfd91a02942820801cba88801cb202e79b))
+* **payment:** PAYPAL-1785 change button name to Complete Order on last step ([995feb2](https://github.com/bigcommerce/checkout-js/commit/995feb238c05ed6cd0f8c24595e132ac01386e58))
+* **payment:** PAYPAL-1915 add isCheckoutPaymentMethod to PaymentForm ([d9e19f2](https://github.com/bigcommerce/checkout-js/commit/d9e19f265693773261b0b2152671b5bcb76cca11))
 
-### [1.111.5](https://github.com/bigcommerce/checkout-js/compare/v1.111.4...v1.111.5) (2022-11-01)
+### [1.286.8](https://github.com/bigcommerce/checkout-js/compare/v1.286.7...v1.286.8) (2023-02-02)
 
-### [1.111.4](https://github.com/bigcommerce/checkout-js/compare/v1.111.3-prerelease.1666883659153...v1.111.4) (2022-10-27)
+### [1.286.7](https://github.com/bigcommerce/checkout-js/compare/v1.286.6...v1.286.7) (2023-02-02)
 
-### [1.111.3](https://github.com/bigcommerce/checkout-js/compare/v1.111.3-prerelease.1666883659153...v1.111.3) (2022-10-27)
+### [1.286.6](https://github.com/bigcommerce/checkout-js/compare/v1.286.5...v1.286.6) (2023-01-31)
 
-### [1.111.3-prerelease.1666883659153](https://github.com/bigcommerce/checkout-js/compare/v1.111.3-prerelease.1666835826995...v1.111.3-prerelease.1666883659153) (2022-10-27)
 
-### [1.111.3-prerelease.1666835826995](https://github.com/bigcommerce/checkout-js/compare/v1.111.3-prerelease.1666574407731...v1.111.3-prerelease.1666835826995) (2022-10-27)
+### Bug Fixes
 
-### [1.111.3-prerelease.1666574407731](https://github.com/bigcommerce/checkout-js/compare/v1.111.3-prerelease.1665691018433...v1.111.3-prerelease.1666574407731) (2022-10-24)
+* **common:** CHECKOUT-000 Fix lint issues ([#1180](https://github.com/bigcommerce/checkout-js/issues/1180)) ([9ad4e5c](https://github.com/bigcommerce/checkout-js/commit/9ad4e5c31a0a2be69d6d4343577980db8edae57a))
 
-### [1.111.3-prerelease.1665691018433](https://github.com/bigcommerce/checkout-js/compare/v1.111.3-prerelease.1665629976852...v1.111.3-prerelease.1665691018433) (2022-10-13)
 
-### [1.111.3-prerelease.1665629976852](https://github.com/bigcommerce/checkout-js/compare/v1.111.2...v1.111.3-prerelease.1665629976852) (2022-10-13)
+### Code Refactoring
 
-### [1.111.2](https://github.com/bigcommerce/checkout-js/compare/v1.251.3-prerelease.1665525466971...v1.111.2) (2022-10-11)
+* **checkout:** CHECKOUT-6434 Build hosted credit card package ([#1146](https://github.com/bigcommerce/checkout-js/issues/1146)) ([37faa66](https://github.com/bigcommerce/checkout-js/commit/37faa664baab546b9ca76d7f59b87d602086ac8b))
 
-### [1.251.3-prerelease.1665525466971](https://github.com/bigcommerce/checkout-js/compare/v1.188.2...v1.251.3-prerelease.1665525466971) (2022-10-11)
+### [1.286.5](https://github.com/bigcommerce/checkout-js/compare/v1.286.4...v1.286.5) (2023-01-31)
+
+### [1.286.4](https://github.com/bigcommerce/checkout-js/compare/v1.286.3...v1.286.4) (2023-01-30)
+
+### [1.286.3](https://github.com/bigcommerce/checkout-js/compare/v1.286.2...v1.286.3) (2023-01-29)
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-6437 Build HostedDropIn component package ([#1158](https://github.com/bigcommerce/checkout-js/issues/1158)) ([b46bc5e](https://github.com/bigcommerce/checkout-js/commit/b46bc5e9bc48f31b5db895d2fd81ca48a9a95070))
+
+### [1.286.2](https://github.com/bigcommerce/checkout-js/compare/v1.286.1...v1.286.2) (2023-01-27)
+
+### [1.286.1](https://github.com/bigcommerce/checkout-js/compare/v1.286.0...v1.286.1) (2023-01-25)
+
+## [1.286.0](https://github.com/bigcommerce/checkout-js/compare/v1.285.2...v1.286.0) (2023-01-25)
 
 
 ### Features
 
-* **checkout:** ADYEN-378 AdyenV3 module creation ([05549aa](https://github.com/bigcommerce/checkout-js/commit/05549aa6b394e391770c256c6e006a35bb4338ff))
-* **checkout:** ADYEN-399 AdyenV3 googlepay ([2ec324b](https://github.com/bigcommerce/checkout-js/commit/2ec324bdc5ff5cbb445f59400696b3a97d5841fd))
-* **checkout:** CHECKOUT-0000 Update e2e tests local env entry point ([#933](https://github.com/bigcommerce/checkout-js/issues/933)) ([df53c97](https://github.com/bigcommerce/checkout-js/commit/df53c976b089aac0a96dea0abb0d9ca7de1210de))
-* **checkout:** CHECKOUT-6265 Add build script to generate export file that can automatically surface new payment integrations ([43b89c1](https://github.com/bigcommerce/checkout-js/commit/43b89c12211788ad713840d7e1fbe29ece769388))
-* **checkout:** CHECKOUT-6265 Render resolved component and inject dependencies ([1d74990](https://github.com/bigcommerce/checkout-js/commit/1d749906fc6109cf7b819ca5709c73646740807a))
-* **checkout:** CHECKOUT-6269 Create payment-integration package ([#920](https://github.com/bigcommerce/checkout-js/issues/920)) ([989669f](https://github.com/bigcommerce/checkout-js/commit/989669f50198028d6cea1aae34d9b854b6842969))
-* **checkout:** CHECKOUT-6269 Restructure checkout-js into monorepo ([#912](https://github.com/bigcommerce/checkout-js/issues/912)) ([42ee27d](https://github.com/bigcommerce/checkout-js/commit/42ee27d679f81eaabc8b43771b08575525962d4a))
-* **checkout:** CHECKOUT-6269 Use nx to run build ([#913](https://github.com/bigcommerce/checkout-js/issues/913)) ([5485c21](https://github.com/bigcommerce/checkout-js/commit/5485c213b02add0262fae44b4f0bcc36f8939c8e))
-* **checkout:** CHECKOUT-6277 Apply eslint ([#916](https://github.com/bigcommerce/checkout-js/issues/916)) ([9f30793](https://github.com/bigcommerce/checkout-js/commit/9f307935e6bca94010c40b68bbeb711797c04b3a))
-* **checkout:** CHECKOUT-6340 checkout-js Test Automation Framework ([#842](https://github.com/bigcommerce/checkout-js/issues/842)) ([d28c714](https://github.com/bigcommerce/checkout-js/commit/d28c714790626df2b6d400ab155df924ef7dbd4c))
-* **checkout:** CHECKOUT-6340 Update Jest Config ([#855](https://github.com/bigcommerce/checkout-js/issues/855)) ([c6fed8f](https://github.com/bigcommerce/checkout-js/commit/c6fed8fb910f8b870cf45a1b286942fcf31074ac))
-* **checkout:** CHECKOUT-6426 Refactor ApplePay as Monorepo Package ([#950](https://github.com/bigcommerce/checkout-js/issues/950)) ([885116f](https://github.com/bigcommerce/checkout-js/commit/885116fb60be6657db37ce466591ca45f346a63a))
-* **checkout:** CHECKOUT-6595 remove edit cart button for buy now carts ([#899](https://github.com/bigcommerce/checkout-js/issues/899)) ([d0a4179](https://github.com/bigcommerce/checkout-js/commit/d0a4179d26d05fa629d9c6b4bff27be62f3bc4e2))
-* **checkout:** CHECKOUT-6621 Refactor custom fixtures ([#859](https://github.com/bigcommerce/checkout-js/issues/859)) ([c6988ed](https://github.com/bigcommerce/checkout-js/commit/c6988ed50cf666042de50fd5d408d90566f9fa18))
-* **checkout:** CHECKOUT-6628 Add 6 language translations ([#872](https://github.com/bigcommerce/checkout-js/issues/872)) ([052e612](https://github.com/bigcommerce/checkout-js/commit/052e6126d9a0512bdf72d2f269626466aeb843fd))
-* **checkout:** CHECKOUT-6643 add billingSameAsShipping check for checkout ([#871](https://github.com/bigcommerce/checkout-js/issues/871)) ([c957c2d](https://github.com/bigcommerce/checkout-js/commit/c957c2dd56b311260faa0acfe02a66576f1e826b))
-* **checkout:** CHECKOUT-6652 provide accessibility label for AddressSelect ([#867](https://github.com/bigcommerce/checkout-js/issues/867)) ([d102ba9](https://github.com/bigcommerce/checkout-js/commit/d102ba982c8d6a50496284d0c4333f6d378f83bd))
-* **checkout:** CHECKOUT-6653 make cart drawer interactable via keyboard ([#881](https://github.com/bigcommerce/checkout-js/issues/881)) ([9c6d398](https://github.com/bigcommerce/checkout-js/commit/9c6d398570428b9c153d4760e7abf49bb2d4d920))
-* **checkout:** CHECKOUT-6655 Make Screen reader say each error ([35c271e](https://github.com/bigcommerce/checkout-js/commit/35c271e86eb53538d9e68065850f1727ef6180ca))
-* **checkout:** CHECKOUT-6655 Make screen reader say each shipping form error individually ([#876](https://github.com/bigcommerce/checkout-js/issues/876)) ([90ab315](https://github.com/bigcommerce/checkout-js/commit/90ab3156549161081bd0e6c472b530e803ecec8d))
-* **checkout:** CHECKOUT-6703 bump checkout-sdk-js version 1.248.0 ([2cbe0ad](https://github.com/bigcommerce/checkout-js/commit/2cbe0adb092e03aea29e9de8a51a75f7dd8679c2))
-* **checkout:** CHECKOUT-6711 Add buy now cart experiment ([#906](https://github.com/bigcommerce/checkout-js/issues/906)) ([ff4bfa9](https://github.com/bigcommerce/checkout-js/commit/ff4bfa92c8ab4b7f3bb07f34655b0cf5cb540535))
-* **checkout:** CHECKOUT-6711 Update buy now cart order-confirmation URL ([#902](https://github.com/bigcommerce/checkout-js/issues/902)) ([bdaf0f2](https://github.com/bigcommerce/checkout-js/commit/bdaf0f2a739ba77a065fe5c856313bfe330b418b))
-* **checkout:** CHECKOUT-6723 Add Norwegian Language ([#883](https://github.com/bigcommerce/checkout-js/issues/883)) ([6baa079](https://github.com/bigcommerce/checkout-js/commit/6baa0798a0d6ebaa9e8b76f32fcb49ddb729da30))
-* **checkout:** CHECKOUT-6781 Add component for loading checkout buttons from integration packages ([3a70a97](https://github.com/bigcommerce/checkout-js/commit/3a70a9797cffa52d31ae7a7dd540d2fd759c49c5))
-* **checkout:** CHECKOUT-6781 Add embedded checkout override for Google Pay button ([7faba43](https://github.com/bigcommerce/checkout-js/commit/7faba433bddf7265779c5a7c254b56a6e4eb6bfc))
-* **checkout:** CHECKOUT-6781 Resolve default component ([9cab99f](https://github.com/bigcommerce/checkout-js/commit/9cab99f26c9b3c7c7e701d5997c278c9a5517124))
-* **checkout:** CHECKOUT-6817 Update Sentry version and config ([#966](https://github.com/bigcommerce/checkout-js/issues/966)) ([16c3c2a](https://github.com/bigcommerce/checkout-js/commit/16c3c2a1bd43569052a31bf0c3b68382f3824c9a))
-* **checkout:** CHECKOUT-6851 Improve multi-shipping look ([#993](https://github.com/bigcommerce/checkout-js/issues/993)) ([699c181](https://github.com/bigcommerce/checkout-js/commit/699c18125e4c8b4e78ce97948b701884d61752f0))
-* **checkout:** CHECKOUT-6851 Separate shipping option from address ([#991](https://github.com/bigcommerce/checkout-js/issues/991)) ([8b141ff](https://github.com/bigcommerce/checkout-js/commit/8b141ff6a65c87325cb42b664dfd94f2e139aee5))
-* **checkout:** CHECKOUT-6875 Improve accessibility part I ([#996](https://github.com/bigcommerce/checkout-js/issues/996)) ([6bcb5e4](https://github.com/bigcommerce/checkout-js/commit/6bcb5e4a586427d0676c7d628074c113283bac0e))
-* **checkout:** CHECKOUT-6896 Add STOREURL as env variable ([#968](https://github.com/bigcommerce/checkout-js/issues/968)) ([269c74d](https://github.com/bigcommerce/checkout-js/commit/269c74d76867074fd4f5860d0803dd1819298a3b))
-* **checkout:** INT-5126 [MPGS] Add 3ds support for MPGS ([9e5408f](https://github.com/bigcommerce/checkout-js/commit/9e5408ffcfbad534fa85d7f232a292e20e247f27))
-* **checkout:** STRF-9829 Redirect to cart on sign-out if prices are hidden from guests ([b482e59](https://github.com/bigcommerce/checkout-js/commit/b482e592c3fd09b62a91d5a93490919b2fe7479b))
-* **order:** INT-4776 Create a new field for the mandate reference ID ([#674](https://github.com/bigcommerce/checkout-js/issues/674)) ([c8b9b8b](https://github.com/bigcommerce/checkout-js/commit/c8b9b8b6b78134abbba2fff353c94c05d4c4ac09))
-* **payment:** ADYEN-539 added vaulting card validation ([dd4a141](https://github.com/bigcommerce/checkout-js/commit/dd4a14113d194c08b4bc0493935ae37780dcbf48))
-* **payment:** BOLT-135 multi-field component ([3bf3a27](https://github.com/bigcommerce/checkout-js/commit/3bf3a27c073aefacfdc7d03798996c328de7216e))
-* **payment:** BOLT-135 multi-field component ([e490beb](https://github.com/bigcommerce/checkout-js/commit/e490beb8181d207399a659f153b24320eb37d2ed))
-* **payment:** BOLT-164 updated text for Bolt Checkout Checkbox in Payment section ([7057a1e](https://github.com/bigcommerce/checkout-js/commit/7057a1e95212bdc1dfb972f511e115edd89abf72))
-* **payment:** BOLT-255 bump checkout sdk version ([4723bd1](https://github.com/bigcommerce/checkout-js/commit/4723bd1ffd989a25603d55b8f9c3c8d64a579b3a))
-* **payment:** CHECKOUT-0000 Optimize Payment Integration JS API ([#956](https://github.com/bigcommerce/checkout-js/issues/956)) ([a0d5f1d](https://github.com/bigcommerce/checkout-js/commit/a0d5f1dcc6987e1ee5f2079eae35073d492b539f))
-* **payment:** CHECKOUT-6070 Add applepay button component ([#778](https://github.com/bigcommerce/checkout-js/issues/778)) ([a7fa190](https://github.com/bigcommerce/checkout-js/commit/a7fa190d45b55500eeacb7d7c837f5b771578d85))
-* **payment:** CHECKOUT-6460 Add apple pay test boilerplate ([be46b60](https://github.com/bigcommerce/checkout-js/commit/be46b60e7330a8c30e65605c0bfff48fe05ce8c1))
-* **payment:** CHECKOUT-6460 Add mock file for apple pay mock ([4d6e81b](https://github.com/bigcommerce/checkout-js/commit/4d6e81b04332fe8d8c898f07ee779eb87476fff4))
-* **payment:** CHECKOUT-6460 Payment step happy path ([15c37c4](https://github.com/bigcommerce/checkout-js/commit/15c37c4597abcda85ee82b2eb22e4acd42ab0456))
-* **payment:** INT-4282 remove masterpass for Square ([e664ef4](https://github.com/bigcommerce/checkout-js/commit/e664ef41b5555acd970eeef9f920eae3cca0677d))
-* **payment:** INT-5031 Stripe: Deleted everything not needed for upe ([925537f](https://github.com/bigcommerce/checkout-js/commit/925537f16f8cd6d9016dbf53879030aba190deaf))
-* **payment:** INT-5031 Stripe: Deleted everything not needed for upe ([4bc61a7](https://github.com/bigcommerce/checkout-js/commit/4bc61a72b6db9e105654e1dd99be73c15492426e))
-* **payment:** INT-5031 Stripe: PR feedback ([0e0f15e](https://github.com/bigcommerce/checkout-js/commit/0e0f15e39561cff9f069d3d47396ce2f327995a0))
-* **payment:** INT-5031 Stripe: Stripe UPE boilerplate ([0e83acc](https://github.com/bigcommerce/checkout-js/commit/0e83acccfdcad55a10d7987fe25b48c7b6c63512))
-* **payment:** INT-5036 Enable to show oxxo ticket and boleto ticket link on order confirmation page for stripe UPE) ([ff5a175](https://github.com/bigcommerce/checkout-js/commit/ff5a175f4a9abed452a091142049d6371de4f0e6))
-* **payment:** INT-5060 Stripe UPE Look and Feel. Get styles from store theme styles ([c5a51ee](https://github.com/bigcommerce/checkout-js/commit/c5a51ee13da87b14a4f8226111bb8b8a6aad1eb3))
-* **payment:** INT-5331 Remove validation for Amazon Pay and all the time show an specific label ([#781](https://github.com/bigcommerce/checkout-js/issues/781)) ([7cdab30](https://github.com/bigcommerce/checkout-js/commit/7cdab3040975d61b2bdd3443a30bec99e9881088))
-* **payment:** INT-5384 Openpay: Add support to hosting their widget ([#808](https://github.com/bigcommerce/checkout-js/issues/808)) ([8832972](https://github.com/bigcommerce/checkout-js/commit/8832972860eb5f25d4fffa2cea94167d6f425426))
-* **payment:** INT-5460 Add translations ([aa5dafb](https://github.com/bigcommerce/checkout-js/commit/aa5dafb0084109d72127da858ce6ab7ef0411c5c))
-* **payment:** INT-5460 Remove the word Payment from error title ([86ba865](https://github.com/bigcommerce/checkout-js/commit/86ba865df03019e65e024fb91725e4a4458fbca3))
-* **payment:** INT-5467 Stripe UPE GooglePay ([0972c44](https://github.com/bigcommerce/checkout-js/commit/0972c44df1b711fa8cfb0d72c0d7cd2375f576a0))
-* **payment:** INT-5481 Worldpay component ([98a7816](https://github.com/bigcommerce/checkout-js/commit/98a78169bd26ec19d8bf7568a240c38a14e58ee1))
-* **payment:** INT-5754 Stripe UPE Added onError to initialize option to throw error from sdk subscriber ([41909ed](https://github.com/bigcommerce/checkout-js/commit/41909ed584c665a158cf87fad4956e8df8b00f2d))
-* **payment:** INT-5904 Remove formatting for payment method when Mollie ([0eda531](https://github.com/bigcommerce/checkout-js/commit/0eda5310e880ba1b1b83b4d192425bec2c4549de))
-* **payment:** INT-6055 bump checkout-sdk-js version ([#896](https://github.com/bigcommerce/checkout-js/issues/896)) ([294b536](https://github.com/bigcommerce/checkout-js/commit/294b5368c08dbe09ee43d1e861df986fcbbbd1af))
-* **payment:** INT-6115 Worldpay - remove unnecessary iframe ([708af7e](https://github.com/bigcommerce/checkout-js/commit/708af7e1993415c5d68a3dd5ce07f76b8931e987))
-* **payment:** PAYMENTS-7403 Add PPSDK Credit Card payment method UI ([9e9222f](https://github.com/bigcommerce/checkout-js/commit/9e9222fc8bc671566cab9cdc0fbf52c196ea30c1))
-* **payment:** PAYMENTS-7403 Bump checkout-sdk for PPSDK credit card sub-strategy ([638b144](https://github.com/bigcommerce/checkout-js/commit/638b14424087d0f6c015564bf92230cda72a4a5a))
-* **payment:** PAYMENTS-7524 Bump checkout-sdk version to 1.254.0 ([161a8ea](https://github.com/bigcommerce/checkout-js/commit/161a8ea51eb8ca58dac20e7194fef69319f0a1d0))
-* **payment:** PAYMENTS-7788 Add icons for Crypto instruments ([fc73f22](https://github.com/bigcommerce/checkout-js/commit/fc73f221dbaf8e67a6b729bb6554c4b06d7c037f))
-* **payment:** PAYPAL-1151 venmo spb integration ([ce81c45](https://github.com/bigcommerce/checkout-js/commit/ce81c45c46afae3ee7cff7a6586f64578ae603e3))
-* **payment:** PAYPAL-1177 bump checkout sdk js version ([ed4e36f](https://github.com/bigcommerce/checkout-js/commit/ed4e36fea96ba416c1ef5773c3910e2f8edda9c0))
-* **payment:** PAYPAL-1257 replaced paypal credit logo ([#782](https://github.com/bigcommerce/checkout-js/issues/782)) ([6db9206](https://github.com/bigcommerce/checkout-js/commit/6db92068491003bb03508f02b00aeffb7af36db7))
-* **payment:** PAYPAL-1282 New style object for PayPal APMs ([6a7269a](https://github.com/bigcommerce/checkout-js/commit/6a7269af47a8d69dabe49759648b3c2f92ca85da))
-* **payment:** PAYPAL-1284 different naming for PPCP on checkout page ([924f0d4](https://github.com/bigcommerce/checkout-js/commit/924f0d4e8ed090984c1920f0f817c888edea6e13))
-* **payment:** PAYPAL-1284 different naming for PPCP on checkout page ([5556508](https://github.com/bigcommerce/checkout-js/commit/555650890df260920b7ccb92a1a39b2e9f6e3a8a))
-* **payment:** PAYPAL-1298 added brainding names logic for BT ([e3bfe6a](https://github.com/bigcommerce/checkout-js/commit/e3bfe6a48b1d88d8bdb9fd3e47d043a9b966aaeb))
-* **payment:** PAYPAL-1298 fixed branding for BT on checkout page ([788b95f](https://github.com/bigcommerce/checkout-js/commit/788b95f0a08ec588e65611b02346551d09f42bd6))
-* **payment:** PAYPAL-1327 added branding name to Submit button ([b373429](https://github.com/bigcommerce/checkout-js/commit/b3734292cf3b75f9df15a22274ac337fedc51ef1))
-* **payment:** PAYPAL-1380 updated BraintreeVenmo to show it correctly in payment section ([1dc3edb](https://github.com/bigcommerce/checkout-js/commit/1dc3edb559fed3621272b1c497be6eeca32b4bb1))
-* **payment:** PAYPAL-1416 Add oxxo ticket for PPCP ([b447960](https://github.com/bigcommerce/checkout-js/commit/b447960daa7d51902e90aa595fb252eab3893c49))
-* **payment:** PAYPAL-1445 fixed storeCredit checkbox ([575fcd4](https://github.com/bigcommerce/checkout-js/commit/575fcd4c63dad7ba13e9606626fa02a2b44e3462))
-* **payment:** PAYPAL-1466 bump checkout-sdk-js version ([b49613e](https://github.com/bigcommerce/checkout-js/commit/b49613eb5cb5e9239dd52586fd3ea638defa36fa))
-* **payment:** PAYPAL-1487 Add paypal-venmo payment method ([2f10bea](https://github.com/bigcommerce/checkout-js/commit/2f10bea51aacc7d1614d364b5c676e42232d1fd8))
-* **payment:** PAYPAL-1613 removed unnecessary Braintree Venmo logic from PaymentSubmitButton component ([#977](https://github.com/bigcommerce/checkout-js/issues/977)) ([5cf70e4](https://github.com/bigcommerce/checkout-js/commit/5cf70e4bb2d24558790b75841ba9c045bd18f385))
-* **payment:** STRIPE-82 Add array in back, to receive it and use it in front ([0cc8fe6](https://github.com/bigcommerce/checkout-js/commit/0cc8fe65922f44b1b893331611be19a57ea1f470))
-* **payment:** STRIPE-82 Add code to show images on the list ([93280f1](https://github.com/bigcommerce/checkout-js/commit/93280f11ab671991a2223fcc6c73f93ece5f0961))
-* **shipping:** CHECKOUT-6544 Update consignment methods to use address ([#845](https://github.com/bigcommerce/checkout-js/issues/845)) ([4d82b05](https://github.com/bigcommerce/checkout-js/commit/4d82b05aec3ec323983ac76c3185dc0dfaf2a6ad))
+* **payment:** PAYPAL-1840 Create braintreepaypalcredit customer button strategy ([e6bfdad](https://github.com/bigcommerce/checkout-js/commit/e6bfdadfb5d2222f89a0301deb44f8a464f6579e))
+
+### [1.285.2](https://github.com/bigcommerce/checkout-js/compare/v1.285.1...v1.285.2) (2023-01-20)
+
+### [1.285.1](https://github.com/bigcommerce/checkout-js/compare/v1.285.0...v1.285.1) (2023-01-19)
+
+## [1.285.0](https://github.com/bigcommerce/checkout-js/compare/v1.284.2...v1.285.0) (2023-01-19)
+
+
+### Features
+
+* **checkout:** CHECKOUT-6480 Build instrument utils package ([#1166](https://github.com/bigcommerce/checkout-js/issues/1166)) ([4e6a868](https://github.com/bigcommerce/checkout-js/commit/4e6a8681f4ac007477a1008d6a182058999788e3))
+
+### [1.284.2](https://github.com/bigcommerce/checkout-js/compare/v1.284.1...v1.284.2) (2023-01-17)
+
+### [1.284.1](https://github.com/bigcommerce/checkout-js/compare/v1.284.0...v1.284.1) (2023-01-17)
+
+## [1.284.0](https://github.com/bigcommerce/checkout-js/compare/v1.283.0...v1.284.0) (2023-01-17)
+
+
+### Features
+
+* **checkout:** CHECKOUT-6480 Offline payment method e2e tests ([#1162](https://github.com/bigcommerce/checkout-js/issues/1162)) ([948dc44](https://github.com/bigcommerce/checkout-js/commit/948dc44bd2dc74da0ef11fdd1059247b6f9db6b6))
+
+## [1.283.0](https://github.com/bigcommerce/checkout-js/compare/v1.282.2...v1.283.0) (2023-01-16)
+
+
+### Features
+
+* **payment:** PAYPAL-1839 Create braintreepaypal customer button strategy ([4a5fe0d](https://github.com/bigcommerce/checkout-js/commit/4a5fe0d2fe5ee311bbf47a0cae727ca795179a36))
+
+### [1.282.2](https://github.com/bigcommerce/checkout-js/compare/v1.282.1...v1.282.2) (2023-01-13)
+
+
+### Bug Fixes
+
+* **common:** CHECKOUT-000 upgrade reselect from 4.1.6 to 4.1.7 ([#1154](https://github.com/bigcommerce/checkout-js/issues/1154)) ([9d5da8b](https://github.com/bigcommerce/checkout-js/commit/9d5da8b957c582bb03c0d312a6aabd3789d2a221))
+
+### [1.282.1](https://github.com/bigcommerce/checkout-js/compare/v1.282.0...v1.282.1) (2023-01-12)
+
+## [1.282.0](https://github.com/bigcommerce/checkout-js/compare/v1.281.7...v1.282.0) (2023-01-10)
+
+
+### Features
+
+* **payment:** BOLT-437 Modify analytics event for Bolt suggestion on customer step ([8c51f72](https://github.com/bigcommerce/checkout-js/commit/8c51f72fbaba025fc8dc6b2e9c01dc9b2371a7ee))
+
+### [1.281.7](https://github.com/bigcommerce/checkout-js/compare/v1.281.6...v1.281.7) (2023-01-10)
+
+
+### Code Refactoring
+
+* **payment:** INT-6964 Sunset Amazon Pay V1 ([a404b04](https://github.com/bigcommerce/checkout-js/commit/a404b040dc1e9b245f39177296f091dd822725b4))
+
+### [1.281.6](https://github.com/bigcommerce/checkout-js/compare/v1.281.5...v1.281.6) (2023-01-09)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-7148 Handle cart inconsistency error and display appropriate message to shopper ([3ca525d](https://github.com/bigcommerce/checkout-js/commit/3ca525d9a7fe3f69970dcc642eb7cfa11112bd93))
+
+### [1.281.5](https://github.com/bigcommerce/checkout-js/compare/v1.281.4...v1.281.5) (2023-01-05)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-7047 Unable to scroll Cart Summary on Mobile ([#1148](https://github.com/bigcommerce/checkout-js/issues/1148)) ([6d8f6bc](https://github.com/bigcommerce/checkout-js/commit/6d8f6bc4d8e3260c5f6d5217462eb35fd3a31a5e))
+
+### [1.281.4](https://github.com/bigcommerce/checkout-js/compare/v1.281.3...v1.281.4) (2023-01-05)
+
+### [1.281.3](https://github.com/bigcommerce/checkout-js/compare/v1.281.2...v1.281.3) (2023-01-04)
+
+### [1.281.2](https://github.com/bigcommerce/checkout-js/compare/v1.281.1...v1.281.2) (2023-01-03)
+
+
+### Bug Fixes
+
+* **payment:** STRIPE-269 exclude wallets from the custom customer step status for stripeLink ([#1116](https://github.com/bigcommerce/checkout-js/issues/1116)) ([9a49c2e](https://github.com/bigcommerce/checkout-js/commit/9a49c2e70fb6ff6b8c64ff66ca93e9e8cdebb7f5))
+
+### [1.281.1](https://github.com/bigcommerce/checkout-js/compare/v1.281.0...v1.281.1) (2023-01-03)
+
+## [1.281.0](https://github.com/bigcommerce/checkout-js/compare/v1.280.0...v1.281.0) (2023-01-03)
+
+
+### Features
+
+* **payment:** PAYPAL-1836 added PayPalCommerce button to customer step ([#1123](https://github.com/bigcommerce/checkout-js/issues/1123)) ([9973949](https://github.com/bigcommerce/checkout-js/commit/99739492ed5c8f14951ef529f7e00dfcd7e1ec6f))
+
+
+### Bug Fixes
+
+* **common:** CHECKOUT-000 upgrade @types/react from 16.14.31 to 16.14.32 ([#1064](https://github.com/bigcommerce/checkout-js/issues/1064)) ([2f0bb2d](https://github.com/bigcommerce/checkout-js/commit/2f0bb2d070b5043eee8951a3e02e28e3a6f82704))
+* **common:** CHECKOUT-000 upgrade classnames from 2.3.1 to 2.3.2 ([#1063](https://github.com/bigcommerce/checkout-js/issues/1063)) ([f2dd532](https://github.com/bigcommerce/checkout-js/commit/f2dd532635efbdcd7f6f04e63b203c5f794e6be7))
+
+## [1.280.0](https://github.com/bigcommerce/checkout-js/compare/v1.279.3...v1.280.0) (2023-01-03)
+
+
+### Features
+
+* **payment:** STRIPE-178 Loading Submit button after card loads ([#1143](https://github.com/bigcommerce/checkout-js/issues/1143)) ([ac2fd3f](https://github.com/bigcommerce/checkout-js/commit/ac2fd3f71d50094424e95e9e555643d56cc7da34))
+
+### [1.279.3](https://github.com/bigcommerce/checkout-js/compare/v1.279.2...v1.279.3) (2023-01-02)
+
+
+### Bug Fixes
+
+* **payment:** STRIPE-175 remove extra payment call and extra code on core ([#1109](https://github.com/bigcommerce/checkout-js/issues/1109)) ([1f46f32](https://github.com/bigcommerce/checkout-js/commit/1f46f329e073226e333ba258f4dd2ba28543ff61))
+
+### [1.279.2](https://github.com/bigcommerce/checkout-js/compare/v1.279.1...v1.279.2) (2022-12-30)
+
+### [1.279.1](https://github.com/bigcommerce/checkout-js/compare/v1.279.0...v1.279.1) (2022-12-29)
+
+## [1.279.0](https://github.com/bigcommerce/checkout-js/compare/v1.278.1...v1.279.0) (2022-12-23)
+
+
+### Features
+
+* **payment:** PAYPAL-1828 fixed cvv tooltip ([466b08b](https://github.com/bigcommerce/checkout-js/commit/466b08bc1ed1600586f0a01a8e381b2421efb35d))
+
+### [1.278.1](https://github.com/bigcommerce/checkout-js/compare/v1.278.0...v1.278.1) (2022-12-23)
+
+## [1.278.0](https://github.com/bigcommerce/checkout-js/compare/v1.277.2...v1.278.0) (2022-12-22)
+
+
+### Features
+
+* **payment:** INT-6715 SquareV2: Add payment method component ([#1058](https://github.com/bigcommerce/checkout-js/issues/1058)) ([b1c3555](https://github.com/bigcommerce/checkout-js/commit/b1c35559c5ef0b09a288d204058c040ff75c2aad))
+
+### [1.277.2](https://github.com/bigcommerce/checkout-js/compare/v1.277.1...v1.277.2) (2022-12-22)
+
+### [1.277.1](https://github.com/bigcommerce/checkout-js/compare/v1.277.0...v1.277.1) (2022-12-21)
+
+
+### Bug Fixes
+
+* **payment:** BOLT-268 Bolt payment fields with store credits ([a80e564](https://github.com/bigcommerce/checkout-js/commit/a80e56433e1b95f15ac28afb8222aebeae3fc70b))
+
+## [1.277.0](https://github.com/bigcommerce/checkout-js/compare/v1.276.0...v1.277.0) (2022-12-21)
+
+
+### Features
+
+* **payment:** BOLT-408 Add BODL event for customer suggestion init ([1c21e2d](https://github.com/bigcommerce/checkout-js/commit/1c21e2d7131ed9bef4d19aeab507b3c56863eb68))
+
+## [1.276.0](https://github.com/bigcommerce/checkout-js/compare/v1.275.6...v1.276.0) (2022-12-20)
+
+
+### Features
+
+* **payment:** PAYMENTS-8376 Adds ability to enable vaulting for multi-shipping ([66b6387](https://github.com/bigcommerce/checkout-js/commit/66b6387270240e630c7a0e65dce661948ab61106))
+
+### [1.275.6](https://github.com/bigcommerce/checkout-js/compare/v1.275.5...v1.275.6) (2022-12-19)
+
+### [1.275.5](https://github.com/bigcommerce/checkout-js/compare/v1.275.4...v1.275.5) (2022-12-14)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-0000 Revert square component to use previous hosted form component ([#1125](https://github.com/bigcommerce/checkout-js/issues/1125)) ([e589374](https://github.com/bigcommerce/checkout-js/commit/e5893749884ae24a2fef9fd62cf8026ac513d5d3))
+
+### [1.275.4](https://github.com/bigcommerce/checkout-js/compare/v1.275.3...v1.275.4) (2022-12-13)
+
+### [1.275.3](https://github.com/bigcommerce/checkout-js/compare/v1.275.2...v1.275.3) (2022-12-13)
+
+
+### Bug Fixes
+
+* **payment:** INT-6928 [Mollie] No Ability To Use A Different Card To Pay ([#1110](https://github.com/bigcommerce/checkout-js/issues/1110)) ([c6ccd77](https://github.com/bigcommerce/checkout-js/commit/c6ccd7792d1cc460f6281ca29e13af3ad167c8e1))
+
+### [1.275.2](https://github.com/bigcommerce/checkout-js/compare/v1.275.1...v1.275.2) (2022-12-13)
+
+
+### Bug Fixes
+
+* **payment:** STRIPE-0000 bump checkout-sdk-js v1.309.6 ([#1122](https://github.com/bigcommerce/checkout-js/issues/1122)) ([2f097fb](https://github.com/bigcommerce/checkout-js/commit/2f097fbb547cda3fbf529153987cfa95cb23ebe1))
+
+### [1.275.1](https://github.com/bigcommerce/checkout-js/compare/v1.275.0...v1.275.1) (2022-12-05)
+
+## [1.275.0](https://github.com/bigcommerce/checkout-js/compare/v1.274.2...v1.275.0) (2022-11-29)
+
+
+### Features
+
+* **checkout:** CHECKOUT-6438 Refactor `HostedField` component ([#1106](https://github.com/bigcommerce/checkout-js/issues/1106)) ([7b6bd9f](https://github.com/bigcommerce/checkout-js/commit/7b6bd9f336beb1bd4e20104515c38b55d18c6cf5))
+
+### [1.274.2](https://github.com/bigcommerce/checkout-js/compare/v1.274.1...v1.274.2) (2022-11-25)
+
+
+### Bug Fixes
+
+* **checkout:** INT-6968 fix for the misaligned text when it has spaces in between on APMs name ([4dc9bf5](https://github.com/bigcommerce/checkout-js/commit/4dc9bf5859f05536c63201b36717b886dacc9434))
+
+
+### Code Refactoring
+
+* **payment:** INT-6930 Zip: remove "(Quadpay)" from checkout ([c9e9a35](https://github.com/bigcommerce/checkout-js/commit/c9e9a359455bed231458d6e508247a4e83f4a244))
+
 ### [1.274.1](https://github.com/bigcommerce/checkout-js/compare/v1.274.0...v1.274.1) (2022-11-18)
 
 ## [1.274.0](https://github.com/bigcommerce/checkout-js/compare/v1.273.1...v1.274.0) (2022-11-13)

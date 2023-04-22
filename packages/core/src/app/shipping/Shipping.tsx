@@ -74,8 +74,8 @@ export interface WithCheckoutShippingProps {
     shouldShowAddAddressInCheckout: boolean;
     shouldShowMultiShipping: boolean;
     shouldShowOrderComments: boolean;
-    isStripeLinkEnabled?: boolean;
-    useFloatingLabel?: boolean;
+    providerWithCustomCheckout?: string;
+    isFloatingLabelEnabled?: boolean;
     assignItem(consignment: ConsignmentAssignmentRequestBody): Promise<CheckoutSelectors>;
     deinitializeShippingMethod(options: ShippingRequestOptions): Promise<CheckoutSelectors>;
     deleteConsignments(): Promise<Address | undefined>;
@@ -114,7 +114,6 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
         const {
             loadShippingAddressFields,
             loadShippingOptions,
-            loadPaymentMethods,
             onReady = noop,
             onUnhandledError = noop,
         } = this.props;
@@ -126,7 +125,6 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             await Promise.all([loadShippingAddressFields(), loadShippingOptions()]);
 
             onReady();
-            await loadPaymentMethods();
         } catch (error) {
             onUnhandledError(error);
         } finally {
@@ -153,9 +151,10 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             setArrivalDate,
             giftMessage,
             setGiftMessage,
-            isStripeLinkEnabled,
+            // isStripeLinkEnabled,
+            providerWithCustomCheckout,
             step,
-            useFloatingLabel,
+            isFloatingLabelEnabled,
             ...shippingFormProps
         } = this.props;
 
@@ -165,7 +164,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             giftMessages
         } = this.state;
 
-        if (isStripeLinkEnabled && !customer.email && this.props.countries.length > 0) {
+        if (providerWithCustomCheckout === PaymentMethodId.StripeUPE && !customer.email && this.props.countries.length > 0) {
             return <StripeShipping
                 { ...shippingFormProps }
                 customer={ customer }
@@ -226,7 +225,6 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
                         onUseNewAddress={this.handleUseNewAddress}
                         shouldShowSaveAddress={!isGuest}
                         updateAddress={updateShippingAddress}
-                        useFloatingLabel={useFloatingLabel}
                         shipDate={ shipDate }
                         setShipDate={ setShipDate }
                         arrivalDate={ arrivalDate }
@@ -238,6 +236,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
                         giftMessages={ giftMessages }
                         setGiftMessages={ setGiftMessages }
                         loadGiftMessages={ this.loadGiftMessages }
+                        isFloatingLabelEnabled={isFloatingLabelEnabled}
                     />
                 </div>
             </AddressFormSkeleton>
@@ -509,7 +508,6 @@ export function mapToShippingProps({
             getBillingAddress,
             getShippingAddressFields,
             getShippingCountries,
-            getPaymentMethod,
         },
         statuses: {
             isShippingStepPending,
@@ -556,10 +554,6 @@ export function mapToShippingProps({
     const shouldShowMultiShipping =
         hasMultiShippingEnabled && !methodId && shippableItemsCount > 1 && shippableItemsCount < 50;
     const countriesWithAutocomplete = ['US', 'CA', 'AU', 'NZ'];
-    const stripeUpe = getPaymentMethod('card', PaymentMethodId.StripeUPE);
-    const linkEnabled = stripeUpe?.initializationData.enableLink || false;
-    const stripeUpeSupportedCurrency = cart?.currency.code === 'USD' || false;
-    const stripeUpeLinkEnabled = linkEnabled && stripeUpeSupportedCurrency;
 
     if (features['CHECKOUT-4183.checkout_google_address_autocomplete_uk']) {
         countriesWithAutocomplete.push('GB');
@@ -590,6 +584,7 @@ export function mapToShippingProps({
         loadShippingAddressFields: checkoutService.loadShippingAddressFields,
         loadShippingOptions: checkoutService.loadShippingOptions,
         methodId,
+        providerWithCustomCheckout: config.checkoutSettings.providerWithCustomCheckout || undefined,
         shippingAddress,
         shouldShowMultiShipping,
         shouldShowAddAddressInCheckout:
@@ -601,9 +596,9 @@ export function mapToShippingProps({
         updateCheckout: checkoutService.updateCheckout,
         updateShippingAddress: checkoutService.updateShippingAddress,
         updateConsignment: checkoutService.updateConsignment,
-        isStripeLinkEnabled: stripeUpeLinkEnabled,
+        // isStripeLinkEnabled: stripeUpeLinkEnabled,
         loadPaymentMethods: checkoutService.loadPaymentMethods,
-        useFloatingLabel: isFloatingLabelEnabled(config.checkoutSettings),
+        isFloatingLabelEnabled: isFloatingLabelEnabled(config.checkoutSettings),
     };
 }
 
