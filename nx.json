@@ -12,7 +12,6 @@
       "runner": "nx/tasks-runners/default",
       "options": {
         "cacheableOperations": [
-          "dev",
           "lint",
           "test"
         ]

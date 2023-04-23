@@ -67,7 +67,7 @@ const ShipDate = (props: any) => {
         const currentShipDate = shipDate
         var savedShipDate
         if (customFields && isActiveCart) {
-            savedShipDate = consignments[0].shippingAddress.customFields.find((customField: { fieldId: string; }) => customField.fieldId === 'field_43')
+            savedShipDate = consignments[0].shippingAddress.customFields.find((customField: { fieldId: string; }) => customField.fieldId === 'field_30')
             savedShipDate = new Date(savedShipDate.fieldValue)
         }
         savedShipDate && isAfterNextAvailable(savedShipDate) && filterDates(savedShipDate) 

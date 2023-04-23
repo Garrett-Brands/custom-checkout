@@ -14,6 +14,7 @@ import ShippingBanner from './customComponents/shipDate/ShippingBanner';
 
 import { ShippingOptions } from './shippingOption';
 import GiftMessageMulti from './customComponents/giftOptions/GiftMessageMulti';
+import ShippingAcknowledgment from './customComponents/shippingAcknowledgement/ShippingAcknowledgement';
 
 export interface ShippingFormFooterProps {
     cart: Cart;
@@ -37,6 +38,7 @@ export interface ShippingFormFooterProps {
 interface ShippingFormFooterState {
     unavailableItems: Array<any>;
     itemsUnavailableToShip: Array<any>;
+    shippingAcknowledged: boolean;
 }
 
 class ShippingFormFooter extends PureComponent<ShippingFormFooterProps, ShippingFormFooterState> {
@@ -44,7 +46,8 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps, Shipping
         super(props);
         this.state = {
             unavailableItems: [],
-            itemsUnavailableToShip: []
+            itemsUnavailableToShip: [],
+            shippingAcknowledged: false
         };
     }
 
@@ -69,11 +72,11 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps, Shipping
         if (cart && consignments[0]) {
             var isActiveCart
             var savedCartID
-            savedCartID = consignments[0].shippingAddress.customFields.find((customField: { fieldId: string; }) => customField.fieldId === 'field_49')
+            savedCartID = consignments[0].shippingAddress.customFields.find((customField: { fieldId: string; }) => customField.fieldId === 'field_36')
             isActiveCart = cart.id === savedCartID?.fieldValue
         }
 
-        const { unavailableItems, itemsUnavailableToShip } = this.state;
+        const { unavailableItems, itemsUnavailableToShip, shippingAcknowledged } = this.state;
 
         const setUnavailableItems = (unavailableItems: Array<any>) => {
             this.setState({unavailableItems: unavailableItems})
@@ -81,6 +84,10 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps, Shipping
 
         const setItemsUnavailableToShip = (unavailableItems: Array<any>) => {
             this.setState({itemsUnavailableToShip: unavailableItems})
+        }
+
+        const setShippingAcknowledged = (shippingAcknowledged: boolean) => {
+            this.setState({shippingAcknowledged: shippingAcknowledged})
         }
 
         const renderItemAvailabilityMessage = (type: string) => {
@@ -102,8 +109,16 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps, Shipping
             : products
         }
 
+        const includesFrangoItems = () => {
+            var includesFrangoItems = false
+            cart.lineItems.physicalItems.map(item => { if (item.categoryNames?.includes('Frango Chocolate')) includesFrangoItems = true })
+            return includesFrangoItems
+        }
+
         const shippingSurchargeMessage = 'UPS increased their shipping prices, resulting in a holiday surcharge per item.'
         const surchargeIsActive = false
+
+        console.log(shippingAcknowledged)
 
         return (
             <>
@@ -137,6 +152,7 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps, Shipping
                         isUpdatingAddress={isLoading}
                         shouldShowShippingOptions={shouldShowShippingOptions}
                     />
+                    { includesFrangoItems() && <ShippingAcknowledgment setShippingAcknowledged={setShippingAcknowledged}  /> }
                 </Fieldset>
 
             { shouldShowShippingOptions && unavailableItems.length === 0
@@ -207,7 +223,7 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps, Shipping
         if (cart && consignment) {
             var isActiveCart
             var savedCartID
-            savedCartID = consignment.shippingAddress.customFields.find((customField: { fieldId: string; }) => customField.fieldId === 'field_49')
+            savedCartID = consignment.shippingAddress.customFields.find((customField: { fieldId: string; }) => customField.fieldId === 'field_36')
             isActiveCart = cart.id === savedCartID?.fieldValue
         }
 

@@ -7,12 +7,12 @@ const ShippingSummaryMulti = (props: any) => {
 
     var isActiveCart: boolean
     var savedCartID: { fieldValue: any; }
-    savedCartID = consignment.shippingAddress.customFields.find((customField: { fieldId: string; }) => customField.fieldId === 'field_49')
+    savedCartID = consignment.shippingAddress.customFields.find((customField: { fieldId: string; }) => customField.fieldId === 'field_36')
     isActiveCart = cart.id === savedCartID?.fieldValue
 
     const renderShipDate = () => {
         var savedShipDate
-        savedShipDate = consignment.shippingAddress.customFields.find((customField: { fieldId: string; }) => customField.fieldId === 'field_43')
+        savedShipDate = consignment.shippingAddress.customFields.find((customField: { fieldId: string; }) => customField.fieldId === 'field_30')
         savedShipDate = savedShipDate?.fieldValue
         if (isActiveCart && savedShipDate) {
             return <SelectedShipDate shipDate={ new Date(`${savedShipDate}`) } />
@@ -21,7 +21,7 @@ const ShippingSummaryMulti = (props: any) => {
 
     const renderGiftMessage = () => {
         var giftMessage
-        giftMessage = consignment.shippingAddress.customFields.find((customField: { fieldId: string; }) => customField.fieldId === 'field_45')
+        giftMessage = consignment.shippingAddress.customFields.find((customField: { fieldId: string; }) => customField.fieldId === 'field_32')
         giftMessage = giftMessage?.fieldValue
         return isActiveCart
         ? giftMessage

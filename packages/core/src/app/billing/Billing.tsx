@@ -113,9 +113,9 @@ class Billing extends Component<BillingProps & WithCheckoutBillingProps> {
             const shipDateValue = shipDate.toLocaleDateString('en-US')
             const arrivalDateValue = arrivalDate.toLocaleDateString('en-US')
             const giftMessageValue = giftMessage.toString()
-            addressValues.customFields.field_43 = shipDateValue
-            addressValues.customFields.field_47 = arrivalDateValue
-            addressValues.customFields.field_45 = giftMessageValue
+            addressValues.customFields.field_30 = shipDateValue
+            addressValues.customFields.field_38 = arrivalDateValue
+            addressValues.customFields.field_32 = giftMessageValue
         }
 
         const promises: Array<Promise<CheckoutSelectors>> = [];

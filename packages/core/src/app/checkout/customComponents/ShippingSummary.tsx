@@ -8,12 +8,12 @@ const ShippingSummary = (props: any) => {
 
     var isActiveCart: boolean
     var savedCartID: { fieldValue: any; }
-    savedCartID = consignment.shippingAddress.customFields.find((customField: { fieldId: string; }) => customField.fieldId === 'field_49')
+    savedCartID = consignment.shippingAddress.customFields.find((customField: { fieldId: string; }) => customField.fieldId === 'field_36')
     isActiveCart = cart.id === savedCartID?.fieldValue
 
     const renderShipDate = () => {
         var savedShipDate
-        savedShipDate = consignment.shippingAddress.customFields.find((customField: { fieldId: string; }) => customField.fieldId === 'field_43')
+        savedShipDate = consignment.shippingAddress.customFields.find((customField: { fieldId: string; }) => customField.fieldId === 'field_30')
         savedShipDate = savedShipDate?.fieldValue
         if (isActiveCart && savedShipDate) {
             return <SelectedShipDate shipDate={ new Date(`${savedShipDate}`) } />
@@ -22,7 +22,7 @@ const ShippingSummary = (props: any) => {
 
     const renderArrivalDate = () => {
         var savedArrivalDate
-        savedArrivalDate = consignment.shippingAddress.customFields.find((customField: { fieldId: string; }) => customField.fieldId === 'field_47')
+        savedArrivalDate = consignment.shippingAddress.customFields.find((customField: { fieldId: string; }) => customField.fieldId === 'field_38')
         savedArrivalDate = savedArrivalDate?.fieldValue
         if (isActiveCart && savedArrivalDate) {
             return <ArrivalDate arrivalDate={ new Date(`${savedArrivalDate}`) } />
@@ -31,7 +31,7 @@ const ShippingSummary = (props: any) => {
 
     const renderGiftMessage = () => {
         var savedGiftMessage
-        savedGiftMessage = consignment.shippingAddress.customFields.find((customField: { fieldId: string; }) => customField.fieldId === 'field_45')
+        savedGiftMessage = consignment.shippingAddress.customFields.find((customField: { fieldId: string; }) => customField.fieldId === 'field_32')
         savedGiftMessage = savedGiftMessage?.fieldValue
         return giftMessage.length > 0
         ? giftMessage
