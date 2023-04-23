@@ -332,6 +332,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             addressValues.customFields.field_45 = giftMessageValue
             isGiftOrder ? addressValues.customFields.field_51 = ['0'] : addressValues.customFields.field_51 = []
             addressValues.customFields.field_49 = cartID
+            debugger
         }
 
         const updatedShippingAddress = addressValues && mapAddressFromFormValues(addressValues);
