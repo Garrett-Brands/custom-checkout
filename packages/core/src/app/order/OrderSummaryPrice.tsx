@@ -22,8 +22,19 @@ export interface OrderSummaryPriceState {
     previousAmount?: number;
 }
 
-function getDisplayValue(amount?: number | null, zeroLabel?: ReactNode): ReactNode | number {
+function getDisplayValue(amount?: number | null, zeroLabel?: ReactNode, testId?: string): ReactNode | number {
     const notYetSetSymbol = '--';
+    const nextStepCopy = 'Calculated at next step'
+
+    console.log(testId, amount, zeroLabel)
+
+    if (typeof amount === 'undefined' || amount === null && testId === 'cart-shipping') {
+        return nextStepCopy
+    }
+
+    if (amount === 0 && zeroLabel === 'undefined' && testId === 'cart-taxes') {
+        return nextStepCopy
+    }
 
     if (typeof amount === 'undefined' || amount === null) {
         return notYetSetSymbol;
@@ -68,7 +79,7 @@ class OrderSummaryPrice extends Component<OrderSummaryPriceProps, OrderSummaryPr
         } = this.props;
 
         const { highlight } = this.state;
-        const displayValue = getDisplayValue(amount, zeroLabel);
+        const displayValue = getDisplayValue(amount, zeroLabel, testId);
 
         return (
             <div data-test={testId}>

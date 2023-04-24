@@ -64,6 +64,7 @@ const GuestForm: FunctionComponent<
                     </Legend>
                 }
             >
+                {checkoutButtons}
                 {/* <p>
                     <TranslatedHtml id="customer.checkout_as_guest_text" />
                 </p> */}
@@ -110,7 +111,7 @@ const GuestForm: FunctionComponent<
                     </div>
                 </div>
 
-                {checkoutButtons}
+                {/* {checkoutButtons} */}
             </Fieldset>
         </Form>
     );

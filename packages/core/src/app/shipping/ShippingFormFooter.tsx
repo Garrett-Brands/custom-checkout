@@ -47,7 +47,7 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps, Shipping
         this.state = {
             unavailableItems: [],
             itemsUnavailableToShip: [],
-            shippingAcknowledged: false
+            shippingAcknowledged: true
         };
     }
 
@@ -115,10 +115,14 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps, Shipping
             return includesFrangoItems
         }
 
+        
         const shippingSurchargeMessage = 'UPS increased their shipping prices, resulting in a holiday surcharge per item.'
         const surchargeIsActive = false
-
-        console.log(shippingAcknowledged)
+        
+        const shouldDisableContinue = () => {
+            // Disable shipping continue if there are unavailable items, items unavailable to ship, or Frango and fan hasn't acknowledged warm shipping.
+            return unavailableItems.length > 0 || itemsUnavailableToShip.length > 0 || shippingAcknowledged === false
+        };
 
         return (
             <>
@@ -152,7 +156,7 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps, Shipping
                         isUpdatingAddress={isLoading}
                         shouldShowShippingOptions={shouldShowShippingOptions}
                     />
-                    { includesFrangoItems() && <ShippingAcknowledgment setShippingAcknowledged={setShippingAcknowledged}  /> }
+                    { includesFrangoItems() && <ShippingAcknowledgment setShippingAcknowledged={setShippingAcknowledged} /> }
                 </Fieldset>
 
             { shouldShowShippingOptions && unavailableItems.length === 0
@@ -200,7 +204,7 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps, Shipping
 
                 <div className="form-actions">
                     <Button
-                        disabled={ shouldDisableSubmit || unavailableItems.length > 0 || itemsUnavailableToShip.length > 0 }
+                        disabled={ shouldDisableSubmit || unavailableItems.length > 0 || itemsUnavailableToShip.length > 0 || shouldDisableContinue() }
                         id="checkout-shipping-continue"
                         isLoading={isLoading}
                         type="submit"

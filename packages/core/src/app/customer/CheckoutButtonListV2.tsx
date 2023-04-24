@@ -23,7 +23,7 @@ const CheckoutButtonList: FunctionComponent<
         <>
             {!isInitializingCustomer() && (
                 <p>
-                    <TranslatedString id="remote.continue_with_text" />
+                    <TranslatedString id="remote.express_checkout_text" />
                 </p>
             )}
 
