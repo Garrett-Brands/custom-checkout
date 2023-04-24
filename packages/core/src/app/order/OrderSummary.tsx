@@ -1,7 +1,5 @@
 import { LineItemMap, ShopperCurrency, StoreCurrency } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent, ReactNode, useMemo } from 'react';
-import ShippingSummary from '../checkout/customComponents/ShippingSummary';
-
 import { TranslatedString } from '../locale';
 
 import OrderSummaryHeader from './OrderSummaryHeader';

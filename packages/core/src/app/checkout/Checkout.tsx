@@ -9,7 +9,7 @@ import {
     EmbeddedCheckoutMessengerOptions,
     FlashMessage,
     Promotion,
-    RequestOptions,
+    RequestOptions
 } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import { find, findIndex } from 'lodash';
@@ -48,6 +48,7 @@ import ShippingSummaryMulti from './customComponents/ShippingSummaryMulti';
 import mapToCheckoutProps from './mapToCheckoutProps';
 import navigateToOrderConfirmation from './navigateToOrderConfirmation';
 import withCheckout from './withCheckout';
+// import ProgressIndicator from './customComponents/progressIndicator/ProgressIndicator';
 
 const Billing = lazy(() =>
     retry(
@@ -314,6 +315,7 @@ class Checkout extends Component<
         return (
             <LoadingOverlay hideContentWhenLoading isLoading={isRedirecting}>
                 <div className="layout-main">
+                    {/* <ProgressIndicator steps={steps} /> */}
                     <LoadingNotification isLoading={!isShowingWalletButtonsOnTop && isPending} />
 
                     <PromotionBannerList promotions={promotions} />
