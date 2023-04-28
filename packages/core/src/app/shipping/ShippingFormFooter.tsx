@@ -156,7 +156,9 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps, Shipping
                         isUpdatingAddress={isLoading}
                         shouldShowShippingOptions={shouldShowShippingOptions}
                     />
-                    { includesFrangoItems() && <ShippingAcknowledgment setShippingAcknowledged={setShippingAcknowledged} /> }
+                    { includesFrangoItems() && <ShippingAcknowledgment 
+                                                    setShippingAcknowledged={setShippingAcknowledged}
+                                                    shippingAcknowledged={shippingAcknowledged} /> }
                 </Fieldset>
 
             { shouldShowShippingOptions && unavailableItems.length === 0

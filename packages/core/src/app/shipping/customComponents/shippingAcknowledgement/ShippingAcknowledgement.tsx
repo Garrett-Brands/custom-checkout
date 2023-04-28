@@ -3,7 +3,7 @@ import { CheckboxFormField as AcknowledgementCheckbox } from "../../../ui/form";
 
 const ShippingAcknowledgment = (props: any) => {
 
-    const { setShippingAcknowledged } = props
+    const { setShippingAcknowledged, shippingAcknowledged } = props
     const labelContent = 'Chocolate is more likely to melt in warmer temperatures. By selecting ground shipping, I acknowledge Garrett is not responsible for heat damage caused during shipping. UPS 2nd Day Air and Next Day Air are preferred shipping methods to reduce the likelihood of chocolate melting.'
 
     useEffect(() => {
@@ -11,7 +11,7 @@ const ShippingAcknowledgment = (props: any) => {
     }, [])
 
     return (
-        <div className="shipping-acknowledgement-container">
+        <div className={ shippingAcknowledged ? "shipping-acknowledgement-container--checked" : "shipping-acknowledgement-container--not-checked" }>
             <AcknowledgementCheckbox
                 labelContent={labelContent}
                 name={'shipping-acknowledgment'}
