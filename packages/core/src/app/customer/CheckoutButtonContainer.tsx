@@ -5,7 +5,7 @@ import React, { FunctionComponent } from 'react';
 import { WalletButtonsContainerSkeleton } from '@bigcommerce/checkout/ui';
 
 import { CheckoutContextProps, withCheckout } from '../checkout';
-import { TranslatedString } from '../locale';
+// import { TranslatedString } from '../locale';
 
 import CheckoutButtonListV1, { filterUnsupportedMethodIds } from './CheckoutButtonList';
 
@@ -66,9 +66,9 @@ const CheckoutButtonContainer: FunctionComponent<CheckoutButtonContainerProps & 
         <div className='checkout-button-container'
              style={ isPaymentStepActive ? { position: 'absolute', left: '0', top: '-100%' } : undefined }
         >
-            <p>
+            {/* <p>
                 <TranslatedString id="remote.start_with_text" />
-            </p>
+            </p> */}
             <div className={classNames({
                 'checkout-buttons--1': methodIds.length === 1,
                 'checkout-buttons--2': methodIds.length === 2,
@@ -90,7 +90,7 @@ const CheckoutButtonContainer: FunctionComponent<CheckoutButtonContainerProps & 
                     />
                 </WalletButtonsContainerSkeleton>
             </div>
-            <div className='checkout-separator'><span><TranslatedString id='remote.or_text' /></span></div>
+            {/* <div className='checkout-separator'><span><TranslatedString id='remote.or_text' /></span></div> */}
         </div>
     );
 };

@@ -85,7 +85,8 @@ const CheckoutButtonList: FunctionComponent<CheckoutButtonListProps> = ({
 
     return (
         <div className='checkout-romote-custom-container'>
-            {!isInitializing && !hideText && (
+            {/* {!isInitializing && !hideText && ( */}
+            {!isInitializing && (
                 <p>
                     <TranslatedString id="remote.express_checkout_text" />
                 </p>
@@ -141,6 +142,7 @@ const CheckoutButtonList: FunctionComponent<CheckoutButtonListProps> = ({
                     );
                 })}
             </div>
+            <div className='custom-checkout-separator'><span><TranslatedString id='remote.or_text' /></span></div>
         </div>
     );
 };

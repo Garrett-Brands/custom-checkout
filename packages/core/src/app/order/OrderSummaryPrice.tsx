@@ -26,13 +26,11 @@ function getDisplayValue(amount?: number | null, zeroLabel?: ReactNode, testId?:
     const notYetSetSymbol = '--';
     const nextStepCopy = 'Calculated at next step'
 
-    console.log(testId, amount, zeroLabel)
-
     if (typeof amount === 'undefined' || amount === null && testId === 'cart-shipping') {
         return nextStepCopy
     }
 
-    if (amount === 0 && zeroLabel === 'undefined' && testId === 'cart-taxes') {
+    if (amount === 0 && zeroLabel === undefined && testId === 'cart-taxes') {
         return nextStepCopy
     }
 

@@ -64,11 +64,6 @@ const GuestForm: FunctionComponent<
                     </Legend>
                 }
             >
-                {checkoutButtons}
-                {/* <p>
-                    <TranslatedHtml id="customer.checkout_as_guest_text" />
-                </p> */}
-
                 <div className="customerEmail-container">
                     <div className="customerEmail-body">
                         <EmailField onChange={onChangeEmail} isFloatingLabelEnabled={isFloatingLabelEnabled}/>
@@ -111,7 +106,7 @@ const GuestForm: FunctionComponent<
                     </div>
                 </div>
 
-                {/* {checkoutButtons} */}
+                {checkoutButtons}
             </Fieldset>
         </Form>
     );

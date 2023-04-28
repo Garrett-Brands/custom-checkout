@@ -103,7 +103,7 @@
             "continue_as_guest_action": "Continue as guest",
             "continue_as_stripe_customer_action": "Continue with Link",
             "create_account_action": "Create Account",
-            "continue": "Continue",
+            "continue": "Continue as guest",
             "set_password_action": "Save Password",
             "required_error": "{label} is required",
             "min_error": "{label} should be bigger than {min}",
