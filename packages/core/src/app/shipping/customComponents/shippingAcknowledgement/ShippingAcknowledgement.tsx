@@ -10,8 +10,6 @@ const ShippingAcknowledgment = (props: any) => {
         setShippingAcknowledged(false)
     }, [])
 
-    console.log(shippingAcknowledged)
-
     return (
         <div className={ shippingAcknowledged ? "shipping-acknowledgement-container--checked" : "shipping-acknowledgement-container--not-checked" }>
             <AcknowledgementCheckbox

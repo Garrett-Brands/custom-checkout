@@ -142,7 +142,7 @@ const ShippingFormFooter: FunctionComponent<ShippingFormFooterProps> = ({
         
     const shouldDisableContinue = () => {
         // Disable shipping continue if there are unavailable items, items unavailable to ship, or Frango and fan hasn't acknowledged warm shipping.
-        return unavailableItems.length > 0 || itemsUnavailableToShip.length > 0 || shippingAcknowledged === false
+        return unavailableItems.length > 0 || itemsUnavailableToShip.length > 0 || ( includesFrangoItems() && shippingAcknowledged === false )
     };
 
     const renderGiftMessageMulti = (consignment: Consignment, index: number) => {
