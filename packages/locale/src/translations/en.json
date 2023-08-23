@@ -318,12 +318,8 @@
             "instrument_manage_modal_title_text": "Manage stored payment methods",
             "instrument_manage_modal_empty_text": "You do not have any stored payment methods.",
             "instrument_manage_table_header_ending_in_text": "Ending in",
-<<<<<<< HEAD:packages/core/src/app/locale/translations/en.json
-            "instrument_manage_table_header_expiry_date_text": "Expiration date",
-=======
             "instrument_manage_table_header_routing_number_text": "Routing Number",
             "instrument_manage_table_header_expiry_date_text": "Expiry date",
->>>>>>> staging:packages/locale/src/translations/en.json
             "instrument_manage_table_header_payment_method_text": "Payment method",
             "instrument_manage_delete_server_error": "There was an error when attempting to delete that stored payment method, please try again.",
             "instrument_manage_delete_auth_error": "There was a problem authorizing your request. Please try signing in again",
@@ -478,12 +474,8 @@
             "sign_out_after_action": "to view other payment methods",
             "sign_in_required_error": "Remote sign in required before payment",
             "sign_out_before_action": "",
-<<<<<<< HEAD:packages/core/src/app/locale/translations/en.json
-            "start_with_text": "Express Checkout"
-=======
-            "start_with_text": "Check out faster with:",
+            "start_with_text": "Express Checkout",
             "powered_by": "Powered by"
->>>>>>> staging:packages/locale/src/translations/en.json
         },
         "shipping": {
             "cart_change_error": "An update to your shopping cart has been detected and your available shipping costs have been updated. Please re-select a shipping method to continue.",
