@@ -44,11 +44,19 @@
     flex-shrink: 1;
 }
 
+@media (max-width: $screen-xsmall) {
+    div[data-test="payment-method-sezzle"] {
+        .paymentProviderHeader-name {
+            visibility: hidden;
+        }
+    }
+}
+
 .paymentMethod--creditCard,
 .paymentMethod--hosted,
 .paymentMethod--walletButton {
     clear: both;
-    padding: (spacing("base") / 1.5) 0;
+    padding: $payment-step-spacing-top 0;
 }
 
 .chasePay--container {

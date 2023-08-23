@@ -8,7 +8,9 @@ import {
 } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent, memo } from 'react';
 
-import { CheckoutContextProps, withCheckout } from '../../checkout';
+import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
+
+import { withCheckout } from '../../checkout';
 
 import AdyenV2PaymentMethod from './AdyenV2PaymentMethod';
 import AdyenV3PaymentMethod from './AdyenV3PaymentMethod';
@@ -22,7 +24,6 @@ import CCAvenueMarsPaymentMethod from './CCAvenueMarsPaymentMethod';
 import ChasePayPaymentMethod from './ChasePayPaymentMethod';
 import CheckoutCustomPaymentMethod from './CheckoutcomCustomPaymentMethod';
 import DigitalRiverPaymentMethod from './DigitalRiverPaymentMethod';
-import getUniquePaymentMethodId from './getUniquePaymentMethodId';
 import GooglePayPaymentMethod from './GooglePayPaymentMethod';
 import HostedCreditCardPaymentMethod from './HostedCreditCardPaymentMethod';
 import HostedPaymentMethod from './HostedPaymentMethod';
@@ -36,7 +37,6 @@ import PaymentMethodId from './PaymentMethodId';
 import PaymentMethodProviderType from './PaymentMethodProviderType';
 import PaymentMethodType from './PaymentMethodType';
 import PaypalCommerceCreditCardPaymentMethod from './PaypalCommerceCreditCardPaymentMethod';
-import PaypalCommercePaymentMethod from './PaypalCommercePaymentMethod';
 import PaypalExpressPaymentMethod from './PaypalExpressPaymentMethod';
 import PaypalPaymentsProPaymentMethod from './PaypalPaymentsProPaymentMethod';
 import PPSDKPaymentMethod from './PPSDKPaymentMethod';
@@ -166,7 +166,8 @@ const PaymentMethodComponent: FunctionComponent<
         method.id === PaymentMethodId.CybersourceV2GooglePay ||
         method.id === PaymentMethodId.OrbitalGooglePay ||
         method.id === PaymentMethodId.StripeGooglePay ||
-        method.id === PaymentMethodId.StripeUPEGooglePay
+        method.id === PaymentMethodId.StripeUPEGooglePay ||
+        method.id === PaymentMethodId.WorldpayAccessGooglePay
     ) {
         return <GooglePayPaymentMethod {...props} />;
     }
@@ -181,21 +182,6 @@ const PaymentMethodComponent: FunctionComponent<
 
     if (method.id === PaymentMethodId.PaypalCommerceCreditCards) {
         return <PaypalCommerceCreditCardPaymentMethod {...props} />;
-    }
-
-    if (
-        method.id === PaymentMethodId.PaypalCommerce ||
-        method.id === PaymentMethodId.PaypalCommerceCredit ||
-        method.id === PaymentMethodId.PaypalCommerceVenmo ||
-        method.gateway === PaymentMethodId.PaypalCommerceAlternativeMethod
-    ) {
-        return (
-            <PaypalCommercePaymentMethod
-                {...props}
-                isAPM={method.gateway === PaymentMethodId.PaypalCommerceAlternativeMethod}
-                uniqueId={getUniquePaymentMethodId(method.id, method.gateway)}
-            />
-        );
     }
 
     if (method.id === PaymentMethodId.PaypalExpress) {

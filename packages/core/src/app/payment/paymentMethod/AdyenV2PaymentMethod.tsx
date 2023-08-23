@@ -4,11 +4,11 @@ import {
     AdyenV2ValidationState,
     CardInstrument,
 } from '@bigcommerce/checkout-sdk';
-import _ from 'lodash';
 import React, { FunctionComponent, useCallback, useRef, useState } from 'react';
 import { Omit } from 'utility-types';
 
-import { TranslatedString } from '../../locale';
+import { TranslatedString } from '@bigcommerce/checkout/locale';
+
 import { Modal } from '../../ui/modal';
 
 import AdyenV2CardValidation from './AdyenV2CardValidation';

@@ -3,9 +3,10 @@ import { render } from 'enzyme';
 import { merge } from 'lodash';
 import React from 'react';
 
-import CheckoutProvider from '../checkout/CheckoutProvider';
+import { createLocaleContext, LocaleContext, LocaleContextType, } from '@bigcommerce/checkout/locale';
+import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
+
 import { getStoreConfig } from '../config/config.mock';
-import { createLocaleContext, LocaleContext, LocaleContextType, } from '../locale';
 
 import CheckoutButtonContainer from './CheckoutButtonContainer';
 import { getCustomer, getGuestCustomer } from './customers.mock';
@@ -21,6 +22,7 @@ describe('CheckoutButtonContainer', () => {
         localeContext = createLocaleContext(getStoreConfig());
 
         jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue(getGuestCustomer());
+        jest.spyOn(checkoutState.data, 'isPaymentDataRequired').mockReturnValue(true);
         jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(
             merge(getStoreConfig(), {
                 checkoutSettings: {
@@ -35,6 +37,24 @@ describe('CheckoutButtonContainer', () => {
     });
 
     it('displays wallet buttons for guest checkout', () => {
+        const component = render(
+            <CheckoutProvider checkoutService={checkoutService}>
+                <LocaleContext.Provider value={localeContext}>
+                    <CheckoutButtonContainer
+                        checkEmbeddedSupport={jest.fn()}
+                        isPaymentStepActive={false}
+                        onUnhandledError={jest.fn()}
+                    />
+                </LocaleContext.Provider>
+            </CheckoutProvider>
+        );
+
+        expect(component).toMatchSnapshot();
+    });
+
+    it('not displays wallet buttons for guest checkout if isPaymentDataRequired = false', () => {
+        jest.spyOn(checkoutState.data, 'isPaymentDataRequired').mockReturnValue(false);
+
         const component = render(
             <CheckoutProvider checkoutService={checkoutService}>
                 <LocaleContext.Provider value={localeContext}>

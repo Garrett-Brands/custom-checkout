@@ -18,10 +18,11 @@ import { noop } from 'lodash';
 import React, { Component, ReactNode } from 'react';
 import { createSelector } from 'reselect';
 
+import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
 import { AddressFormSkeleton } from '@bigcommerce/checkout/ui';
 
 import { isEqualAddress, mapAddressFromFormValues } from '../address';
-import { CheckoutContextProps, withCheckout } from '../checkout';
+import { withCheckout } from '../checkout';
 import CheckoutStepStatus from '../checkout/CheckoutStepStatus';
 import { EMPTY_ARRAY, isFloatingLabelEnabled } from '../common/utility';
 import { PaymentMethodId } from '../payment/paymentMethod';
@@ -173,8 +174,8 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
                 isBillingSameAsShipping={isBillingSameAsShipping}
                 isGuest={ isGuest }
                 isLoading={ isInitializing }
-                isShippingMethodLoading={ this.props.isLoading }
                 isMultiShippingMode={isMultiShippingMode}
+                isShippingMethodLoading={ this.props.isLoading }
                 onMultiShippingChange={ this.handleMultiShippingModeSwitch }
                 onSubmit={this.handleSingleShippingSubmit}
                 shouldShowMultiShipping={ shouldShowMultiShipping }
@@ -218,6 +219,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
                         deinitialize={deinitializeShippingMethod}
                         initialize={initializeShippingMethod}
                         isBillingSameAsShipping={isBillingSameAsShipping}
+                        isFloatingLabelEnabled={isFloatingLabelEnabled}
                         isGuest={isGuest}
                         isMultiShippingMode={isMultiShippingMode}
                         onMultiShippingSubmit={this.handleMultiShippingSubmit}
@@ -236,7 +238,6 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
                         giftMessages={ giftMessages }
                         setGiftMessages={ setGiftMessages }
                         loadGiftMessages={ this.loadGiftMessages }
-                        isFloatingLabelEnabled={isFloatingLabelEnabled}
                     />
                 </div>
             </AddressFormSkeleton>
@@ -255,7 +256,10 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             consignments.map((consignment: Consignment) => {
                 var giftMessage
                 var consignmentId
+                // Development Custom Field
                 giftMessage = consignment.shippingAddress.customFields.find(customField => customField.fieldId === 'field_32')
+                // Production Custom Field
+                // giftMessage = consignment.shippingAddress.customFields.find(customField => customField.fieldId === 'field_45')
                 consignmentId = consignment.id
                 if (consignmentId) {
                     giftMessages.push({
@@ -327,11 +331,18 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             const arrivalDateValue = arrivalDate.toLocaleDateString('en-US')
             const giftMessageValue = giftMessage.toString()
             const cartID = cart.id
+            // Development Custom Fields
             addressValues.customFields.field_30 = shipDateValue
             addressValues.customFields.field_38 = arrivalDateValue
             addressValues.customFields.field_32 = giftMessageValue
             isGiftOrder ? addressValues.customFields.field_34 = ['0'] : addressValues.customFields.field_34 = []
             addressValues.customFields.field_36 = cartID
+            // Production Custom Fields
+            // addressValues.customFields.field_43 = shipDateValue
+            // addressValues.customFields.field_47 = arrivalDateValue
+            // addressValues.customFields.field_45 = giftMessageValue
+            // isGiftOrder ? addressValues.customFields.field_51 = ['0'] : addressValues.customFields.field_51 = []
+            // addressValues.customFields.field_49 = cartID
         }
 
         const updatedShippingAddress = addressValues && mapAddressFromFormValues(addressValues);
@@ -436,11 +447,19 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             const shipDateValue = shipDate.toLocaleDateString('en-US')
             const cartID = cart.id.toString()
 
+            // Development Custom Fields
             var customFields = [
                 { fieldId: "field_30", fieldValue: shipDateValue },
                 { fieldId: "field_36", fieldValue: cartID },
                 { fieldId: "field_32", fieldValue: giftMessage && giftMessage || '' }
             ]
+
+            // Production Custom Fields
+            // var customFields = [
+            //     { fieldId: "field_43", fieldValue: shipDateValue },
+            //     { fieldId: "field_49", fieldValue: cartID },
+            //     { fieldId: "field_45", fieldValue: giftMessage && giftMessage || '' }
+            // ]
 
             consignment.shippingAddress.customFields = customFields
             var consignmentLineItems: { itemId: string | number; quantity: number; }[] = []

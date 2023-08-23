@@ -6,14 +6,21 @@ import {
 import { mount } from 'enzyme';
 import React, { FunctionComponent } from 'react';
 
+import { getLanguageService, LocaleProvider } from '@bigcommerce/checkout/locale';
+import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
+
 import { StaticAddress } from '../address';
 import { getAddress } from '../address/address.mock';
 import { getAddressFormFields } from '../address/formField.mock';
-import { CheckoutProvider } from '../checkout';
+import * as usePayPalConnectAddress from '../address/PayPalAxo/usePayPalConnectAddress';
 import { getCheckout, getCheckoutPayment } from '../checkout/checkouts.mock';
-import { getLanguageService, LocaleProvider } from '../locale';
 
 import StaticBillingAddress, { StaticBillingAddressProps } from './StaticBillingAddress';
+
+jest.mock(
+    '../address/PayPalAxo/PoweredByPaypalConnectLabel',
+    () => () => <div data-test="powered-by-paypal-connect-label">PoweredByPaypalConnectLabel</div>
+);
 
 describe('StaticBillingAddress', () => {
     let StaticBillingAddressTest: FunctionComponent<StaticBillingAddressProps>;
@@ -33,6 +40,13 @@ describe('StaticBillingAddress', () => {
 
         jest.spyOn(checkoutState.data, 'getBillingAddressFields').mockReturnValue(
             getAddressFormFields(),
+        );
+
+        jest.spyOn(usePayPalConnectAddress, 'default').mockImplementation(
+            jest.fn().mockImplementation(() => ({
+                isPayPalAxoEnabled: false,
+                paypalConnectAddresses: [],
+            })),
         );
 
         StaticBillingAddressTest = (props) => (
@@ -67,5 +81,39 @@ describe('StaticBillingAddress', () => {
         expect(container.text()).toEqual(
             getLanguageService().translate('billing.billing_address_amazonpay'),
         );
+    });
+
+    describe('with PayPal Connect flow', () => {
+        it('should not show label if PayPal Axo is disabled', () => {
+            const container = mount(<StaticBillingAddressTest {...defaultProps} />);
+
+            expect(container.find('[data-test="powered-by-paypal-connect-label"]')).toHaveLength(0);
+        });
+
+        it('should not show label if PayPal Axo is enabled but no PP addresses available', () => {
+            jest.spyOn(usePayPalConnectAddress, 'default').mockImplementation(
+                jest.fn().mockImplementation(() => ({
+                    isPayPalAxoEnabled: true,
+                    paypalConnectAddresses: [],
+                })),
+            );
+
+            const container = mount(<StaticBillingAddressTest {...defaultProps} />);
+
+            expect(container.find('[data-test="powered-by-paypal-connect-label"]')).toHaveLength(0);
+        });
+        
+        it('should show label if PayPal Axo is enabled and address match to PP address', () => {
+            jest.spyOn(usePayPalConnectAddress, 'default').mockImplementation(
+                jest.fn().mockImplementation(() => ({
+                    isPayPalAxoEnabled: true,
+                    paypalConnectAddresses: [getAddress()],
+                })),
+            );
+
+            const container = mount(<StaticBillingAddressTest {...defaultProps} />);
+
+            expect(container.find('[data-test="powered-by-paypal-connect-label"]')).toHaveLength(1);
+        });
     });
 });

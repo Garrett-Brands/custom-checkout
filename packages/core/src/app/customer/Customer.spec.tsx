@@ -10,13 +10,13 @@ import { mount, ReactWrapper } from 'enzyme';
 import React, { FunctionComponent } from 'react';
 
 import { AnalyticsProviderMock } from '@bigcommerce/checkout/analytics';
+import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
+import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 
 import { getBillingAddress } from '../billing/billingAddresses.mock';
-import { CheckoutProvider } from '../checkout';
 import { getCheckout } from '../checkout/checkouts.mock';
 import CheckoutStepType from '../checkout/CheckoutStepType';
 import { getStoreConfig } from '../config/config.mock';
-import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale';
 import { PaymentMethodId } from '../payment/paymentMethod';
 
 import CreateAccountForm from './CreateAccountForm';
@@ -138,7 +138,6 @@ describe('Customer', () => {
 
             expect(unhandledError).toHaveBeenCalled();
         });
-
 
         it('renders guest form if billing address is undefined', async () => {
             jest.spyOn(checkoutService.getState().data, 'getBillingAddress').mockReturnValue(
@@ -602,6 +601,45 @@ describe('Customer', () => {
             expect(checkoutService.signInCustomer).toHaveBeenCalledWith({
                 email: 'test@bigcommerce.com',
                 password: 'password1',
+            });
+        });
+
+        it('triggers execution method if customer is successfully signed in', async () => {
+            jest.spyOn(checkoutService, 'signInCustomer').mockReturnValue(
+                Promise.resolve(checkoutService.getState()),
+            );
+
+            jest.spyOn(checkoutService, 'executePaymentMethodCheckout').mockReturnValue(
+                Promise.resolve(checkoutService.getState()),
+            );
+
+            const handleSignedIn = jest.fn();
+            const component = mount(
+                <CustomerTest
+                    onSignIn={handleSignedIn}
+                    providerWithCustomCheckout={PaymentMethodId.BraintreeAcceleratedCheckout}
+                    viewType={CustomerViewType.Login}
+                />,
+            );
+
+            await new Promise((resolve) => process.nextTick(resolve));
+            component.update();
+
+            (component.find(LoginForm) as ReactWrapper<LoginFormProps>).prop('onSignIn')({
+                email: 'test@bigcommerce.com',
+                password: 'password1',
+            });
+
+            expect(checkoutService.signInCustomer).toHaveBeenCalledWith({
+                email: 'test@bigcommerce.com',
+                password: 'password1',
+            });
+
+            await new Promise((resolve) => process.nextTick(resolve));
+
+            expect(checkoutService.executePaymentMethodCheckout).toHaveBeenCalledWith({
+                methodId: PaymentMethodId.BraintreeAcceleratedCheckout,
+                continueWithCheckoutCallback: handleSignedIn,
             });
         });
 

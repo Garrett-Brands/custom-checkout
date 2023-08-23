@@ -4,6 +4,8 @@ exports[`OrderSummaryModal renders order summary 1`] = `
 <Modal
   additionalBodyClassName="cart-modal-body optimizedCheckout-orderSummary"
   additionalHeaderClassName="cart-modal-header optimizedCheckout-orderSummary"
+  additionalModalClassName=""
+  footer={false}
   header={
     <React.Fragment>
       <a
@@ -33,6 +35,7 @@ exports[`OrderSummaryModal renders order summary 1`] = `
 >
   <OrderSummarySection>
     <OrderSummaryItems
+      displayLineItemsCount={true}
       items={
         Object {
           "customItems": Array [],
@@ -116,6 +119,7 @@ exports[`OrderSummaryModal renders order summary 1`] = `
         ]
       }
       discountAmount={10}
+      fees={Array []}
       giftCertificates={
         Array [
           Object {
@@ -158,6 +162,8 @@ exports[`OrderSummaryModal when taxes are inclusive displays tax as summary sect
 <Modal
   additionalBodyClassName="cart-modal-body optimizedCheckout-orderSummary"
   additionalHeaderClassName="cart-modal-header optimizedCheckout-orderSummary"
+  additionalModalClassName=""
+  footer={false}
   header={
     <React.Fragment>
       <a
@@ -187,6 +193,7 @@ exports[`OrderSummaryModal when taxes are inclusive displays tax as summary sect
 >
   <OrderSummarySection>
     <OrderSummaryItems
+      displayLineItemsCount={true}
       items={
         Object {
           "customItems": Array [],
@@ -270,6 +277,7 @@ exports[`OrderSummaryModal when taxes are inclusive displays tax as summary sect
         ]
       }
       discountAmount={10}
+      fees={Array []}
       giftCertificates={
         Array [
           Object {

@@ -3,14 +3,15 @@ import { noop } from 'lodash';
 import React, { FunctionComponent, memo, useCallback } from 'react';
 import { object, string } from 'yup';
 
-import { preventDefault } from '../common/dom';
 import {
     TranslatedHtml,
     TranslatedLink,
     TranslatedString,
     withLanguage,
     WithLanguageProps,
-} from '../locale';
+} from '@bigcommerce/checkout/locale';
+
+import { preventDefault } from '../common/dom';
 import { Alert, AlertType } from '../ui/alert';
 import { Button, ButtonVariant } from '../ui/button';
 import { Fieldset, Form, Legend } from '../ui/form';
@@ -29,6 +30,7 @@ export interface LoginFormProps {
     isSignInEmailEnabled?: boolean;
     isSendingSignInEmail?: boolean;
     isSigningIn?: boolean;
+    isExecutingPaymentMethodCheckout?: boolean;
     signInError?: Error;
     signInEmailError?: Error;
     viewType?: Omit<CustomerViewType, 'guest'>;
@@ -57,6 +59,7 @@ const LoginForm: FunctionComponent<
     email,
     isSignInEmailEnabled,
     isSigningIn,
+    isExecutingPaymentMethodCheckout,
     language,
     onCancel = noop,
     onChangeEmail,
@@ -127,7 +130,7 @@ const LoginForm: FunctionComponent<
 
                 {(viewType === CustomerViewType.Login ||
                     viewType === CustomerViewType.EnforcedLogin) && (
-                    <EmailField onChange={onChangeEmail} isFloatingLabelEnabled={isFloatingLabelEnabled} />
+                    <EmailField isFloatingLabelEnabled={isFloatingLabelEnabled} onChange={onChangeEmail} />
                 )}
 
                 <PasswordField isFloatingLabelEnabled={isFloatingLabelEnabled} />
@@ -164,7 +167,8 @@ const LoginForm: FunctionComponent<
 
                 <div className="form-actions">
                     <Button
-                        disabled={isSigningIn}
+                        disabled={isSigningIn && isExecutingPaymentMethodCheckout}
+                        isLoading={isSigningIn && isExecutingPaymentMethodCheckout}
                         id="checkout-customer-continue"
                         testId="customer-continue-button"
                         type="submit"

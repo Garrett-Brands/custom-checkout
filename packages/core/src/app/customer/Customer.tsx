@@ -15,10 +15,11 @@ import { noop } from 'lodash';
 import React, { Component, ReactNode } from 'react';
 
 import { AnalyticsContextProps } from '@bigcommerce/checkout/analytics';
+import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
 import { CustomerSkeleton } from '@bigcommerce/checkout/ui';
 
 import { withAnalytics } from '../analytics';
-import { CheckoutContextProps, withCheckout } from '../checkout';
+import { withCheckout } from '../checkout';
 import CheckoutStepStatus from '../checkout/CheckoutStepStatus';
 import { isErrorWithType } from '../common/error';
 import { isFloatingLabelEnabled } from '../common/utility';
@@ -192,7 +193,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
           />;
 
         const isLoadingGuestForm = isWalletButtonsOnTop ?
-            isContinuingAsGuest :
+            isContinuingAsGuest || isExecutingPaymentMethodCheckout :
             isContinuingAsGuest || isInitializing || isExecutingPaymentMethodCheckout;
 
         return (
@@ -220,13 +221,13 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
                 continueAsGuestButtonLabelId="customer.continue"
                 defaultShouldSubscribe={isSubscribed}
                 email={this.draftEmail || email}
+                isFloatingLabelEnabled={isFloatingLabelEnabled}
                 isLoading={isLoadingGuestForm}
                 onChangeEmail={this.handleChangeEmail}
                 onContinueAsGuest={this.handleContinueAsGuest}
                 onShowLogin={this.handleShowLogin}
                 privacyPolicyUrl={privacyPolicyUrl}
                 requiresMarketingConsent={requiresMarketingConsent}
-                isFloatingLabelEnabled={isFloatingLabelEnabled}
             />
         );
     }
@@ -241,13 +242,13 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
             <EmailLoginForm
                 email={this.draftEmail}
                 emailHasBeenRequested={hasRequestedLoginEmail}
+                isFloatingLabelEnabled={isFloatingLabelEnabled}
                 isOpen={isEmailLoginFormOpen}
                 isSendingEmail={isSendingSignInEmail}
                 onRequestClose={this.closeEmailLoginFormForm}
                 onSendLoginEmail={this.handleSendLoginEmail}
                 sentEmail={signInEmail}
                 sentEmailError={signInEmailError}
-                isFloatingLabelEnabled={isFloatingLabelEnabled}
             />
         );
     }
@@ -273,10 +274,10 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
                 createAccountError={createAccountError}
                 formFields={customerAccountFields}
                 isCreatingAccount={isCreatingAccount}
+                isFloatingLabelEnabled={isFloatingLabelEnabled}
                 onCancel={this.handleCancelCreateAccount}
                 onSubmit={this.handleCreateAccount}
                 requiresMarketingConsent={requiresMarketingConsent}
-                isFloatingLabelEnabled={isFloatingLabelEnabled}
             />
         );
     }
@@ -290,6 +291,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
             isGuestEnabled,
             isSendingSignInEmail,
             isSigningIn,
+            isExecutingPaymentMethodCheckout,
             isAccountCreationEnabled,
             providerWithCustomCheckout,
             signInError,
@@ -307,9 +309,11 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
                 }
                 email={this.draftEmail || email}
                 forgotPasswordUrl={forgotPasswordUrl}
+                isFloatingLabelEnabled={isFloatingLabelEnabled}
                 isSendingSignInEmail={isSendingSignInEmail}
                 isSignInEmailEnabled={isSignInEmailEnabled && !isEmbedded}
                 isSigningIn={isSigningIn}
+                isExecutingPaymentMethodCheckout={isExecutingPaymentMethodCheckout}
                 onCancel={this.handleCancelSignIn}
                 onChangeEmail={this.handleChangeEmail}
                 onContinueAsGuest={this.executePaymentMethodCheckoutOrContinue}
@@ -318,7 +322,6 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
                 onSignIn={this.handleSignIn}
                 shouldShowCreateAccountLink={isAccountCreationEnabled}
                 signInError={signInError}
-                isFloatingLabelEnabled={isFloatingLabelEnabled}
                 viewType={viewType}
             />
         );
@@ -419,11 +422,25 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
     private handleSignIn: (credentials: CustomerCredentials) => Promise<void> = async (
         credentials,
     ) => {
-        const { signIn, onSignIn = noop, onSignInError = noop } = this.props;
+        const {
+            executePaymentMethodCheckout,
+            signIn,
+            onSignIn = noop,
+            onSignInError = noop,
+            providerWithCustomCheckout,
+        } = this.props;
 
         try {
             await signIn(credentials);
-            onSignIn();
+
+            if (providerWithCustomCheckout === PaymentMethodId.Braintree || providerWithCustomCheckout === PaymentMethodId.BraintreeAcceleratedCheckout) {
+                await executePaymentMethodCheckout({
+                    methodId: providerWithCustomCheckout,
+                    continueWithCheckoutCallback: onSignIn,
+                });
+            } else {
+                onSignIn();
+            }
 
             this.draftEmail = undefined;
         } catch (error) {

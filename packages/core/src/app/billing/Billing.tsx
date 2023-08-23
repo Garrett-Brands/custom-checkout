@@ -9,12 +9,13 @@ import {
 import { noop } from 'lodash';
 import React, { Component, ReactNode } from 'react';
 
+import { TranslatedString } from '@bigcommerce/checkout/locale';
+import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
 import { AddressFormSkeleton } from '@bigcommerce/checkout/ui';
 
 import { isEqualAddress, mapAddressFromFormValues } from '../address';
-import { CheckoutContextProps, withCheckout } from '../checkout';
+import { withCheckout } from '../checkout';
 import { EMPTY_ARRAY, isFloatingLabelEnabled } from '../common/utility';
-import { TranslatedString } from '../locale';
 import { getShippableItemsCount } from '../shipping';
 import { Legend } from '../ui/form';
 
@@ -113,9 +114,14 @@ class Billing extends Component<BillingProps & WithCheckoutBillingProps> {
             const shipDateValue = shipDate.toLocaleDateString('en-US')
             const arrivalDateValue = arrivalDate.toLocaleDateString('en-US')
             const giftMessageValue = giftMessage.toString()
+            // Development Custom Fields
             addressValues.customFields.field_30 = shipDateValue
             addressValues.customFields.field_38 = arrivalDateValue
             addressValues.customFields.field_32 = giftMessageValue
+            // Production Custom Fields
+            // addressValues.customFields.field_43 = shipDateValue
+            // addressValues.customFields.field_47 = arrivalDateValue
+            // addressValues.customFields.field_45 = giftMessageValue
         }
 
         const promises: Array<Promise<CheckoutSelectors>> = [];

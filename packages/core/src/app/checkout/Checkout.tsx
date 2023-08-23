@@ -16,11 +16,14 @@ import { find, findIndex } from 'lodash';
 import React, { Component, lazy, ReactNode } from 'react';
 
 import { AnalyticsContextProps } from '@bigcommerce/checkout/analytics';
+import { ExtensionContextProps, withExtension } from '@bigcommerce/checkout/checkout-extension';
+import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { AddressFormSkeleton, ChecklistSkeleton } from '@bigcommerce/checkout/ui';
 
 import { withAnalytics } from '../analytics';
 import { StaticBillingAddress } from '../billing';
 import { EmptyCartMessage } from '../cart';
+import { withCheckout } from '../checkout';
 import { CustomError, ErrorLogger, ErrorModal, isCustomError } from '../common/error';
 import { retry } from '../common/utility';
 import {
@@ -32,7 +35,6 @@ import {
     CustomerViewType,
 } from '../customer';
 import { EmbeddedCheckoutStylesheet, isEmbedded } from '../embeddedCheckout';
-import { TranslatedString, withLanguage, WithLanguageProps } from '../locale';
 import { PromotionBannerList } from '../promotion';
 import { hasSelectedShippingOptions, isUsingMultiShipping, StaticConsignment } from '../shipping';
 import { ShippingOptionExpiredError } from '../shipping/shippingOption';
@@ -47,8 +49,6 @@ import ShippingSummary from './customComponents/ShippingSummary';
 import ShippingSummaryMulti from './customComponents/ShippingSummaryMulti';
 import mapToCheckoutProps from './mapToCheckoutProps';
 import navigateToOrderConfirmation from './navigateToOrderConfirmation';
-import withCheckout from './withCheckout';
-// import ProgressIndicator from './customComponents/progressIndicator/ProgressIndicator';
 
 const Billing = lazy(() =>
     retry(
@@ -152,7 +152,11 @@ export interface WithCheckoutProps {
 }
 
 class Checkout extends Component<
-    CheckoutProps & WithCheckoutProps & WithLanguageProps & AnalyticsContextProps,
+    CheckoutProps &
+        WithCheckoutProps &
+        WithLanguageProps &
+        AnalyticsContextProps &
+        ExtensionContextProps,
     CheckoutState
 > {
     state: CheckoutState = {
@@ -184,13 +188,15 @@ class Checkout extends Component<
 
     async componentDidMount(): Promise<void> {
         const {
+            analyticsTracker,
             checkoutId,
             containerId,
             createEmbeddedMessenger,
             embeddedStylesheet,
+            extensionService,
             loadCheckout,
             subscribeToConsignments,
-            analyticsTracker
+            isExtensionEnabled,
         } = this.props;
 
         try {
@@ -264,6 +270,10 @@ class Checkout extends Component<
             }
 
             window.addEventListener('beforeunload', this.handleBeforeExit);
+
+            if (isExtensionEnabled()) {
+                await extensionService.loadExtensions();
+            }
         } catch (error) {
             if (error instanceof Error) {
                 this.handleUnhandledError(error);
@@ -300,7 +310,7 @@ class Checkout extends Component<
     }
 
     private renderContent(): ReactNode {
-        const { isPending, loginUrl, promotions = [], steps, isShowingWalletButtonsOnTop } = this.props;
+        const { isPending, loginUrl, promotions = [], steps, isShowingWalletButtonsOnTop, extensionState } = this.props;
 
         const { activeStepType, defaultStepType, isCartEmpty, isRedirecting } = this.state;
 
@@ -315,8 +325,7 @@ class Checkout extends Component<
         return (
             <LoadingOverlay hideContentWhenLoading isLoading={isRedirecting}>
                 <div className="layout-main">
-                    {/* <ProgressIndicator steps={steps} /> */}
-                    <LoadingNotification isLoading={!isShowingWalletButtonsOnTop && isPending} />
+                    <LoadingNotification isLoading={(!isShowingWalletButtonsOnTop && isPending) || extensionState.isShowingLoadingIndicator} />
 
                     <PromotionBannerList promotions={promotions} />
 
@@ -795,4 +804,6 @@ class Checkout extends Component<
     }
 }
 
-export default withAnalytics(withLanguage(withCheckout(mapToCheckoutProps)(Checkout)));
+export default withExtension(
+    withAnalytics(withLanguage(withCheckout(mapToCheckoutProps)(Checkout))),
+);

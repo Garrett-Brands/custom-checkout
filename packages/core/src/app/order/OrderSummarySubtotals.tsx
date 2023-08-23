@@ -1,11 +1,12 @@
-import { Coupon, GiftCertificate, Tax } from '@bigcommerce/checkout-sdk';
+import { Coupon, Fee, GiftCertificate, OrderFee, Tax } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent, memo } from 'react';
 
-import { TranslatedString } from '../locale';
+import { TranslatedString } from '@bigcommerce/checkout/locale';
 
 import OrderSummaryDiscount from './OrderSummaryDiscount';
 import OrderSummaryPrice from './OrderSummaryPrice';
 import ShippingPriceDetail from './customComponents/ShippingPriceDetail';
+import isOrderFee from "./isOrderFee";
 
 export interface OrderSummarySubtotalsProps {
     coupons: Coupon[];
@@ -13,7 +14,9 @@ export interface OrderSummarySubtotalsProps {
     discountAmount?: number;
     isTaxIncluded?: boolean;
     taxes?: Tax[];
+    fees?: Fee[] | OrderFee[];
     giftWrappingAmount?: number;
+    isUpdatedCartSummayModal?: boolean,
     shippingAmount?: number;
     handlingAmount?: number;
     storeCreditAmount?: number;
@@ -27,6 +30,7 @@ const OrderSummarySubtotals: FunctionComponent<OrderSummarySubtotalsProps> = ({
     isTaxIncluded,
     giftCertificates,
     taxes,
+    fees,
     giftWrappingAmount,
     shippingAmount,
     subtotalAmount,
@@ -100,6 +104,15 @@ const OrderSummarySubtotals: FunctionComponent<OrderSummarySubtotalsProps> = ({
                     testId="cart-handling"
                 />
             )}
+
+            {fees?.map((fee, index) => (
+                <OrderSummaryPrice
+                    amount={fee.cost}
+                    key={index}
+                    label={isOrderFee(fee) ? fee.customerDisplayName : fee.displayName}
+                    testId="cart-fees"
+                />
+            ))}
 
             {!isTaxIncluded && (taxes || []).map((tax, index) => (
                 <OrderSummaryPrice

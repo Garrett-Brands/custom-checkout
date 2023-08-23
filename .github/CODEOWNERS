@@ -1,15 +1,15 @@
 # Checkout
 
-* @bigcommerce/checkout
+* @bigcommerce/team-checkout
 /packages/afterpay-integration @bigcommerce/apex-leads
-/packages/apple-pay-integration @bigcommerce/checkout
-/packages/checkout-button-integration @bigcommerce/checkout
-/packages/core @bigcommerce/checkout
+/packages/apple-pay-integration @bigcommerce/team-checkout
+/packages/checkout-button-integration @bigcommerce/team-checkout
+/packages/core @bigcommerce/team-checkout
 /packages/google-pay-integration @bigcommerce/apex-leads
 /packages/hosted-credit-card-integration @bigcommerce/apex-leads
-/packages/payment-integration-api @bigcommerce/checkout
-/packages/payment-integration-test-framework @bigcommerce/checkout
-/packages/workspace-tools @bigcommerce/checkout
+/packages/payment-integration-api @bigcommerce/team-checkout
+/packages/test-framework @bigcommerce/team-checkout
+/packages/workspace-tools @bigcommerce/team-checkout
 
 # Apex integrations
 /packages/google-pay-integration @bigcommerce/apex-leads
@@ -37,6 +37,7 @@
 /packages/core/payment/paymentMethod/WorldpayCreditCardPaymentMethod.tsx @bigcommerce/apex-leads
 
 # kyiv payments
+/packages/bluesnap-direct-integration @bigcommerce/kyiv-payments-team
 /packages/core/customer/checkoutSuggestion @bigcommerce/kyiv-payments-team
 /packages/core/payment/paymentMethod/AdyenV2CardValidation.tsx @bigcommerce/kyiv-payments-team
 /packages/core/payment/paymentMethod/AdyenV3CardValidation.tsx @bigcommerce/kyiv-payments-team
@@ -49,7 +50,8 @@
 /packages/core/payment/paymentMethod/BoltPaymentMethod.tsx @bigcommerce/kyiv-payments-team
 /packages/core/payment/paymentMethod/BraintreeCreditCardPaymentMethod.tsx @bigcommerce/kyiv-payments-team
 /packages/core/payment/paymentMethod/PaypalCommerceCreditCardPaymentMethod.tsx @bigcommerce/kyiv-payments-team
-/packages/core/payment/paymentMethod/PaypalCommercePaymentMethod.tsx @bigcommerce/kyiv-payments-team
 /packages/core/payment/paymentMethod/PaypalExpressPaymentMethod.tsx @bigcommerce/kyiv-payments-team
 /packages/core/payment/paymentMethod/PaypalPaymentsProPaymentMethod.tsx @bigcommerce/kyiv-payments-team
+/packages/braintree-integration @bigcommerce/kyiv-payments-team
+/packages/paypal-commerce-integration @bigcommerce/kyiv-payments-team
 

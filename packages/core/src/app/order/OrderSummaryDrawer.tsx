@@ -6,8 +6,9 @@ import {
 import classNames from 'classnames';
 import React, { FunctionComponent, memo, ReactNode, useCallback } from 'react';
 
+import { TranslatedString } from '@bigcommerce/checkout/locale';
+
 import { ShopperCurrency } from '../currency';
-import { TranslatedString } from '../locale';
 import { IconGiftCertificate } from '../ui/icon';
 import { ModalTrigger } from '../ui/modal';
 
@@ -20,6 +21,7 @@ export interface OrderSummaryDrawerProps {
     lineItems: LineItemMap;
     total: number;
     headerLink: ReactNode;
+    isUpdatedCartSummayModal?: boolean,
     storeCurrency: StoreCurrency;
     shopperCurrency: ShopperCurrencyType;
     additionalLineItems?: ReactNode;
@@ -35,6 +37,7 @@ const OrderSummaryDrawer: FunctionComponent<
     handlingAmount,
     headerLink,
     isTaxIncluded,
+    isUpdatedCartSummayModal,
     lineItems,
     onRemovedCoupon,
     onRemovedGiftCertificate,
@@ -46,6 +49,7 @@ const OrderSummaryDrawer: FunctionComponent<
     subtotalAmount,
     taxes,
     total,
+    fees,
 }) => {
     const renderModal = useCallback(
         (props) => (
@@ -54,11 +58,13 @@ const OrderSummaryDrawer: FunctionComponent<
                 additionalLineItems={additionalLineItems}
                 coupons={coupons}
                 discountAmount={discountAmount}
+                fees={fees}
                 giftCertificates={giftCertificates}
                 giftWrappingAmount={giftWrappingAmount}
                 handlingAmount={handlingAmount}
                 headerLink={headerLink}
                 isTaxIncluded={isTaxIncluded}
+                isUpdatedCartSummayModal={isUpdatedCartSummayModal}
                 lineItems={lineItems}
                 onRemovedCoupon={onRemovedCoupon}
                 onRemovedGiftCertificate={onRemovedGiftCertificate}
@@ -90,6 +96,7 @@ const OrderSummaryDrawer: FunctionComponent<
             subtotalAmount,
             taxes,
             total,
+            fees,
         ],
     );
 
