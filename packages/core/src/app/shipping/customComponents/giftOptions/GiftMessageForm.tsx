@@ -4,7 +4,7 @@ import GiftMessageIcon from "../CustomIcon";
 
 const GiftMessageForm = (props: any) => {
     const { giftMessage, setGiftMessage } = props
-    const [message, setMessage] = useState('');
+    // const [message, setMessage] = useState('');
 
     const maxLength = 350
     const maxRows = 10
@@ -17,28 +17,28 @@ const GiftMessageForm = (props: any) => {
     }
 
     // TODO: Replace textarea's onChange with this function
-    const validateAndSanitizeInput = (event) => {
-        const value = event.target.value.replace(/[^a-zA-Z0-9 .,!?]/g, '');
-        const lineCount = (value.match(/\n/g) || []).length;
-        const isInsertingLineBreak = event.nativeEvent.inputType === 'insertLineBreak';
-        const isInsertingCharacter = event.nativeEvent.inputType !== 'deleteContentBackward';
+    // const validateAndSanitizeInput = (event) => {
+    //     const value = event.target.value.replace(/[^a-zA-Z0-9 .,!?]/g, '');
+    //     const lineCount = (value.match(/\n/g) || []).length;
+    //     const isInsertingLineBreak = event.nativeEvent.inputType === 'insertLineBreak';
+    //     const isInsertingCharacter = event.nativeEvent.inputType !== 'deleteContentBackward';
 
-        if (lineCount >= maxRows && isInsertingLineBreak) {
-        setMessage('You have exceeded the maximum line limit.');
-        event.preventDefault();
-        return;
-        }
+    //     if (lineCount >= maxRows && isInsertingLineBreak) {
+    //     setMessage('You have exceeded the maximum line limit.');
+    //     event.preventDefault();
+    //     return;
+    //     }
 
-        if (value.length >= maxLength && isInsertingCharacter) {
-        setMessage('You have reached the maximum character limit.');
-        event.preventDefault();
+    //     if (value.length >= maxLength && isInsertingCharacter) {
+    //     setMessage('You have reached the maximum character limit.');
+    //     event.preventDefault();
 
-        return;
-        }
+    //     return;
+    //     }
 
-        setMessage('');
-        setGiftMessage(value);
-    };
+    //     setMessage('');
+    //     setGiftMessage(value);
+    // };
     
 
     return(
