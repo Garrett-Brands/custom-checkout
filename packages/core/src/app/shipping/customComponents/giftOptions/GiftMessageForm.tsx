@@ -6,7 +6,7 @@ const GiftMessageForm = (props: any) => {
     const { giftMessage, setGiftMessage } = props
     const maxLength = 350
     const maxRows = 10
-    const placeholder = "Include up to 350 characters and 10 lines, please do not use emojis or special characters. Don't forget to sign your name!"
+    const placeholder = "Limited to 350 characters and 10 lines, please do not use emojis or special characters. Don't forget to sign your name!"
     
     const renderGiftMessage = () => {
         if (giftMessage.length > 0) {
