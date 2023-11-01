@@ -257,9 +257,9 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
                 var giftMessage
                 var consignmentId
                 // Development Custom Field
-                giftMessage = consignment.shippingAddress.customFields.find(customField => customField.fieldId === 'field_32')
+                // giftMessage = consignment.shippingAddress.customFields.find(customField => customField.fieldId === 'field_32')
                 // Production Custom Field
-                // giftMessage = consignment.shippingAddress.customFields.find(customField => customField.fieldId === 'field_45')
+                giftMessage = consignment.shippingAddress.customFields.find(customField => customField.fieldId === 'field_45')
                 consignmentId = consignment.id
                 if (consignmentId) {
                     giftMessages.push({
@@ -332,17 +332,17 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             const giftMessageValue = giftMessage.toString()
             const cartID = cart.id
             // Development Custom Fields
-            addressValues.customFields.field_30 = shipDateValue
-            addressValues.customFields.field_38 = arrivalDateValue
-            addressValues.customFields.field_32 = giftMessageValue
-            isGiftOrder ? addressValues.customFields.field_34 = ['0'] : addressValues.customFields.field_34 = []
-            addressValues.customFields.field_36 = cartID
+            // addressValues.customFields.field_30 = shipDateValue
+            // addressValues.customFields.field_38 = arrivalDateValue
+            // addressValues.customFields.field_32 = giftMessageValue
+            // isGiftOrder ? addressValues.customFields.field_34 = ['0'] : addressValues.customFields.field_34 = []
+            // addressValues.customFields.field_36 = cartID
             // Production Custom Fields
-            // addressValues.customFields.field_43 = shipDateValue
-            // addressValues.customFields.field_47 = arrivalDateValue
-            // addressValues.customFields.field_45 = giftMessageValue
-            // isGiftOrder ? addressValues.customFields.field_51 = ['0'] : addressValues.customFields.field_51 = []
-            // addressValues.customFields.field_49 = cartID
+            addressValues.customFields.field_43 = shipDateValue
+            addressValues.customFields.field_47 = arrivalDateValue
+            addressValues.customFields.field_45 = giftMessageValue
+            isGiftOrder ? addressValues.customFields.field_51 = ['0'] : addressValues.customFields.field_51 = []
+            addressValues.customFields.field_49 = cartID
         }
 
         const updatedShippingAddress = addressValues && mapAddressFromFormValues(addressValues);
@@ -448,18 +448,18 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             const cartID = cart.id.toString()
 
             // Development Custom Fields
-            var customFields = [
-                { fieldId: "field_30", fieldValue: shipDateValue },
-                { fieldId: "field_36", fieldValue: cartID },
-                { fieldId: "field_32", fieldValue: giftMessage && giftMessage || '' }
-            ]
+            // var customFields = [
+            //     { fieldId: "field_30", fieldValue: shipDateValue },
+            //     { fieldId: "field_36", fieldValue: cartID },
+            //     { fieldId: "field_32", fieldValue: giftMessage && giftMessage || '' }
+            // ]
 
             // Production Custom Fields
-            // var customFields = [
-            //     { fieldId: "field_43", fieldValue: shipDateValue },
-            //     { fieldId: "field_49", fieldValue: cartID },
-            //     { fieldId: "field_45", fieldValue: giftMessage && giftMessage || '' }
-            // ]
+            var customFields = [
+                { fieldId: "field_43", fieldValue: shipDateValue },
+                { fieldId: "field_49", fieldValue: cartID },
+                { fieldId: "field_45", fieldValue: giftMessage && giftMessage || '' }
+            ]
 
             consignment.shippingAddress.customFields = customFields
             var consignmentLineItems: { itemId: string | number; quantity: number; }[] = []

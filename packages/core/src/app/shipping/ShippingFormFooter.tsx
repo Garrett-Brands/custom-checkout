@@ -78,9 +78,9 @@ const ShippingFormFooter: FunctionComponent<ShippingFormFooterProps> = ({
         let savedCartID
 
         // Development Custom Field
-        savedCartID = consignments[0].shippingAddress.customFields.find((customField: { fieldId: string; }) => customField.fieldId === 'field_36')
+        // savedCartID = consignments[0].shippingAddress.customFields.find((customField: { fieldId: string; }) => customField.fieldId === 'field_36')
         // Production Custom Field
-        // savedCartID = consignments[0].shippingAddress.customFields.find((customField: { fieldId: string; }) => customField.fieldId === 'field_49')
+        savedCartID = consignments[0].shippingAddress.customFields.find((customField: { fieldId: string; }) => customField.fieldId === 'field_49')
         isActiveCart = cart.id === savedCartID?.fieldValue
     }
 
@@ -144,9 +144,9 @@ const ShippingFormFooter: FunctionComponent<ShippingFormFooterProps> = ({
             let savedCartID
 
             // Development Custom Field
-            savedCartID = consignment.shippingAddress.customFields.find((customField: { fieldId: string; }) => customField.fieldId === 'field_36')
+            // savedCartID = consignment.shippingAddress.customFields.find((customField: { fieldId: string; }) => customField.fieldId === 'field_36')
             // Production Custom Field
-            // savedCartID = consignment.shippingAddress.customFields.find((customField: { fieldId: string; }) => customField.fieldId === 'field_49')
+            savedCartID = consignment.shippingAddress.customFields.find((customField: { fieldId: string; }) => customField.fieldId === 'field_49')
             isActiveCart = cart.id === savedCartID?.fieldValue
         }
 

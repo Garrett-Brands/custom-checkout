@@ -20,9 +20,9 @@ const GiftMessage = (props: any) => {
         var savedGiftMessage
         if (customFields && isActiveCart) {
             // Development Custom Field
-            savedGiftMessage = consignments[0].shippingAddress.customFields.find((customField: { fieldId: string, fieldValue: string }) => customField.fieldId === 'field_32')
+            // savedGiftMessage = consignments[0].shippingAddress.customFields.find((customField: { fieldId: string, fieldValue: string }) => customField.fieldId === 'field_32')
             // Production Custom Field
-            // savedGiftMessage = consignments[0].shippingAddress.customFields.find((customField: { fieldId: string, fieldValue: string }) => customField.fieldId === 'field_45')
+            savedGiftMessage = consignments[0].shippingAddress.customFields.find((customField: { fieldId: string, fieldValue: string }) => customField.fieldId === 'field_45')
             savedGiftMessage = savedGiftMessage.fieldValue
             setGiftMessage(savedGiftMessage)
             setGiftMessageToggle(savedGiftMessage.length > 0)
