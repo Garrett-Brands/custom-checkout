@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useEffect, useState } from "react";
 import DatePicker from 'react-datepicker'
 
@@ -22,7 +23,7 @@ const ShipDate = (props: any) => {
         arrivalDate, 
         setArrivalDate,
         isActiveCart,
-        setUnavailableItems,
+        // setUnavailableItems,
         itemsUnavailableToShip,
         setItemsUnavailableToShip,
     } = props
@@ -41,12 +42,12 @@ const ShipDate = (props: any) => {
     const [blackoutDates, setBlackoutDates] = useState([])
     const [promotionalItems, setPromotionalItems] = useState([])
     const [nextAvailableDate, setNextAvailableDate] = useState(today)
-    const [inventoryData, setInventoryData] = useState([])
+    // const [inventoryData, setInventoryData] = useState([])
 
     useEffect(() => {
         fetchBlackoutDates()
         fetchShipByDates()
-        fetchInventoryData()
+        // fetchInventoryData()
     }, [])
 
     useEffect(() => {
@@ -116,19 +117,19 @@ const ShipDate = (props: any) => {
         }
     }, [])
 
-    useEffect(() => {
-        const unavailableItems = []
+    // useEffect(() => {
+    //     const unavailableItems = []
 
-        inventoryData.map(item => {
-            if (item.quantity > item.qty_available || item.status === 'OOS') {
-                unavailableItems.push(item)
-            }
-        })
+    //     inventoryData.map(item => {
+    //         if (item.quantity > item.qty_available || item.status === 'OOS') {
+    //             unavailableItems.push(item)
+    //         }
+    //     })
 
-        if (unavailableItems.length > 0) {
-            setUnavailableItems(unavailableItems)
-        }
-    }, [inventoryData.length > 0])
+    //     if (unavailableItems.length > 0) {
+    //         setUnavailableItems(unavailableItems)
+    //     }
+    // }, [inventoryData.length > 0])
 
     const getAvailableDates = (start: Date, end: Date) => {
         const dates = []
@@ -304,49 +305,49 @@ const ShipDate = (props: any) => {
         })
     }
 
-    const fetchInventoryData = () => {
-        const skus = []
+    // const fetchInventoryData = () => {
+    //     const skus = []
 
-        cart.lineItems.physicalItems.map((item: {sku: string, quantity: string, name: string, options: Object}) => {
-            skus.push({
-                'sku': item.sku, 
-                'quantity': item.quantity,
-                'name': item.name,
-                'options': item.options
-            })
-        })
+    //     cart.lineItems.physicalItems.map((item: {sku: string, quantity: string, name: string, options: Object}) => {
+    //         skus.push({
+    //             'sku': item.sku, 
+    //             'quantity': item.quantity,
+    //             'name': item.name,
+    //             'options': item.options
+    //         })
+    //     })
 
-        const body = {
-            "inventoryList": skus
-        }
+    //     const body = {
+    //         "inventoryList": skus
+    //     }
 
-        const reqObj = {
-            method: 'POST',
-            headers: {
-              "Content-Type": "application/json",
-              "Accept": "application/json",
-              "x-access-key": "XM9xCpdv7TC1ZrzZ3ZeNYKUoCK1GHbZw"
-            },
-            body: JSON.stringify(body)
-          }
+    //     const reqObj = {
+    //         method: 'POST',
+    //         headers: {
+    //           "Content-Type": "application/json",
+    //           "Accept": "application/json",
+    //           "x-access-key": "XM9xCpdv7TC1ZrzZ3ZeNYKUoCK1GHbZw"
+    //         },
+    //         body: JSON.stringify(body)
+    //       }
 
-        fetch(`https://api.gbdev.cloud/v1/client/inventory/check-quantities`, reqObj)
-        .then(resp => resp.json())
-        .then(({data}) => {
-            data.map((item: {qty_available: number, status: string, variant_sku: string}) => {
-                skus.find(sku => {
-                    if (sku.sku === item.variant_sku) {
-                        sku.qty_available = item.qty_available
-                        sku.status = item.status
-                    }
-                })
-            })
-            setInventoryData(skus)
-        })
-        .catch(error => {
-            console.log('INVENTORY REQUEST ERROR =>', error)
-        })
-    }
+    //     fetch(`https://api.gbdev.cloud/v1/client/inventory/check-quantities`, reqObj)
+    //     .then(resp => resp.json())
+    //     .then(({data}) => {
+    //         data.map((item: {qty_available: number, status: string, variant_sku: string}) => {
+    //             skus.find(sku => {
+    //                 if (sku.sku === item.variant_sku) {
+    //                     sku.qty_available = item.qty_available
+    //                     sku.status = item.status
+    //                 }
+    //             })
+    //         })
+    //         setInventoryData(skus)
+    //     })
+    //     .catch(error => {
+    //         console.log('INVENTORY REQUEST ERROR =>', error)
+    //     })
+    // }
     
     const renderUnavailableToShipMessage = (type: string) => {
         const products = []
