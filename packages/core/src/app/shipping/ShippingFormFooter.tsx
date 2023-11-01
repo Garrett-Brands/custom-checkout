@@ -8,33 +8,33 @@ import { OrderComments } from '../orderComments';
 import { Alert, AlertType } from '../ui/alert';
 import { Button, ButtonVariant } from '../ui/button';
 import { Fieldset, Legend } from '../ui/form';
-import ShipDate from './customComponents/shipDate/ShipDate';
-import ShipDateDisabled from './customComponents/shipDate/ShipDateDisabled';
+
 import GiftMessage from './customComponents/giftOptions/GiftMessage';
 import GiftMessageDisabled from './customComponents/giftOptions/GiftMessageDisabled';
-import ShippingBanner from './customComponents/shipDate/ShippingBanner';
-
-import { ShippingOptions } from './shippingOption';
 import GiftMessageMulti from './customComponents/giftOptions/GiftMessageMulti';
-import ShippingAcknowledgment from './customComponents/shippingAcknowledgement/ShippingAcknowledgement';
+import ShipDate from './customComponents/shipDate/ShipDate';
+import ShipDateDisabled from './customComponents/shipDate/ShipDateDisabled';
+import ShippingBanner from './customComponents/shipDate/ShippingBanner';
+import { ShippingOptions } from './shippingOption';
+// import ShippingAcknowledgment from './customComponents/shippingAcknowledgement/ShippingAcknowledgement';
 
 export interface ShippingFormFooterProps {
-    cart: Cart;
-    cartHasChanged: boolean;
-    isMultiShippingMode: boolean;
-    shouldShowOrderComments: boolean;
-    shouldShowShippingOptions?: boolean;
-    shouldDisableSubmit: boolean;
-    isLoading: boolean;
-    shipDate: Date;
-    setShipDate: Function;
-    arrivalDate: Date;
-    setArrivalDate: Function;
-    giftMessage: String;
-    setGiftMessage: Function;
-    giftMessages: Array<any>;
-    setGiftMessages: Function;
-    consignments: Consignment[];
+    readonly cart: Cart;
+    readonly cartHasChanged: boolean;
+    readonly isMultiShippingMode: boolean;
+    readonly shouldShowOrderComments: boolean;
+    readonly shouldShowShippingOptions?: boolean;
+    readonly shouldDisableSubmit: boolean;
+    readonly isLoading: boolean;
+    readonly shipDate: Date;
+    readonly setShipDate: Function;
+    readonly arrivalDate: Date;
+    readonly setArrivalDate: Function;
+    readonly giftMessage: string;
+    readonly setGiftMessage: Function;
+    readonly giftMessages: any[];
+    readonly setGiftMessages: Function;
+    readonly consignments: Consignment[];
 }
 
 const ShippingFormFooter: FunctionComponent<ShippingFormFooterProps> = ({
@@ -63,7 +63,7 @@ const ShippingFormFooter: FunctionComponent<ShippingFormFooterProps> = ({
 
     const [unavailableItems, setUnavailableItems] = useState([]);
     const [itemsUnavailableToShip, setItemsUnavailableToShip] = useState([]);
-    const [shippingAcknowledged, setShippingAcknowledged] = useState(false);
+    // const [shippingAcknowledged, setShippingAcknowledged] = useState(false);
 
     // Code Prior to August 23 Merge
 
@@ -75,7 +75,8 @@ const ShippingFormFooter: FunctionComponent<ShippingFormFooterProps> = ({
 
     if (cart && consignments[0]) {
         var isActiveCart
-        var savedCartID
+        let savedCartID
+
         // Development Custom Field
         savedCartID = consignments[0].shippingAddress.customFields.find((customField: { fieldId: string; }) => customField.fieldId === 'field_36')
         // Production Custom Field
@@ -96,71 +97,65 @@ const ShippingFormFooter: FunctionComponent<ShippingFormFooterProps> = ({
         }
     }, [extensionService, isExtensionRegionEnabled]);
 
-    // Code Prior to August 23 Merge
+    // const renderItemAvailabilityMessage = (type: string) => {
+    //     const message = ['no longer available. Please update your cart to complete checkout.']
+    //     const products = []
 
-    // const { unavailableItems, itemsUnavailableToShip, shippingAcknowledged } = this.state;
+    //     unavailableItems.map((item: { name: string, options: any }) => {
+    //         const options = []
 
-    // const setUnavailableItems = (unavailableItems: Array<any>) => {
-    //     this.setState({unavailableItems: unavailableItems})
+    //         if (item.options.length > 0) {
+    //             item.options.map((option: any) => options.push(option.value))
+    //         }
+
+    //         options.unshift(item.name)
+
+    //         const productDetails = { message: options.join(' - ') }
+
+    //         products.push(productDetails)
+    //     })
+    //     message.unshift(products.length > 1 ? ' products are ' : ' product is ')
+    //     message.unshift(products.length.toString())
+
+    //     return type === 'main'
+    //     ? message
+    //     : products
     // }
 
-    // const setItemsUnavailableToShip = (unavailableItems: Array<any>) => {
-    //     this.setState({itemsUnavailableToShip: unavailableItems})
+    // const includesFrangoItems = () => {
+    //     let includesFrangoItems = false
+
+    //     cart.lineItems.physicalItems.map(item => { if (item.categoryNames?.includes('Frango Chocolate')) includesFrangoItems = true })
+
+    //     return includesFrangoItems
     // }
-
-    // const setShippingAcknowledged = (shippingAcknowledged: boolean) => {
-    //     this.setState({shippingAcknowledged: shippingAcknowledged})
-    // }
-
-    const renderItemAvailabilityMessage = (type: string) => {
-        var message = ['no longer available. Please update your cart to complete checkout.']
-        var products = new Array
-        unavailableItems.map((item: { name: string, options: any }) => {
-            var options = new Array
-            if (item.options.length > 0) {
-                item.options.map((option: any) => options.push(option.value))
-            }
-            options.unshift(item.name)
-            var productDetails = { message: options.join(' - ') }
-            products.push(productDetails)
-        })
-        message.unshift(products.length > 1 ? ' products are ' : ' product is ')
-        message.unshift(products.length.toString())
-        return type === 'main'
-        ? message
-        : products
-    }
-
-    const includesFrangoItems = () => {
-        var includesFrangoItems = false
-        cart.lineItems.physicalItems.map(item => { if (item.categoryNames?.includes('Frango Chocolate')) includesFrangoItems = true })
-        return includesFrangoItems
-    }
 
     const shippingSurchargeMessage = 'UPS increased their shipping prices, resulting in a holiday surcharge per item.'
     const surchargeIsActive = false
         
-    const shouldDisableContinue = () => {
-        // Disable shipping continue if there are unavailable items, items unavailable to ship, or Frango and fan hasn't acknowledged warm shipping.
-        return unavailableItems.length > 0 || itemsUnavailableToShip.length > 0 || ( includesFrangoItems() && shippingAcknowledged === false )
-    };
+    // const shouldDisableContinue = () => {
+    //     // Disable shipping continue if there are unavailable items, items unavailable to ship, or Frango and fan hasn't acknowledged warm shipping.
+    //     return unavailableItems.length > 0 || itemsUnavailableToShip.length > 0 || ( includesFrangoItems() && shippingAcknowledged === false )
+    // };
 
     const renderGiftMessageMulti = (consignment: Consignment, index: number) => {
         if (cart && consignment) {
             var isActiveCart
-            var savedCartID
+            let savedCartID
+
             // Development Custom Field
             savedCartID = consignment.shippingAddress.customFields.find((customField: { fieldId: string; }) => customField.fieldId === 'field_36')
             // Production Custom Field
             // savedCartID = consignment.shippingAddress.customFields.find((customField: { fieldId: string; }) => customField.fieldId === 'field_49')
             isActiveCart = cart.id === savedCartID?.fieldValue
         }
+
         return (
             <GiftMessageMulti
-                key={index}
                 consignment={ consignment }
-                isActiveCart={ isActiveCart }
                 giftMessages={ giftMessages }
+                isActiveCart={ isActiveCart }
+                key={index}
                 setGiftMessages={ setGiftMessages } />
         )
     }
@@ -200,44 +195,48 @@ const ShippingFormFooter: FunctionComponent<ShippingFormFooterProps> = ({
                     isUpdatingAddress={isLoading}
                     shouldShowShippingOptions={shouldShowShippingOptions}
                 />
-                { includesFrangoItems() && <ShippingAcknowledgment 
+                {/* Seasonal Frango Chocolate Shipping Acknowledgement */}
+                {/* { includesFrangoItems() && <ShippingAcknowledgment 
                                                 setShippingAcknowledged={setShippingAcknowledged}
-                                                shippingAcknowledged={shippingAcknowledged} /> }
+                                                shippingAcknowledged={shippingAcknowledged} /> } */}
                 
             </Fieldset>
 
-            { shouldShowShippingOptions && unavailableItems.length === 0
+            { shouldShowShippingOptions
+            // { shouldShowShippingOptions && unavailableItems.length === 0
             ?   <ShipDate
-                    cart={ cart }
-                    isMultiShippingMode={ isMultiShippingMode }
-                    consignments={ consignments }
-                    shipDate={ shipDate }
-                    setShipDate={ setShipDate }
                     arrivalDate={ arrivalDate }
-                    setArrivalDate={ setArrivalDate }
+                    cart={ cart }
+                    consignments={ consignments }
                     isActiveCart={ isActiveCart }
+                    isMultiShippingMode={ isMultiShippingMode }
                     itemsUnavailableToShip={ itemsUnavailableToShip }
+                    setArrivalDate={ setArrivalDate }
                     setItemsUnavailableToShip={ setItemsUnavailableToShip }
-                    unavailableItems={ unavailableItems }
-                    setUnavailableItems={ setUnavailableItems } /> 
+                    setShipDate={ setShipDate }
+                    setUnavailableItems={ setUnavailableItems }
+                    shipDate={ shipDate }
+                    unavailableItems={ unavailableItems } /> 
             : <ShipDateDisabled /> }
 
-            { unavailableItems.length > 0 &&
+
+            {/* Optional Inventory Banner */}
+            {/* { unavailableItems.length > 0 &&
                 <ShippingBanner
                     className='unavailable-items-alert-banner'
-                    mainMessage={renderItemAvailabilityMessage('main')}
-                    listItems={renderItemAvailabilityMessage('second')} />
-            }
+                    listItems={renderItemAvailabilityMessage('second')}
+                    mainMessage={renderItemAvailabilityMessage('main')} />
+            } */}
 
             { shouldShowShippingOptions 
-            && unavailableItems.length === 0 
+            // && unavailableItems.length === 0
             && itemsUnavailableToShip.length === 0
             && !isMultiShippingMode
             ?   <GiftMessage
                     consignments={ consignments }
                     giftMessage={ giftMessage }
-                    setGiftMessage={ setGiftMessage }
-                    isActiveCart={ isActiveCart } />
+                    isActiveCart={ isActiveCart }
+                    setGiftMessage={ setGiftMessage } />
             : ( isMultiShippingMode
             ? <>
                 <Fieldset id='gift-message'>
@@ -251,8 +250,8 @@ const ShippingFormFooter: FunctionComponent<ShippingFormFooterProps> = ({
 
             <div className="form-actions">
                 <Button
-                    // disabled={shouldDisableSubmit}
-                    disabled={ shouldDisableSubmit || unavailableItems.length > 0 || itemsUnavailableToShip.length > 0 || shouldDisableContinue() }
+                    // disabled={ shouldDisableSubmit || unavailableItems.length > 0 || itemsUnavailableToShip.length > 0 || shouldDisableContinue() }
+                    disabled={ shouldDisableSubmit || itemsUnavailableToShip.length > 0 }
                     id="checkout-shipping-continue"
                     isLoading={isLoading}
                     type="submit"
