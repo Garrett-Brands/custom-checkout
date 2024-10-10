@@ -31,6 +31,7 @@ const ShippingOptionListItem: FunctionComponent<ShippingOptionListItemProps> = (
                 {(isSelected && !isMultiShippingMode) && (
                     <Extension region={ExtensionRegion.ShippingSelectedShippingMethod} />
                 )}
+                <span>testing additional copy here</span>
             </div>
         ),
         [isSelected, isMultiShippingMode, shippingOption],

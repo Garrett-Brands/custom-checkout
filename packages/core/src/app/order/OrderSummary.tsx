@@ -4,7 +4,7 @@ import {
     ShopperCurrency,
     StoreCurrency,
 } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent, ReactNode, useMemo } from 'react';
+import React, { FunctionComponent, ReactNode, useMemo, useEffect, useState } from 'react';
 
 import { Extension } from '@bigcommerce/checkout/checkout-extension';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
@@ -40,12 +40,34 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
     const nonBundledLineItems = useMemo(() => removeBundledItems(lineItems), [lineItems]);
     const displayInclusiveTax = isTaxIncluded && taxes && taxes.length > 0;
 
+    interface ShipDateObject {
+        formatted: string;
+        fetchDate: string;
+      }
+      
+      const [formattedShipDate, setformattedShipDate] = useState<string | null>(null);
+
+      useEffect(() => {
+        // Retrieve the data from localStorage
+        const shipDateObject = localStorage.getItem('selectedShipDateObject');
+    
+        if (shipDateObject) {
+          // Safely parse the string and update the state
+          const parsedShipDateObject: ShipDateObject = JSON.parse(shipDateObject);
+          setformattedShipDate(parsedShipDateObject.formatted);
+        }
+      }, []); // Empty dependency array ensures this only runs once when the component mounts
+
     return (
         <article className="cart optimizedCheckout-orderSummary" data-test="cart">
             <OrderSummaryHeader>{headerLink}</OrderSummaryHeader>
 
             <OrderSummarySection>
                 <OrderSummaryItems displayLineItemsCount items={nonBundledLineItems} />
+            </OrderSummarySection>
+
+            <OrderSummarySection>
+                <p>{formattedShipDate}</p>
             </OrderSummarySection>
 
             <Extension region={ExtensionRegion.SummaryLastItemAfter} />
