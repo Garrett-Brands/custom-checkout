@@ -42,20 +42,26 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
 
     interface ShipDateObject {
         formatted: string;
-        fetchDate: string;
-      }
+    }
+
+    interface DeliveryEstimateObject {
+        formatted: string;
+    }
       
-      const [formattedShipDate, setformattedShipDate] = useState<string | null>(null);
+      const [formattedShipDate, setFormattedShipDate] = useState<string | null>(null);
+      const [formattedDeliveryEstimate, setFormatedDeliveryEstimate] = useState<string | null>(null);
 
       useEffect(() => {
-        // Retrieve the data from localStorage
         const shipDateObject = localStorage.getItem('selectedShipDateObject');
-    
+        const deliveryEstimateObject = localStorage.getItem('deliveryEstimateObject');
         if (shipDateObject) {
-          // Safely parse the string and update the state
           const parsedShipDateObject: ShipDateObject = JSON.parse(shipDateObject);
-          setformattedShipDate(parsedShipDateObject.formatted);
+          setFormattedShipDate(parsedShipDateObject.formatted);
         }
+        if (deliveryEstimateObject) {
+            const parsedDeliveryEstimateObject: DeliveryEstimateObject = JSON.parse(deliveryEstimateObject);
+            setFormatedDeliveryEstimate(parsedDeliveryEstimateObject.formatted);
+          }
       }, []); // Empty dependency array ensures this only runs once when the component mounts
 
     return (
@@ -66,9 +72,20 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
                 <OrderSummaryItems displayLineItemsCount items={nonBundledLineItems} />
             </OrderSummarySection>
 
-            <OrderSummarySection>
-                <p>{formattedShipDate}</p>
-            </OrderSummarySection>
+            {formattedShipDate && 
+                <OrderSummarySection>
+                    <div className="shipping-preview-container-orderSummary">
+                        <div className="shipping-preview-item" data-type="ship-date">
+                            <span>Ship Date</span>
+                            <span>{formattedShipDate}</span>
+                        </div>
+                        <div className="shipping-preview-item" data-type="delivery-date">
+                            <span>Estimated Delivery</span>
+                            <span>{formattedDeliveryEstimate}</span>
+                        </div>
+                    </div>
+                </OrderSummarySection>
+            }
 
             <Extension region={ExtensionRegion.SummaryLastItemAfter} />
 

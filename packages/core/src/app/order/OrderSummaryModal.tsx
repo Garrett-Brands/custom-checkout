@@ -3,7 +3,7 @@ import {
     ShopperCurrency as ShopperCurrencyType,
     StoreCurrency,
 } from '@bigcommerce/checkout-sdk';
-import React, { cloneElement, FunctionComponent, isValidElement, ReactNode } from 'react';
+import React, { cloneElement, FunctionComponent, isValidElement, ReactNode, useEffect, useState } from 'react';
 
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
@@ -65,6 +65,30 @@ const OrderSummaryModal: FunctionComponent<
             <TranslatedString id="cart.return_to_checkout" />
     </Button>;
 
+    interface ShipDateObject {
+        formatted: string;
+    }
+
+    interface DeliveryEstimateObject {
+        formatted: string;
+    }
+
+    const [formattedShipDate, setFormattedShipDate] = useState<string | null>(null);
+    const [formattedDeliveryEstimate, setFormatedDeliveryEstimate] = useState<string | null>(null);
+
+    useEffect(() => {
+    const shipDateObject = localStorage.getItem('selectedShipDateObject');
+    const deliveryEstimateObject = localStorage.getItem('deliveryEstimateObject');
+    if (shipDateObject) {
+        const parsedShipDateObject: ShipDateObject = JSON.parse(shipDateObject);
+        setFormattedShipDate(parsedShipDateObject.formatted);
+    }
+    if (deliveryEstimateObject) {
+        const parsedDeliveryEstimateObject: DeliveryEstimateObject = JSON.parse(deliveryEstimateObject);
+        setFormatedDeliveryEstimate(parsedDeliveryEstimateObject.formatted);
+        }
+    }, []); // Empty dependency array ensures this only runs once when the component mounts
+
     return <Modal
         additionalBodyClassName="cart-modal-body optimizedCheckout-orderSummary"
         additionalHeaderClassName="cart-modal-header optimizedCheckout-orderSummary with-continue-button"
@@ -82,6 +106,20 @@ const OrderSummaryModal: FunctionComponent<
         <OrderSummarySection>
             <OrderSummaryItems displayLineItemsCount={false} items={items} />
         </OrderSummarySection>
+        { formattedShipDate && 
+                <OrderSummarySection>
+                    <div className="shipping-preview-container-orderSummary">
+                        <div className="shipping-preview-item" data-type="ship-date">
+                            <span>Ship Date</span>
+                            <span>{formattedShipDate}</span>
+                        </div>
+                        <div className="shipping-preview-item" data-type="delivery-date">
+                            <span>Estimated Delivery</span>
+                            <span>{formattedDeliveryEstimate}</span>
+                        </div>
+                    </div>
+                </OrderSummarySection>
+        }
         <OrderSummarySection>
             <OrderSummarySubtotals isTaxIncluded={isTaxIncluded} taxes={taxes} {...orderSummarySubtotalsProps} />
             {additionalLineItems}

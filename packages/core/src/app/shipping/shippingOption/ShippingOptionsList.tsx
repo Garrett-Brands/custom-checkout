@@ -1,5 +1,5 @@
 import { ExtensionRegion, ShippingOption } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent, memo, useCallback } from 'react';
+import React, { FunctionComponent, memo, useCallback, useState, useEffect } from 'react';
 
 import { Extension } from '@bigcommerce/checkout/checkout-extension';
 
@@ -16,6 +16,14 @@ interface ShippingOptionListItemProps {
     shippingOption: ShippingOption;
 }
 
+interface ShipDateObject {
+    formatted: string;
+}
+
+interface DeliveryEstimateObject {
+    formatted: string;
+}
+
 const ShippingOptionListItem: FunctionComponent<ShippingOptionListItemProps> = ({
     consignmentId,
     isMultiShippingMode,
@@ -24,6 +32,24 @@ const ShippingOptionListItem: FunctionComponent<ShippingOptionListItemProps> = (
 }) => {
     const isSelected = selectedShippingOptionId === shippingOption.id;
 
+    const [formattedShipDate, setFormattedShipDate] = useState<string | null>(null);
+    const [formattedDeliveryEstimate, setFormattedDeliveryEstimate] = useState<string | null>(null);
+
+    useEffect(() => {
+        const shipDateObject = localStorage.getItem('selectedShipDateObject');
+        const deliveryEstimateObject = localStorage.getItem('deliveryEstimateObject');
+        
+        if (shipDateObject) {
+            const parsedShipDateObject: ShipDateObject = JSON.parse(shipDateObject);
+            setFormattedShipDate(parsedShipDateObject.formatted);
+        }
+        
+        if (deliveryEstimateObject) {
+            const parsedDeliveryEstimateObject: DeliveryEstimateObject = JSON.parse(deliveryEstimateObject);
+            setFormattedDeliveryEstimate(parsedDeliveryEstimateObject.formatted);
+        }
+    }), [];
+
     const renderLabel = useCallback(
         () => (
             <div className="shippingOptionLabel">
@@ -31,10 +57,19 @@ const ShippingOptionListItem: FunctionComponent<ShippingOptionListItemProps> = (
                 {(isSelected && !isMultiShippingMode) && (
                     <Extension region={ExtensionRegion.ShippingSelectedShippingMethod} />
                 )}
-                <span>testing additional copy here</span>
+                {formattedShipDate && (
+                    <div className='shippingOptions-item-container' data-type='ship-date'>
+                        <span>Ship Date: {formattedShipDate}</span>
+                    </div>
+                )}
+                {formattedDeliveryEstimate && (
+                    <div className='shippingOptions-item-container' data-type='delivery-date'>
+                        <span>Estimated Delivery: {formattedDeliveryEstimate}</span>
+                    </div>
+                )}
             </div>
         ),
-        [isSelected, isMultiShippingMode, shippingOption],
+        [isSelected, isMultiShippingMode, shippingOption, formattedShipDate, formattedDeliveryEstimate],
     );
 
 
