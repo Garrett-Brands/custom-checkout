@@ -4,7 +4,7 @@ import {
     ShopperCurrency,
     StoreCurrency,
 } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent, ReactNode, useMemo, useEffect, useState } from 'react';
+import React, { FunctionComponent, ReactNode, useEffect, useMemo, useState } from 'react';
 
 import { Extension } from '@bigcommerce/checkout/checkout-extension';
 import { TranslatedString } from '@bigcommerce/checkout/locale';

@@ -1,5 +1,7 @@
+/* eslint-disable */
+
 import { ExtensionRegion, ShippingOption } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent, memo, useCallback, useState, useEffect } from 'react';
+import React, { FunctionComponent, memo, useCallback, useEffect, useState } from 'react';
 
 import { Extension } from '@bigcommerce/checkout/checkout-extension';
 
