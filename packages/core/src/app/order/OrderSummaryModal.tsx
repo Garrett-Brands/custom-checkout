@@ -79,11 +79,11 @@ const OrderSummaryModal: FunctionComponent<
     useEffect(() => {
     const shipDateObject = localStorage.getItem('selectedShipDateObject');
     const deliveryEstimateObject = localStorage.getItem('deliveryEstimateObject');
-    if (shipDateObject) {
+    if (shipDateObject && shipDateObject !== 'null') {
         const parsedShipDateObject: ShipDateObject = JSON.parse(shipDateObject);
         setFormattedShipDate(parsedShipDateObject.formatted);
     }
-    if (deliveryEstimateObject) {
+    if (deliveryEstimateObject && deliveryEstimateObject !== 'null') {
         const parsedDeliveryEstimateObject: DeliveryEstimateObject = JSON.parse(deliveryEstimateObject);
         setFormatedDeliveryEstimate(parsedDeliveryEstimateObject.formatted);
         }
