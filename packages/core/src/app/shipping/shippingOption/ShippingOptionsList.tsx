@@ -74,28 +74,28 @@ const ShippingOptionListItem: FunctionComponent<ShippingOptionListItemProps> = (
         return null; // Return null if no valid method is found
     }
 
+    // Effect to initialize zip code and listen for changes
     useEffect(() => {
         // jQuery selector for the zip code input
         const zipCodeInput = $('#postCodeInput');
-    
-        // Get the initial zip code when the component mounts
-        const initialZipCode = zipCodeInput.val() as string;
-        setZipCode(initialZipCode);
-    
+
         // Function to update the zip code state
         const updateZipCode = () => {
-          const newZipCode = zipCodeInput.val() as string;
-          setZipCode(newZipCode);
+            const newZipCode = zipCodeInput.val() as string;
+            setZipCode(newZipCode);
         };
-    
-        // Attach event listeners
-        zipCodeInput.on('input', updateZipCode); // This captures input events for real-time updates
-    
-        // Cleanup event listeners on component unmount
+
+        // Get the initial zip code when the component mounts
+        updateZipCode();
+
+        // Attach event listener for real-time updates
+        zipCodeInput.on('input', updateZipCode);
+
+        // Cleanup event listener on component unmount
         return () => {
-          zipCodeInput.off('input', updateZipCode);
+            zipCodeInput.off('input', updateZipCode);
         };
-      }, []);
+    });
 
     useEffect(() => {
         const shipDateObject = localStorage.getItem('selectedShipDateObject');
@@ -117,53 +117,40 @@ const ShippingOptionListItem: FunctionComponent<ShippingOptionListItemProps> = (
         }
     }), [];
 
+    // Function to render the estimated delivery message
     const renderEstimatedDelivery = () => {
-        console.log('Rendering Estimated Delivery:', zipCode, savedZipCode); // Debugging
-        if (formattedDeliveryEstimate && zipCode === savedZipCode) {
+        if (!isMultiShippingMode && formattedDeliveryEstimate && zipCode === savedZipCode) {
             return (
                 <div className='shippingOptions-item-container' data-type='delivery-date'>
-                    <span>Estimated Delivery: {formattedDeliveryEstimate}</span>
+                    <span>Est. Delivery: {formattedDeliveryEstimate}</span>
                 </div>
             );
         }
-        if (formattedDeliveryEstimate && zipCode !== savedZipCode) {
-            return <p>Sorry, try again.</p>;
+        if (isMultiShippingMode && formattedDeliveryEstimate && zipCode !== savedZipCode) {
+            return;
+            // return (
+            //     <div className='shippingOptions-item-container' data-type='delivery-date'>
+            //         <span>Est. Delivery: Update zip code to {savedZipCode} or in your cart.</span>
+            //     </div>
+            // )
         }
+        return null;
     };
 
-    // const renderEstimatedDelivery = () => {
-    //     if (formattedDeliveryEstimate && zipCode === savedZipCode) {
-    //         return (
-    //             <div className='shippingOptions-item-container' data-type='delivery-date'>
-    //                 <span>Estimated Delivery: {formattedDeliveryEstimate}</span>
-    //             </div>
-    //         )
-    //     }
-    // }
-
-    const renderLabel = useCallback(
-        () => (
-            <div className="shippingOptionLabel">
-                <StaticShippingOption displayAdditionalInformation={true} method={shippingOption} />
-                {(isSelected && !isMultiShippingMode) && (
-                    <Extension region={ExtensionRegion.ShippingSelectedShippingMethod} />
-                )}
-                {formattedShipDate && (
-                    <div className='shippingOptions-item-container' data-type='ship-date'>
-                        <span>Ship Date: {formattedShipDate}</span>
-                    </div>
-                )}
-                {renderEstimatedDelivery()}
-                {/* {formattedDeliveryEstimate && (
-                    <div className='shippingOptions-item-container' data-type='delivery-date'>
-                        <span>Estimated Delivery: {formattedDeliveryEstimate}</span>
-                    </div>
-                )} */}
-            </div>
-        ),
-        [isSelected, isMultiShippingMode, shippingOption, formattedShipDate, formattedDeliveryEstimate, zipCode, savedZipCode],
+    const renderLabel = () => (
+        <div className="shippingOptionLabel">
+            <StaticShippingOption displayAdditionalInformation={true} method={shippingOption} />
+            {isSelected && !isMultiShippingMode && (
+                <Extension region={ExtensionRegion.ShippingSelectedShippingMethod} />
+            )}
+            {formattedShipDate && (
+                <div className='shippingOptions-item-container' data-type='ship-date'>
+                    <span>Ship Date: {formattedShipDate}</span>
+                </div>
+            )}
+            {renderEstimatedDelivery()}
+        </div>
     );
-
 
     return (
         <ChecklistItem

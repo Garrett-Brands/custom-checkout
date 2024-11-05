@@ -44,24 +44,24 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
         formatted: string;
     }
 
-    interface DeliveryEstimateObject {
-        formatted: string;
-    }
+    // interface DeliveryEstimateObject {
+    //     formatted: string;
+    // }
       
       const [formattedShipDate, setFormattedShipDate] = useState<string | null>(null);
-      const [formattedDeliveryEstimate, setFormatedDeliveryEstimate] = useState<string | null>(null);
+    //   const [formattedDeliveryEstimate, setFormatedDeliveryEstimate] = useState<string | null>(null);
 
       useEffect(() => {
         const shipDateObject = localStorage.getItem('selectedShipDateObject');
-        const deliveryEstimateObject = localStorage.getItem('deliveryEstimateObject');
+        // const deliveryEstimateObject = localStorage.getItem('deliveryEstimateObject');
         if (shipDateObject && shipDateObject !== 'null') {
           const parsedShipDateObject: ShipDateObject = JSON.parse(shipDateObject);
           setFormattedShipDate(parsedShipDateObject.formatted);
         }
-        if (deliveryEstimateObject && deliveryEstimateObject !== 'null') {
-            const parsedDeliveryEstimateObject: DeliveryEstimateObject = JSON.parse(deliveryEstimateObject);
-            setFormatedDeliveryEstimate(parsedDeliveryEstimateObject.formatted);
-          }
+        // if (deliveryEstimateObject && deliveryEstimateObject !== 'null') {
+        //     const parsedDeliveryEstimateObject: DeliveryEstimateObject = JSON.parse(deliveryEstimateObject);
+        //     setFormatedDeliveryEstimate(parsedDeliveryEstimateObject.formatted);
+        //   }
       }, []); // Empty dependency array ensures this only runs once when the component mounts
 
     return (
@@ -79,10 +79,10 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
                             <span>Ship Date</span>
                             <span>{formattedShipDate}</span>
                         </div>
-                        <div className="shipping-preview-item" data-type="delivery-date">
+                        {/* <div className="shipping-preview-item" data-type="delivery-date">
                             <span>Estimated Delivery</span>
                             <span>{formattedDeliveryEstimate}</span>
-                        </div>
+                        </div> */}
                     </div>
                 </OrderSummarySection>
             }
