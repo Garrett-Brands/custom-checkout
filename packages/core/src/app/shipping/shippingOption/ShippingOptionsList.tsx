@@ -23,10 +23,6 @@ interface ShipDateObject {
     isoDate: string;
 }
 
-// interface DeliveryEstimateObject {
-//     formatted: string;
-// }
-
 interface DeliveryDate {
     formatted: string;
 }
@@ -47,10 +43,9 @@ const ShippingOptionListItem: FunctionComponent<ShippingOptionListItemProps> = (
     shippingOption,
 }) => {
     const isSelected = selectedShippingOptionId === shippingOption.id;
-
     const [formattedShipDate, setFormattedShipDate] = useState<string | null>(null);
-    const [isoShipDate, setIsoShipDate] = useState<string | null>(null);
     const [formattedDeliveryEstimate, setFormattedDeliveryEstimate] = useState<string | null>(null);
+    const [zipCode, setZipCode] = useState<string | null>(null);
 
     function getDeliveryDateFormatted(
         allScheduledShipMethods: AllScheduledShipMethods | null,
@@ -79,22 +74,38 @@ const ShippingOptionListItem: FunctionComponent<ShippingOptionListItemProps> = (
     }
 
     useEffect(() => {
+        // jQuery selector for the zip code input
+        const zipCodeInput = $('#postCodeInput');
+    
+        // Get the initial zip code when the component mounts
+        const initialZipCode = zipCodeInput.val() as string;
+        setZipCode(initialZipCode);
+    
+        // Function to update the zip code state
+        const updateZipCode = () => {
+          const newZipCode = zipCodeInput.val() as string;
+          setZipCode(newZipCode);
+        };
+    
+        // Attach event listeners
+        zipCodeInput.on('input', updateZipCode); // This captures input events for real-time updates
+    
+        // Cleanup event listeners on component unmount
+        return () => {
+          zipCodeInput.off('input', updateZipCode);
+        };
+      }, []);
+
+    useEffect(() => {
         const shipDateObject = localStorage.getItem('selectedShipDateObject');
-        const deliveryEstimateObject = localStorage.getItem('deliveryEstimateObject');
         const allScheduledShipMethods: AllScheduledShipMethods | null = JSON.parse(
             localStorage.getItem('allScheduledShipMethods') || 'null'
         );
-        
         if (shipDateObject && shipDateObject !== 'null') {
             const parsedShipDateObject: ShipDateObject = JSON.parse(shipDateObject);
-            setFormattedShipDate(parsedShipDateObject.formatted);
-            setIsoShipDate(parsedShipDateObject.isoDate)
-        }
-        
-        if (deliveryEstimateObject && deliveryEstimateObject !== 'null') {
-            // const parsedDeliveryEstimateObject: DeliveryEstimateObject = JSON.parse(deliveryEstimateObject);
             const shippingMethod = getFormattedShippingMethod(shippingOption.description)
-            const deliveryDate = getDeliveryDateFormatted(allScheduledShipMethods, shippingMethod, isoShipDate)
+            const deliveryDate = getDeliveryDateFormatted(allScheduledShipMethods, shippingMethod, parsedShipDateObject.isoDate)
+            setFormattedShipDate(parsedShipDateObject.formatted);
             setFormattedDeliveryEstimate(deliveryDate);
         }
     }), [];

@@ -118,6 +118,7 @@
     "@types/ejs": "^3.1.0",
     "@types/enzyme": "^3.10.3",
     "@types/jest": "^29.5.13",
+    "@types/jquery": "^3.5.32",
     "@types/node": "^12.6.9",
     "@types/object-hash": "^1.2.0",
     "@types/react-test-renderer": "^17.0.2",
