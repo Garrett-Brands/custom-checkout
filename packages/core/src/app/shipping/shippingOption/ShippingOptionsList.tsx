@@ -46,6 +46,7 @@ const ShippingOptionListItem: FunctionComponent<ShippingOptionListItemProps> = (
     const [formattedShipDate, setFormattedShipDate] = useState<string | null>(null);
     const [formattedDeliveryEstimate, setFormattedDeliveryEstimate] = useState<string | null>(null);
     const [zipCode, setZipCode] = useState<string | null>(null);
+    const [savedZipCode, setSavedZipCode] = useState<string | null>(null);
 
     function getDeliveryDateFormatted(
         allScheduledShipMethods: AllScheduledShipMethods | null,
@@ -98,6 +99,7 @@ const ShippingOptionListItem: FunctionComponent<ShippingOptionListItemProps> = (
 
     useEffect(() => {
         const shipDateObject = localStorage.getItem('selectedShipDateObject');
+        const zipCodeItem = localStorage.getItem('zipCode');
         const allScheduledShipMethods: AllScheduledShipMethods | null = JSON.parse(
             localStorage.getItem('allScheduledShipMethods') || 'null'
         );
@@ -108,7 +110,36 @@ const ShippingOptionListItem: FunctionComponent<ShippingOptionListItemProps> = (
             setFormattedShipDate(parsedShipDateObject.formatted);
             setFormattedDeliveryEstimate(deliveryDate);
         }
+        if (zipCodeItem && zipCodeItem !== 'null') {
+            const rawZipCode = localStorage.getItem("zipCode");
+            const zipCodeItem = rawZipCode ? JSON.parse(rawZipCode) : null;
+            setSavedZipCode(zipCodeItem);
+        }
     }), [];
+
+    const renderEstimatedDelivery = () => {
+        console.log('Rendering Estimated Delivery:', zipCode, savedZipCode); // Debugging
+        if (formattedDeliveryEstimate && zipCode === savedZipCode) {
+            return (
+                <div className='shippingOptions-item-container' data-type='delivery-date'>
+                    <span>Estimated Delivery: {formattedDeliveryEstimate}</span>
+                </div>
+            );
+        }
+        if (formattedDeliveryEstimate && zipCode !== savedZipCode) {
+            return <p>Sorry, try again.</p>;
+        }
+    };
+
+    // const renderEstimatedDelivery = () => {
+    //     if (formattedDeliveryEstimate && zipCode === savedZipCode) {
+    //         return (
+    //             <div className='shippingOptions-item-container' data-type='delivery-date'>
+    //                 <span>Estimated Delivery: {formattedDeliveryEstimate}</span>
+    //             </div>
+    //         )
+    //     }
+    // }
 
     const renderLabel = useCallback(
         () => (
@@ -122,14 +153,15 @@ const ShippingOptionListItem: FunctionComponent<ShippingOptionListItemProps> = (
                         <span>Ship Date: {formattedShipDate}</span>
                     </div>
                 )}
-                {formattedDeliveryEstimate && (
+                {renderEstimatedDelivery()}
+                {/* {formattedDeliveryEstimate && (
                     <div className='shippingOptions-item-container' data-type='delivery-date'>
                         <span>Estimated Delivery: {formattedDeliveryEstimate}</span>
                     </div>
-                )}
+                )} */}
             </div>
         ),
-        [isSelected, isMultiShippingMode, shippingOption, formattedShipDate, formattedDeliveryEstimate],
+        [isSelected, isMultiShippingMode, shippingOption, formattedShipDate, formattedDeliveryEstimate, zipCode, savedZipCode],
     );
 
 
