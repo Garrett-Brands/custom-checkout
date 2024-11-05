@@ -20,10 +20,24 @@ interface ShippingOptionListItemProps {
 
 interface ShipDateObject {
     formatted: string;
+    isoDate: string;
 }
 
-interface DeliveryEstimateObject {
+// interface DeliveryEstimateObject {
+//     formatted: string;
+// }
+
+interface DeliveryDate {
     formatted: string;
+}
+
+interface ScheduledShipMethod {
+    shipDate: string;
+    deliveryDate: DeliveryDate;
+}
+
+interface AllScheduledShipMethods {
+    [method: string]: ScheduledShipMethod[];
 }
 
 const ShippingOptionListItem: FunctionComponent<ShippingOptionListItemProps> = ({
@@ -35,20 +49,53 @@ const ShippingOptionListItem: FunctionComponent<ShippingOptionListItemProps> = (
     const isSelected = selectedShippingOptionId === shippingOption.id;
 
     const [formattedShipDate, setFormattedShipDate] = useState<string | null>(null);
+    const [isoShipDate, setIsoShipDate] = useState<string | null>(null);
     const [formattedDeliveryEstimate, setFormattedDeliveryEstimate] = useState<string | null>(null);
+
+    function getDeliveryDateFormatted(
+        allScheduledShipMethods: AllScheduledShipMethods | null,
+        shippingMethod: string | null,
+        isoDate: string | null
+    ): string | null {
+        if (allScheduledShipMethods && shippingMethod && allScheduledShipMethods[shippingMethod]) {
+            const shippingData = allScheduledShipMethods[shippingMethod].find(
+                (entry) => entry.shipDate === isoDate
+            );
+            if (shippingData) {
+                return shippingData.deliveryDate.formatted;
+            }
+        }
+        return null;
+    }
+
+    function getFormattedShippingMethod(method: string): string | null {
+        const validMethods = ["Ground", "Next Day Air", "2nd Day Air"];
+        for (const validMethod of validMethods) {
+            if (method.includes(validMethod)) {
+                return validMethod; // Return the matched method
+            }
+        }
+        return null; // Return null if no valid method is found
+    }
 
     useEffect(() => {
         const shipDateObject = localStorage.getItem('selectedShipDateObject');
         const deliveryEstimateObject = localStorage.getItem('deliveryEstimateObject');
+        const allScheduledShipMethods: AllScheduledShipMethods | null = JSON.parse(
+            localStorage.getItem('allScheduledShipMethods') || 'null'
+        );
         
         if (shipDateObject && shipDateObject !== 'null') {
             const parsedShipDateObject: ShipDateObject = JSON.parse(shipDateObject);
             setFormattedShipDate(parsedShipDateObject.formatted);
+            setIsoShipDate(parsedShipDateObject.isoDate)
         }
         
         if (deliveryEstimateObject && deliveryEstimateObject !== 'null') {
-            const parsedDeliveryEstimateObject: DeliveryEstimateObject = JSON.parse(deliveryEstimateObject);
-            setFormattedDeliveryEstimate(parsedDeliveryEstimateObject.formatted);
+            // const parsedDeliveryEstimateObject: DeliveryEstimateObject = JSON.parse(deliveryEstimateObject);
+            const shippingMethod = getFormattedShippingMethod(shippingOption.description)
+            const deliveryDate = getDeliveryDateFormatted(allScheduledShipMethods, shippingMethod, isoShipDate)
+            setFormattedDeliveryEstimate(deliveryDate);
         }
     }), [];
 
