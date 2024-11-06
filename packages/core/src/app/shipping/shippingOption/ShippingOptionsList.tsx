@@ -77,12 +77,13 @@ const ShippingOptionListItem: FunctionComponent<ShippingOptionListItemProps> = (
     // Effect to initialize zip code and listen for changes
     useEffect(() => {
         // jQuery selector for the zip code input
-        const zipCodeInput = $('#postCodeInput');
+        const zipCodeInput = $('#postCodeInput')
+        const zipCodeInputValue = zipCodeInput.val() as string;
+        const zipCodeSpanValue = $('.postal-code').first().text().replace(/\s+/g, '').replace(/\/$/, '');
 
         // Function to update the zip code state
         const updateZipCode = () => {
-            const newZipCode = zipCodeInput.val() as string;
-            setZipCode(newZipCode);
+            setZipCode(zipCodeInputValue || zipCodeSpanValue);
         };
 
         // Get the initial zip code when the component mounts
