@@ -118,6 +118,18 @@ const ShippingOptionListItem: FunctionComponent<ShippingOptionListItemProps> = (
         }
     }), [];
 
+    useEffect(() => {
+        localStorage.setItem('checkoutZipCode', JSON.stringify(zipCode))
+        let isMultiShip = {
+            value: isMultiShippingMode
+        }
+        localStorage.setItem('isMultiShippingMode', JSON.stringify(isMultiShip))
+        if (isSelected) {
+            const shippingMethod = getFormattedShippingMethod(shippingOption.description)
+            localStorage.setItem('checkoutShippingMethod', JSON.stringify(shippingMethod))
+        }
+    }, [zipCode, isSelected, isMultiShippingMode])
+
     // Function to render the estimated delivery message
     const renderEstimatedDelivery = () => {
         if (!isMultiShippingMode && formattedDeliveryEstimate && zipCode === savedZipCode) {
