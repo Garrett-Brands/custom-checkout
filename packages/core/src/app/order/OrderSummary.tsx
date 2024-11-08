@@ -4,7 +4,7 @@ import {
     ShopperCurrency,
     StoreCurrency,
 } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent, ReactNode, useEffect, useMemo, useState } from 'react';
+import React, { FunctionComponent, ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 
 import { Extension } from '@bigcommerce/checkout/checkout-extension';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
@@ -16,6 +16,7 @@ import OrderSummarySection from './OrderSummarySection';
 import OrderSummarySubtotals, { OrderSummarySubtotalsProps } from './OrderSummarySubtotals';
 import OrderSummaryTotal from './OrderSummaryTotal';
 import removeBundledItems from './removeBundledItems';
+import { Address } from '@faker-js/faker/address';
 
 export interface OrderSummaryProps {
     lineItems: LineItemMap;
@@ -66,15 +67,23 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
     const [formattedDeliveryEstimate, setFormattedDeliveryEstimate] = useState<string | null>(null);
     const [zipCode, setZipCode] = useState<string | null>(null);
     const [checkoutZipCode, setCheckoutZipCode] = useState<string | null>(null);
+    const [addressZipCode, setAddressZipCode] = useState<string | null>(null);
     const [shippingMethod, setShippingMethod] = useState<string | null>(null);
     const [isMultiShippingMode, setIsMultiShippingMode] = useState<boolean>(false);
+    const [multiShipClick, setMultiShipClick] = useState<boolean>(false);
+    const [addressClick, setAddressClick] = useState<boolean>(false);
+    console.log(multiShipClick)
 
     function getDeliveryDateFormatted(
         allScheduledShipMethods: AllScheduledShipMethods | null,
         shippingMethod: string | null,
         isoDate: string | null
     ): string | null {
-        if (allScheduledShipMethods && shippingMethod && allScheduledShipMethods[shippingMethod]) {
+        if (
+            allScheduledShipMethods &&
+            shippingMethod &&
+            Array.isArray(allScheduledShipMethods[shippingMethod])
+        ) {
             const shippingData = allScheduledShipMethods[shippingMethod].find(
                 (entry) => entry.shipDate === isoDate
             );
@@ -95,33 +104,38 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
         return null; // Return null if no valid method is found
     }
 
-    const renderEstimatedDelivery = () => {
-        if (!isMultiShippingMode && formattedDeliveryEstimate && zipCode === checkoutZipCode) {
-            return (
-                <div className="shipping-preview-item" data-type="delivery-date">
-                    <span>Estimated Delivery</span>
-                <span>{formattedDeliveryEstimate}</span>
-            </div>
-                
-            );
-        }
-        if (isMultiShippingMode && formattedDeliveryEstimate && zipCode !== checkoutZipCode) {
-            return;
-            // return (
-            //     <div className='shippingOptions-item-container' data-type='delivery-date'>
-            //         <span>Est. Delivery: Update zip code to {savedZipCode} or in your cart.</span>
-            //     </div>
-            // )
-        }
-        return null;
-    };
+    const lastZipCodeRef = useRef<string | null>(null);
+
+    useEffect(() => {
+        window.addEventListener('multiShipClick', (event) => {
+            const multiShipClickEvent = event as CustomEvent<{ isMultiShippingMode: boolean }>;
+            console.log(multiShipClickEvent)
+            setMultiShipClick(!multiShipClick)
+        });
+        window.addEventListener('addressClick', (event) => {
+            const addressClickEvent = event as CustomEvent<{ address: Address }>;
+            const eventZipCode = (addressClickEvent.detail.address as unknown as { postalCode: string }).postalCode;
+            setAddressClick(!addressClick)
+            setAddressZipCode(eventZipCode)
+            setCheckoutZipCode(eventZipCode)
+        });
+        window.addEventListener('zipCodeInputEvent', (event) => {
+            const zipCodeInputEvent = event as CustomEvent<{ zipCodeInput: string }>;
+            const zipCodeValue = zipCodeInputEvent.detail.zipCodeInput
+            if (zipCodeValue && zipCodeValue !== lastZipCodeRef.current) {
+                lastZipCodeRef.current = zipCodeValue;
+                setAddressZipCode(zipCodeValue);
+                setCheckoutZipCode(zipCodeValue);
+            }
+        });
+    })
 
     useEffect(() => {
         const shipDateObject = localStorage.getItem('selectedShipDateObject');
         const zipCodeItem = localStorage.getItem('zipCode');
         const checkoutZipCodeItem = localStorage.getItem('checkoutZipCode')
         const checkoutShippingMethod = localStorage.getItem('checkoutShippingMethod')
-        const isMultiShippingMode = localStorage.getItem('isMultiShippingMode')
+        const isMultiShippingModeItem = localStorage.getItem('isMultiShippingMode')
         const allScheduledShipMethods: AllScheduledShipMethods | null = JSON.parse(
             localStorage.getItem('allScheduledShipMethods') || 'null'
         );
@@ -132,26 +146,38 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
             setFormattedShipDate(parsedShipDateObject.formatted);
             setFormattedDeliveryEstimate(deliveryDate);
         }
-        if (zipCodeItem && zipCodeItem !== 'null' && checkoutZipCodeItem && checkoutZipCodeItem !== 'null') {
+        if (zipCodeItem && zipCodeItem !== 'null' && checkoutZipCodeItem && checkoutZipCodeItem !== 'null' && checkoutZipCodeItem !== undefined) {
             const rawZipCode = localStorage.getItem("zipCode");
             const zipCodeItem = rawZipCode ? JSON.parse(rawZipCode) : null;
-            const rawCheckoutZipCode = localStorage.getItem("checkoutZipCode");
-            const checkoutZipCodeItem = rawCheckoutZipCode ? JSON.parse(rawCheckoutZipCode) : null;
+            // const rawCheckoutZipCode = localStorage.getItem("checkoutZipCode");
+            // const checkoutZipCodeItem = rawCheckoutZipCode ? JSON.parse(rawCheckoutZipCode) : null;
             setZipCode(zipCodeItem);
-            setCheckoutZipCode(checkoutZipCodeItem)
+            // setCheckoutZipCode(checkoutZipCodeItem)
         }
         if (checkoutShippingMethod && checkoutShippingMethod !== 'null') {
             const rawShippingMethod = localStorage.getItem("checkoutShippingMethod");
             const rawShippingMethodItem = rawShippingMethod ? JSON.parse(rawShippingMethod) : null;
             setShippingMethod(getFormattedShippingMethod(rawShippingMethodItem));
         }
-        if (isMultiShippingMode !== null && isMultiShippingMode !== 'null') {
-            const parsedIsMultiShipModeObject: isMultiShippingMode = JSON.parse(isMultiShippingMode);
+        if (isMultiShippingModeItem !== null && isMultiShippingModeItem !== 'null') {
+            const parsedIsMultiShipModeObject: isMultiShippingMode = JSON.parse(isMultiShippingModeItem);
             if (typeof parsedIsMultiShipModeObject.value === "boolean") {
                 setIsMultiShippingMode(parsedIsMultiShipModeObject.value);
             }
         }
-    }), [];
+    }), [isMultiShippingMode, zipCode, checkoutZipCode, shippingMethod, formattedShipDate, formattedDeliveryEstimate];
+
+    const renderEstimatedDelivery = () => {
+        if (zipCode === checkoutZipCode || zipCode === addressZipCode) {
+            return (
+                <div className="shipping-preview-item" data-type="delivery-date">
+                    <span>Estimated Delivery</span>
+                <span>{formattedDeliveryEstimate}</span>
+            </div>
+            );
+        }
+        return;
+    }
 
     return (
         <article className="cart optimizedCheckout-orderSummary" data-test="cart">
@@ -168,7 +194,8 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
                             <span>Ship Date</span>
                             <span>{formattedShipDate}</span>
                         </div>
-                        {renderEstimatedDelivery()}
+                        { isMultiShippingMode === false && renderEstimatedDelivery()}
+                        {/* <span>values: {zipCode} {checkoutZipCode} {addressZipCode}</span> */}
                     </div>
                 </OrderSummarySection>
             }

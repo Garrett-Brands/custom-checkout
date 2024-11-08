@@ -41,14 +41,16 @@ const ItemAddressSelect: FunctionComponent<ItemAddressSelectProps> = ({
             <div className="consignment-product-body">
                 <h4 className="optimizedCheckout-contentPrimary">{`${quantity} x ${name}`}</h4>
 
-                {(options || []).map(({ name: optionName, value, nameId }) => (
-                    <ul
-                        className="product-options optimizedCheckout-contentSecondary"
-                        data-test="consigment-item-product-options"
-                        key={nameId}
-                    >
-                        <li className="product-option">{`${optionName} ${value}`}</li>
-                    </ul>
+                {(options || [])
+                    .filter(({ name: optionName }) => optionName !== 'Ship Date') // Filter out 'Ship Date' options
+                    .map(({ name: optionName, value, nameId }) => (
+                        <ul
+                            className="product-options optimizedCheckout-contentSecondary"
+                            data-test="consigment-item-product-options"
+                            key={nameId}
+                        >
+                            <li className="product-option">{`${optionName}: ${value}`}</li>
+                        </ul>
                 ))}
 
                 <AddressSelect

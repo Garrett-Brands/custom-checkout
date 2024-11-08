@@ -48,7 +48,13 @@ const AddressSelectMenu: FunctionComponent<AddressSelectProps> = ({
                 <a
                     data-test="address-select-option-action"
                     href="#"
-                    onClick={preventDefault(() => onSelectAddress(address))}
+                    onClick={preventDefault(() => {
+                        onSelectAddress(address)
+                        const addressClick = new CustomEvent('addressClick', {
+                            detail: { address: address } // Add custom data here
+                        });
+                        window.dispatchEvent(addressClick);
+                    })}
                 >
                     <StaticAddress address={address} type={type} />
                 </a>

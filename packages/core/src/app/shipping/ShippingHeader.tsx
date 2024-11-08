@@ -20,6 +20,13 @@ const ShippingHeader: FunctionComponent<ShippingHeaderProps> = ({
     onMultiShippingChange,
     shouldShowMultiShipping,
 }) => {
+    const handleClick = () => {
+        onMultiShippingChange();
+        const multiShipClickEvent = new CustomEvent('multiShipClick', {
+            detail: { isMultiShippingMode: isMultiShippingMode } // Add custom data here
+        });
+        window.dispatchEvent(multiShipClickEvent);
+    };
     return (
         <>
             <Extension region={ExtensionRegion.ShippingShippingAddressFormBefore} />
@@ -40,7 +47,8 @@ const ShippingHeader: FunctionComponent<ShippingHeaderProps> = ({
                     <a
                         data-test="shipping-mode-toggle"
                         href="#"
-                        onClick={preventDefault(onMultiShippingChange)}
+                        onClick={preventDefault(handleClick)}
+                        className='shipping-mode-toggle-button'
                     >
                         <TranslatedString
                             id={isMultiShippingMode ? 'shipping.ship_to_single' : 'shipping.ship_to_multi'}

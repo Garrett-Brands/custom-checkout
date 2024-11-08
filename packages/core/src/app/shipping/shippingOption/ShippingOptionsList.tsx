@@ -53,7 +53,11 @@ const ShippingOptionListItem: FunctionComponent<ShippingOptionListItemProps> = (
         shippingMethod: string | null,
         isoDate: string | null
     ): string | null {
-        if (allScheduledShipMethods && shippingMethod && allScheduledShipMethods[shippingMethod]) {
+        if (
+            allScheduledShipMethods &&
+            shippingMethod &&
+            Array.isArray(allScheduledShipMethods[shippingMethod])
+        ) {
             const shippingData = allScheduledShipMethods[shippingMethod].find(
                 (entry) => entry.shipDate === isoDate
             );
@@ -84,6 +88,10 @@ const ShippingOptionListItem: FunctionComponent<ShippingOptionListItemProps> = (
         // Function to update the zip code state
         const updateZipCode = () => {
             setZipCode(zipCodeInputValue || zipCodeSpanValue);
+            const zipCodeInputEvent = new CustomEvent('zipCodeInputEvent', {
+                detail: { zipCodeInput: zipCodeInputValue || zipCodeSpanValue } // Add custom data here
+            });
+            window.dispatchEvent(zipCodeInputEvent);
         };
 
         // Get the initial zip code when the component mounts
@@ -94,7 +102,7 @@ const ShippingOptionListItem: FunctionComponent<ShippingOptionListItemProps> = (
 
         // Cleanup event listener on component unmount
         return () => {
-            zipCodeInput.off('input', updateZipCode);
+            zipCodeInput.off('input');
         };
     });
 
@@ -119,7 +127,9 @@ const ShippingOptionListItem: FunctionComponent<ShippingOptionListItemProps> = (
     }), [];
 
     useEffect(() => {
-        localStorage.setItem('checkoutZipCode', JSON.stringify(zipCode))
+        if (zipCode) {
+            localStorage.setItem('checkoutZipCode', JSON.stringify(zipCode))
+        }
         let isMultiShip = {
             value: isMultiShippingMode
         }
